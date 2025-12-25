@@ -1,1 +1,1 @@
-web: gunicorn website.wsgi
+web: gunicorn pusatbisnis.wsgi:application
