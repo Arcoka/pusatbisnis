@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+{% load static %}
+{% block body_class %}index-page{% endblock %}
+{% block content %}
+
+{% for row in slide  %}
+
+   <div class=" hero-pilihan">
+        <div class="hero-content">
+             
+            <!-- <a href="#" class="hero-button">Mulai Sekarang</a> -->
+            
+            <!-- Animasi latar belakang yang lebih profesional -->
+            <div class="particles">
+                <div class="particle" style="top: 20%; left: 10%; animation-delay: 0s;"></div>
+                <div class="particle" style="top: 30%; left: 25%; animation-delay: 2s;"></div>
+                <div class="particle" style="top: 50%; left: 15%; animation-delay: 4s;"></div>
+                <div class="particle" style="top: 70%; left: 20%; animation-delay: 1s;"></div>
+                <div class="particle" style="top: 80%; left: 40%; animation-delay: 3s;"></div>
+                <div class="particle" style="top: 40%; left: 60%; animation-delay: 5s;"></div>
+                <div class="particle" style="top: 60%; left: 50%; animation-delay: 0s;"></div>
+                <div class="particle" style="top: 10%; left: 50%; animation-delay: 2s;"></div>
+                <div class="particle" style="top: 30%; left: 70%; animation-delay: 1s;"></div>
+                <div class="particle" style="top: 60%; left: 80%; animation-delay: 3s;"></div>
+            </div>
+            
+            <div class="wave wave-1"></div>
+            <div class="wave wave-2"></div>
+            <div class="wave wave-3"></div>
+            
+            <!-- Dekorasi lingkaran dengan animasi -->
+            <div class="circle-decoration circle-1"></div>
+            <div class="circle-decoration circle-2"></div>
+        </div>
+        
+        <div class="hero-image-container">
+            <img src="{{ row.gambar_slide.url }}" alt="Gedung Bisnis Modern" class="hero-image">
+        </div>
+    </div>
+
+    {% endfor %}
+
+<div class="container my-5">
+    <!-- Section Title -->
+    <div class="container section-title incubation-section-header" style="margin-bottom: -4px;" data-aos="fade-up">
+        <h2>Model Inkubasi</h2>
+        <div class="incubation-section-subtitle">Tahapan pendampingan dari ide hingga scale-up</div>
+    </div><!-- End Section Title -->
+    <div class="row g-4 incubation-grid" data-aos="fade-up" data-aos-delay="50">
+                <div class="col-md-4 col-sm-6">
+                    <div class="card incubation-card">
+                        <div class="card-header">1. Inkubasi Awal</div>
+                        <div class="card-body text-center p-4">
+                            <div class="incubation-icon mb-3">🌱</div>
+                            <p class="card-text">Seleksi startup dengan ide bisnis potensial & bimbingan
+                                dasar.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-6">
+                    <div class="card incubation-card">
+                        <div class="card-header">2. Inkubasi Lanjutan</div>
+                        <div class="card-body text-center p-4">
+                            <div class="incubation-icon mb-3">🚀</div>
+                            <p class="card-text">Mentoring & networking untuk pengembangan startup.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-6">
+                    <div class="card incubation-card">
+                        <div class="card-header">3. Scale-Up & Go To Market</div>
+                        <div class="card-body text-center p-4">
+                            <div class="incubation-icon mb-3">💼</div>
+                            <p class="card-text">Strategi ekspansi bisnis ke pasar lebih luas.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-6">
+                    <div class="card incubation-card">
+                        <div class="card-header">4. Pengembangan Produk</div>
+                        <div class="card-body text-center p-4">
+                            <div class="incubation-icon mb-3">💡</div>
+                            <p class="card-text">Membantu startup dalam riset dan inovasi produk.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-6">
+                    <div class="card incubation-card">
+                        <div class="card-header">5. Validasi Pasar</div>
+                        <div class="card-body text-center p-4">
+                            <div class="incubation-icon mb-3">📊</div>
+                            <p class="card-text">Strategi pemasaran & analisis target pelanggan.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-6">
+                    <div class="card incubation-card">
+                        <div class="card-header">6. Kompetisi & Akselerasi</div>
+                        <div class="card-body text-center p-4">
+                            <div class="incubation-icon mb-3">🏆</div>
+                            <p class="card-text">Program percepatan bisnis melalui kompetisi & event.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-6">
+                    <div class="card incubation-card">
+                        <div class="card-header">7. Akses ke Investor</div>
+                        <div class="card-body text-center p-4">
+                            <div class="incubation-icon mb-3">🤝</div>
+                            <p class="card-text">Membuka peluang pendanaan bagi startup yang berkembang.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-6">
+                    <div class="card incubation-card">
+                        <div class="card-header">8. Strategi Branding</div>
+                        <div class="card-body text-center p-4">
+                            <div class="incubation-icon mb-3">🎯</div>
+                            <p class="card-text">Membantu startup membangun identitas & kepercayaan pasar.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-6">
+                    <div class="card incubation-card">
+                        <div class="card-header">9. Digital Marketing</div>
+                        <div class="card-body text-center p-4">
+                            <div class="incubation-icon mb-3">📢</div>
+                            <p class="card-text">Optimasi pemasaran digital untuk meningkatkan jangkauan
+                                pasar.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+{% endblock content %}

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Token Layanan</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            background-color: #4f46e5;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 8px 8px 0 0;
+        }
+        .content {
+            background-color: #f9fafb;
+            padding: 30px;
+            border-radius: 0 0 8px 8px;
+        }
+        .token-box {
+            background-color: #e0e7ff;
+            border: 2px solid #4f46e5;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .token {
+            font-size: 18px;
+            font-weight: bold;
+            color: #4f46e5;
+            word-break: break-all;
+        }
+        .info-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        .info-table th, .info-table td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .info-table th {
+            background-color: #f3f4f6;
+            font-weight: bold;
+        }
+        .footer {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e5e7eb;
+            font-size: 14px;
+            color: #6b7280;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Token Layanan Anda</h1>
+        <p>Terima kasih telah menggunakan layanan kami</p>
+    </div>
+    
+    <div class="content">
+        <p>Halo <strong>{{ nama }}</strong>,</p>
+        
+        <p>Permintaan layanan Anda telah berhasil diterima. Berikut adalah token layanan Anda:</p>
+        
+        <div class="token-box">
+            <p><strong>Token Layanan:</strong></p>
+            <div class="token">{{ token }}</div>
+        </div>
+        
+        <p><strong>Simpan token ini dengan baik!</strong> Token ini dapat digunakan untuk:</p>
+        <ul>
+            <li>Melacak status permintaan layanan Anda</li>
+            <li>Berkomunikasi dengan tim kami terkait layanan</li>
+            <li>Mengakses informasi layanan Anda</li>
+        </ul>
+        
+        <h3>Detail Permintaan Layanan:</h3>
+        <table class="info-table">
+            <tr>
+                <th>Jenis Layanan</th>
+                <td>{{ jenis_layanan }}</td>
+            </tr>
+            <tr>
+                <th>Jenis Produk</th>
+                <td>{{ jenis_produk }}</td>
+            </tr>
+            <tr>
+                <th>Tanggal Layanan</th>
+                <td>{{ tanggal|date:"d F Y" }}</td>
+            </tr>
+            <tr>
+                <th>Waktu Layanan</th>
+                <td>{{ waktu|time:"H:i" }} WIB</td>
+            </tr>
+            {% if pesan %}
+            <tr>
+                <th>Pesan</th>
+                <td>{{ pesan }}</td>
+            </tr>
+            {% endif %}
+        </table>
+        
+        <p>Tim kami akan segera menghubungi Anda untuk konfirmasi dan pengaturan jadwal layanan.</p>
+        
+        <div class="footer">
+            <p>Email ini dikirim secara otomatis. Jika Anda memiliki pertanyaan, silakan hubungi tim customer service kami.</p>
+            <p><strong>Inkubator Bisnis Universitas Nurul Jadid</strong></p>
+        </div>
+    </div>
+</body>
+</html>

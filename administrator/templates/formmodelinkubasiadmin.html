@@ -1,0 +1,96 @@
+{% extends "baseadmin.html" %}
+{% load static %}
+{% block content %}
+<div class="overflow-x-auto flex-1 p-6 transition-all duration-200 ease-in-out">
+    <div class="md:hidden flex justify-between items-center bg-gray-800 text-white p-4">
+        <h1 class="text-xl font-bold">{{ judul }}</h1>
+        <button @click="isSidebarOpen = !isSidebarOpen" class="focus:outline-none">
+            <i class="fas fa-bars"></i>
+        </button>
+    </div>
+    <header class="mb-8">
+        <h1 class="text-3xl font-bold text-gray-700">{{ judul }}</h1>
+    </header>
+    <a href="{% url  'formmodelinkubasiadmin' %}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+        <i class="fas fa-plus"></i> Tambah ModelInkubasi
+    </a>
+    <div class="overflow-x-auto bg-white shadow rounded-lg p-6 mt-4">
+
+        <div class="overflow-x-auto">
+            <table class="table-auto w-full border-collapse border border-gray-300">
+                <thead>
+                    <tr class="bg-gray-200 text-left">
+                        <th class="px-4 py-2 border border-gray-300">No</th>
+                        <th class="px-4 py-2 border border-gray-300">Nama ModelInkubasi</th>
+                        <th class="px-4 py-2 border border-gray-300">Gambar ModelInkubasi </th>
+                        <th class="px-4 py-2 border border-gray-300">Tanggal Upload</th>
+                        <th class="px-4 py-2 border border-gray-300 text-center">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for modelinkubasi in modelinkubasi_list %}
+                    <tr class="hover:bg-gray-100">
+                        <td class="px-4 py-2 border border-gray-300 text-center">{{ forloop.counter }}</td>
+                        <td class="px-4 py-2 border border-gray-300">{{ modelinkubasi.nama }}</td>
+                        {% comment %} <td class="px-4 py-2 border border-gray-300">{{ modelinkubasi.nama_modelinkubasi }}</td> {% endcomment %}
+                        <td class="px-4 py-2 border border-gray-300">
+                            {% if modelinkubasi.gambar %}
+                                <img src="{{ modelinkubasi.gambar.url }}" alt="gambar" class="h-16 w-auto">
+                            {% else %}
+                                Tidak ada
+                            {% endif %}
+                        </td>
+                        <td class="px-4 py-2 border border-gray-300">
+                            {% with modelinkubasi.tanggal_upload|date:"w" as hari %}
+                            {% if hari == "0" %}Minggu
+                            {% elif hari == "1" %}Senin
+                            {% elif hari == "2" %}Selasa
+                            {% elif hari == "3" %}Rabu
+                            {% elif hari == "4" %}Kamis
+                            {% elif hari == "5" %}Jumat
+                            {% elif hari == "6" %}Sabtu
+                            {% endif %}
+                            {% endwith %}, {{modelinkubasi.tanggal_upload|date:"j"}}
+                        {% with modelinkubasi.tanggal_upload|date:"n" as bulan %}
+                        {% if bulan == "1" %}Januari
+                        {% elif bulan == "2" %}Februari
+                        {% elif bulan == "3" %}Maret
+                        {% elif bulan == "4" %}April
+                        {% elif bulan == "5" %}Mei
+                        {% elif bulan == "6" %}Juni
+                        {% elif bulan == "7" %}Juli
+                        {% elif bulan == "8" %}Agustus
+                        {% elif bulan == "9" %}September
+                        {% elif bulan == "10" %}Oktober
+                        {% elif bulan == "11" %}November
+                        {% elif bulan == "12" %}Desember
+                        {% endif %}
+                        {% endwith %} {{ modelinkubasi.tanggal_upload|date:"Y" }}
+                        {{ modelinkubasi.tanggal_upload|date:"H:i" }}</td>
+                        
+                        <td class="px-4 py-2 border border-gray-300 text-center">
+                            <a href="{% url 'editmodelinkubasiadmin' modelinkubasi.token_modelinkubasi%}" 
+                            class="text-blue-500 hover:text-blue-700">
+                            <i class="fas fa-edit"></i> <!-- Ikon Edit -->
+                            </a>
+                            <form action="{% url 'deletemodelinkubasiadmin' modelinkubasi.token_modelinkubasi%}" method="post" class="inline">
+                                {% csrf_token %}
+                                <button type="submit" 
+                                        class="text-red-500 hover:text-red-700"
+                                        onclick="return confirm('Apakah Anda yakin ingin menghapus modelinkubasi ini?');">
+                                    <i class="fas fa-trash-alt"></i> <!-- Ikon Hapus -->
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr> 
+                        <td colspan="6" class="px-4 py-2 border border-gray-300 text-center">Data modelinkubasi tidak tersedia.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock content %}

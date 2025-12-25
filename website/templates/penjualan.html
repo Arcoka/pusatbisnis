@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+{% load static %}
+{% block body_class %}toko-page{% endblock %}
+
+{% block content %}
+
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Allison&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Italianno&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap" rel="stylesheet">
+<!-- Hike-style page header and intro card -->
+
+<!-- Catalog styles dipindah ke assets/css/cart.css -->
+
+<!-- page-header -->
+<div class="page-header">
+  <div class="container">
+    <div class="row">
+      <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+        <div class="page-caption">
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- news -->
+<div class="card-section">
+  <div class="container" style="max-width:1000px;">
+    <div id="sent-alert" class="alert alert-success" style="display:none; margin: 16px auto;">Form Anda berhasil dikirim ke admin.</div>
+  </div>
+  <div class="catalog-section with-image" >
+    
+    <!-- Intentionally left blank to hide title -->
+      <div class="container-card catalog-panel">
+            <!-- Toggle dihilangkan; kontrol Digital dipindah ke daftar kategori -->
+        <h1 class="catalog-title ">Katalog Produk</h1>
+        
+            <div class="categories" id="category-list">
+              <!-- Kategori -->
+              <div class="category-item active" data-category="all">
+                <img src="{% static 'assets/img/portofolio/kategori.jpeg' %}" alt="Semua" />
+                <div>Semua</div>
+              </div>
+              <!-- Digital: tampil sebagai item kategori, memicu tampilan digital melalui toggle -->
+              <div class="category-item" data-digital="true">
+                <img src="{% static 'assets/img/portofolio/digital.jpeg' %}" alt="Digital" />
+                <div>Digital</div>
+              </div>
+              {% for kategori in kategoripenjualan %}
+              <div class="category-item" data-category="{{ kategori.slug }}">
+                {% if kategori.gambar %}
+                <img src="{{ kategori.gambar.url }}" alt="{{ kategori.nama }}" />
+                {% else %}
+                <img src="{% static 'assets/img/portofolio/cta.jpg' %}" alt="{{ kategori.nama }}" />
+                {% endif %}
+                <div>{{ kategori.nama }}</div>
+              </div>
+              {% endfor %}
+            </div>
+
+            <div class="products" id="product-list">
+              <!-- Produk akan dimuat dengan JavaScript -->
+            </div>
+
+            <div class="pagination" id="pagination"></div>
+
+            <!-- Produk Digital: hover-expand gallery -->
+            <div class="digital-wrapper" id="digital-view" >
+              <div class="digital-gallery" id="digital-gallery">
+                <!-- Kartu gambar digital akan diisi via JS -->
+              </div>
+            </div>
+          </div>
+  </div>
+</div>
+
+<!-- Bersihkan script carousel yang tidak terpakai untuk mencegah error JS -->
+
+<!-- Server-rendered products JSON for safe parsing in JS -->
+<script id="products-data" type="application/json">[
+{% for p in produk %}
+  {
+    "id": {{ p.id }},
+    "name": "{{ p.nama|escapejs }}",
+    "desc": "{{ p.deskripsi|default:''|striptags|truncatechars:80|escapejs }}",
+    "category": "{{ p.kategoripenjualan.slug|default:'uncategorized' }}",
+    "img": "{% if p.gambar %}{{ p.gambar.url }}{% else %}{% static 'assets/img/stats.jpg' %}{% endif %}",
+    "url": "{% url 'produk_detail' p.slug %}",
+    "stok": {{ p.stok|default:0 }}
+  }{% if not forloop.last %},{% endif %}
+{% endfor %}
+]</script>
+
+<!-- Server-rendered jasa JSON for Produk Digital view -->
+<script id="jasa-data" type="application/json">[
+{% for j in jasa %}
+  {
+    "id": {{ j.id }},
+    "desc": "{{ j.deskripsi|default:''|striptags|truncatechars:80|escapejs }}",
+    "img": "{% if j.gambar %}{{ j.gambar.url }}{% else %}{% static 'assets/img/stats.jpg' %}{% endif %}"
+  }{% if not forloop.last %},{% endif %}
+{% endfor %}
+]</script>
+
+<!-- JS dipindah ke assets/js/cart.js -->
+<script>
+  (function(){
+    try {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('sent') === '1') {
+        var el = document.getElementById('sent-alert');
+        if (el) el.style.display = 'block';
+      }
+    } catch (e) {}
+  })();
+</script>
+
+{% endblock content %}

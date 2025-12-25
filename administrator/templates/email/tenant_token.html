@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Token Pendaftaran Tenant</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            background-color: #059669;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 8px 8px 0 0;
+        }
+        .content {
+            background-color: #f9fafb;
+            padding: 30px;
+            border-radius: 0 0 8px 8px;
+        }
+        .token-box {
+            background-color: #d1fae5;
+            border: 2px solid #059669;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .token {
+            font-size: 18px;
+            font-weight: bold;
+            color: #059669;
+            word-break: break-all;
+        }
+        .info-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        .info-table th, .info-table td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .info-table th {
+            background-color: #f3f4f6;
+            font-weight: bold;
+        }
+        .footer {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e5e7eb;
+            font-size: 14px;
+            color: #6b7280;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Token Pendaftaran Tenant</h1>
+        <p>Selamat datang di Inkubator Bisnis</p>
+    </div>
+    
+    <div class="content">
+        <p>Halo <strong>{{ nama }}</strong>,</p>
+        
+        <p>Pendaftaran tenant Anda telah berhasil diterima. Berikut adalah token pendaftaran Anda:</p>
+        
+        <div class="token-box">
+            <p><strong>Token Pendaftaran:</strong></p>
+            <div class="token">{{ token }}</div>
+        </div>
+        
+        <p><strong>Simpan token ini dengan baik!</strong> Token ini dapat digunakan untuk:</p>
+        <ul>
+            <li>Melacak status pendaftaran tenant Anda</li>
+            <li>Berkomunikasi dengan tim kami terkait pendaftaran</li>
+            <li>Mengakses informasi pendaftaran Anda</li>
+            <li>Proses verifikasi dan seleksi tenant</li>
+        </ul>
+        
+        <h3>Detail Pendaftaran Tenant:</h3>
+        <table class="info-table">
+            <tr>
+                <th>Nama Lengkap</th>
+                <td>{{ nama }}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{ email }}</td>
+            </tr>
+            <tr>
+                <th>Telepon</th>
+                <td>{{ telepon }}</td>
+            </tr>
+            <tr>
+                <th>Nama Usaha</th>
+                <td>{{ nama_usaha }}</td>
+            </tr>
+            <tr>
+                <th>Jenis Usaha</th>
+                <td>{{ jenis_usaha }}</td>
+            </tr>
+        </table>
+        
+        <p>Tim kami akan segera meninjau pendaftaran Anda dan menghubungi Anda untuk proses selanjutnya.</p>
+        
+        <div class="footer">
+            <p>Email ini dikirim secara otomatis. Jika Anda memiliki pertanyaan, silakan hubungi tim customer service kami.</p>
+            <p><strong>Inkubator Bisnis Universitas Nurul Jadid</strong></p>
+        </div>
+    </div>
+</body>
+</html>

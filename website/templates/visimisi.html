@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+{% load static %}
+{% block body_class %}index-page{% endblock %}
+{% block content %}
+
+{% for row in slide  %}
+<div class=" hero-pilihan">
+    <div class="hero-content">
+
+        <!-- <a href="#" class="hero-button">Mulai Sekarang</a> -->
+
+        <!-- Animasi latar belakang yang lebih profesional -->
+        <div class="particles">
+            <div class="particle" style="top: 20%; left: 10%; animation-delay: 0s;"></div>
+            <div class="particle" style="top: 30%; left: 25%; animation-delay: 2s;"></div>
+            <div class="particle" style="top: 50%; left: 15%; animation-delay: 4s;"></div>
+            <div class="particle" style="top: 70%; left: 20%; animation-delay: 1s;"></div>
+            <div class="particle" style="top: 80%; left: 40%; animation-delay: 3s;"></div>
+            <div class="particle" style="top: 40%; left: 60%; animation-delay: 5s;"></div>
+            <div class="particle" style="top: 60%; left: 50%; animation-delay: 0s;"></div>
+            <div class="particle" style="top: 10%; left: 50%; animation-delay: 2s;"></div>
+            <div class="particle" style="top: 30%; left: 70%; animation-delay: 1s;"></div>
+            <div class="particle" style="top: 60%; left: 80%; animation-delay: 3s;"></div>
+        </div>
+
+        <div class="wave wave-1"></div>
+        <div class="wave wave-2"></div>
+        <div class="wave wave-3"></div>
+
+        <!-- Dekorasi lingkaran dengan animasi -->
+        <div class="circle-decoration circle-1"></div>
+        <div class="circle-decoration circle-2"></div>
+    </div>
+
+    <div class="hero-image-container">
+        <img src="{{ row.gambar_slide.url }}" alt="Gedung Bisnis Modern" class="hero-image">
+    </div>
+</div>
+{% endfor %}
+
+
+
+<section id="features" class="features section">
+    <!-- Section Title -->
+    <div class="container section-title" style="margin-bottom: -10px;" data-aos="fade-up">
+        <h2>Visi & Misi</h2>
+        <p>Visi & Misi Inkubator Bisnis UNUJA</p>
+    </div><!-- End Section Title -->
+    <!-- Visi & Misi Section -->
+    <section id="Visi&Misi" class="services section">
+        <div class="container">
+            <div class="row gy-4">
+                <div class="col-lg-12 " data-aos="fade-up" data-aos-delay="100">
+                    <div class="service-item d-flex">
+                        <div>
+                            <h4 class="title"><a href="#" class="stretched-link">Visi</a></h4>
+                            <p class="description">
+                                {% for item in visi_list %}
+                                {{ item.visi|safe }}
+                                {% endfor %}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Service Item -->
+
+                <div class="col-lg-12 " data-aos="fade-up" data-aos-delay="200">
+                    <div class="service-item d-flex">
+                        <div>
+                            <h4 class="title"><a href="#" class="stretched-link">Misi</a></h4>
+                            <p class="description">
+                                <ul>
+                                    {% for item in misi_list %}
+                                    <li>{{ item.misi|safe }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </p>
+                        </div>
+                    </div>
+                </div><!-- End Service Item -->
+
+                <div class="col-lg-12 " data-aos="fade-up" data-aos-delay="300">
+                    <div class="service-item d-flex">
+                        <div>
+                            <h4 class="title"><a href="#" class="stretched-link">Sasaran</a></h4>
+                            <p class="description">
+                                <ul>
+                                    {% for item in sasaran_list %}
+                                    <li>{{ item.sasaran|safe }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </p>
+                        </div>
+                    </div>
+                </div><!-- End Service Item -->
+
+                <div class="col-lg-12 " data-aos="fade-up" data-aos-delay="400">
+                    <div class="service-item d-flex">
+                        <div>
+                            <h4 class="title"><a href="#" class="stretched-link">Tujuan</a></h4>
+                            <p class="description">
+                                <ul>
+                                    {% for item in tujuan_list %}
+                                    {% if item.tujuan %}
+                                    <li>{{ item.tujuan|safe }}</li>
+                                    {% endif %}
+                                    {% endfor %}
+                                </ul>
+
+                            </p>
+                        </div>
+                    </div>
+                </div><!-- End Service Item -->
+            </div>
+        </div>
+    </section><!-- /Visi & Misi Section -->
+</section><!-- /Features Section -->
+{% endblock content %}

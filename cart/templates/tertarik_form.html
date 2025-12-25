@@ -1,0 +1,208 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block body_class %}iberita-page{% endblock %}
+{% block content %}
+<style>
+  .form-container {
+    max-width: 800px;
+    margin: 80px auto;
+    padding: 32px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  }
+  .form-title {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #111827;
+  }
+  .form-row {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+  .form-group {
+    flex: 1;
+    margin-bottom: 20px;
+  }
+  .form-group.full-width {
+    flex: 2;
+  }
+  .form-group label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: #374151;
+    font-size: 14px;
+  }
+  .form-group input,
+  .form-group textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #374151;
+    background-color: #ffffff;
+    transition: border-color 0.2s;
+    box-sizing: border-box;
+  }
+  .form-group input:focus,
+  .form-group textarea:focus {
+    outline: none;
+    border-color: #3486bd;
+    box-shadow: 0 0 0 3px rgba(52,134,189,0.1);
+    color: #374151;
+    background-color: #ffffff;
+  }
+  .form-group input::placeholder,
+  .form-group textarea::placeholder {
+    color: #9ca3af;
+  }
+  .form-group input[readonly] {
+    background-color: #f9fafb;
+    color: #6b7280;
+  }
+  .btn-submit {
+    width: 100%;
+    padding: 12px;
+    background: #0a7a3d;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+  .btn-submit:hover {
+    opacity: 0.95;
+  }
+  .alert-error {
+    background: #fef2f2;
+    color: #dc2626;
+    padding: 12px 14px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    border: 1px solid #fecaca;
+  }
+  .alert-success {
+    background: #f0fdf4;
+    color: #166534;
+    padding: 12px 14px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    border: 1px solid #bbf7d0;
+  }
+  .form-text {
+    font-size: 12px;
+    color: #6b7280;
+    margin-top: 4px;
+  }
+  .back-button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+  }
+  
+  /* Responsive untuk mobile */
+  @media (max-width: 768px) {
+    .form-container {
+      max-width: 95%;
+      margin: 40px auto;
+      padding: 20px;
+    }
+    .form-row {
+      flex-direction: column;
+      gap: 0;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    .form-group.full-width {
+      flex: 1;
+    }
+  }
+</style>
+
+<div class="form-container">
+  <a href="javascript:history.back()" class="back-button">
+    <button type="button" class="btn btn-outline-secondary btn-sm">Kembali</button>
+  </a>
+  
+  <h5 class="form-title">Pemesanan: {{ produk.nama }}</h5>
+
+  {% if success %}
+    <div class="alert-success">Detail pemesanan berhasil dikirim. Admin akan segera menghubungi Anda ke nomor yang telah Anda masukkan. Anda akan diarahkan kembali ke produk dalam 2 detik…</div>
+    <button class="btn-submit" onclick="window.location.href='{% url 'produk_detail' slug=produk.slug %}'">Kembali ke Produk</button>
+    <script>
+      setTimeout(function(){ window.location.href = "{% url 'produk_detail' slug=produk.slug %}"; }, 2000);
+    </script>
+  {% else %}
+    {% if error %}
+      <div class="alert-error">{{ error }}</div>
+    {% endif %}
+    
+    <form method="post" novalidate>
+      {% csrf_token %}
+      <input type="hidden" name="next" value="{{ next }}" />
+      
+      <!-- Email dari user login (hidden) -->
+      {% if user.is_authenticated %}
+      <input type="hidden" name="email" value="{{ user.email }}" />
+      {% endif %}
+      
+      <!-- Baris 1: Nama dan Jumlah -->
+      <div class="form-row">
+        <div class="form-group">
+          <label>Nama</label>
+          <input type="text" name="nama" required />
+        </div>
+        <div class="form-group">
+          <label>Jumlah</label>
+          <input type="number" name="jumlah" min="1" required />
+        </div>
+      </div>
+      
+      <!-- Baris 2: Email dan No. Telepon -->
+      <div class="form-row">
+        {% if user.is_authenticated %}
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" value="{{ user.email }}" readonly />
+          <div class="form-text">Email diambil dari akun Anda</div>
+        </div>
+        {% else %}
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" name="email" required />
+        </div>
+        {% endif %}
+        <div class="form-group">
+          <label>No. Telepon</label>
+          <input type="text" name="no_telepon" required />
+        </div>
+      </div>
+      
+      <!-- Baris 4: Alamat dan Pesan (2 kolom) -->
+      <div class="form-row">
+        <div class="form-group">
+          <label>Alamat</label>
+          <textarea name="alamat" rows="4" required></textarea>
+        </div>
+        <div class="form-group">
+          <label>Pesan Pembeli</label>
+          <textarea name="pesan" rows="4" required></textarea>
+          <div class="form-text">Setelah Anda mengirim detail, admin akan segera menghubungi Anda ke nomor yang telah Anda masukkan.</div>
+        </div>
+      </div>
+      
+      <button type="submit" class="btn-submit">Kirim</button>
+    </form>
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Halaman Error</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8d7da;
+            color: #721c24;
+            padding: 50px;
+            text-align: center;
+        }
+        .box {
+            background-color: #f5c6cb;
+            border: 1px solid #f1b0b7;
+            padding: 20px;
+            border-radius: 8px;
+            display: inline-block;
+        }
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            color: #721c24;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <h2>Terjadi Kesalahan, Hanya SuperAdmin yang dapat mengakses Halaman INI</h2>
+        <p>{{ message }}</p>
+        <a href="/">Kembali ke Beranda</a>
+    </div>
+</body>
+</html>

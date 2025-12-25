@@ -1,0 +1,96 @@
+{% extends "baseadmin.html" %}
+{% load static %}
+{% block content %}
+<div class="container mx-auto px-4 py-6">
+    <!-- Header Section -->
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+        <div class="mb-4 md:mb-0">
+            <h1 class="text-2xl md:text-3xl font-bold text-gray-800">{{ judul }}</h1>
+            <p class="text-gray-600 mt-1">Kelola kategori konten organisasi</p>
+        </div>
+        <a href="{% url 'administrator:formkategoriadmin' %}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+            <i class="fas fa-plus mr-2"></i> Tambah Kategori
+        </a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="bg-white rounded-lg shadow-md overflow-hidden">
+        <!-- Table Header -->
+        <div class="p-6 border-b border-gray-200">
+            <h3 class="text-lg font-medium text-gray-900">Daftar Kategori</h3>
+            <p class="text-sm text-gray-500 mt-1">{{ kategori_list|length }} kategori tersedia</p>
+        </div>
+
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-16">No</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama Kategori</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-32">Status</th>
+                        <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider w-32">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    {% for kategori in kategori_list %}
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">{{ forloop.counter }}</td>
+                        <td class="px-6 py-4 text-sm font-medium text-gray-900">{{ kategori.nama }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            {% if kategori.aktif %}
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Aktif</span>
+                            {% else %}
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Nonaktif</span>
+                            {% endif %}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
+                            <div class="flex justify-center space-x-4">
+                                <a href="{% url 'administrator:editkategoriadmin' kategori.token_kategori %}" class="text-blue-600 hover:text-blue-900" title="Edit">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <form action="{% url 'administrator:deletekategoriadmin' kategori.token_kategori %}" method="post" class="inline">
+                                    {% csrf_token %}
+                                    <button type="submit" 
+                                            class="text-red-600 hover:text-red-900"
+                                            onclick="return confirm('Apakah Anda yakin ingin menghapus kategori ini?');"
+                                            title="Hapus">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4" class="px-6 py-4 text-center">
+                            <div class="text-center py-8">
+                                <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-gray-100">
+                                    <i class="fas fa-tags text-gray-400"></i>
+                                </div>
+                                <h3 class="mt-2 text-sm font-medium text-gray-900">Belum ada Kategori</h3>
+                                <p class="mt-1 text-sm text-gray-500">Mulai dengan menambahkan kategori pertama Anda</p>
+                                <div class="mt-6">
+                                    <a href="{% url 'administrator:formkategoriadmin' %}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                        <i class="fas fa-plus mr-2"></i> Tambah Kategori
+                                    </a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Table Footer -->
+        {% if kategori_list %}
+        <div class="px-6 py-4 border-t border-gray-200">
+            <div class="flex justify-between items-center text-sm text-gray-500">
+                <span>Menampilkan {{ kategori_list|length }} kategori</span>
+                <span>Data terbaru</span>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock content %}

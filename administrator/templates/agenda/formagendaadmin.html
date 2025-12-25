@@ -1,0 +1,318 @@
+{% extends "baseadmin.html" %}
+{% load static %}
+{% block content %}
+{% block extra_head %}
+    {{ form.media }}
+    <style>
+        .agenda-form-container {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #f8fafc;
+            min-height: calc(100vh - 60px);
+        }
+
+        .agenda-form-header {
+            background: white;
+            padding: 32px;
+            border-bottom: 1px solid #e2e8f0;
+            margin: 0;
+        }
+
+        .agenda-header-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1e293b;
+            margin: 0 0 8px 0;
+        }
+
+        .agenda-header-subtitle {
+            color: #64748b;
+            font-size: 16px;
+            margin: 0;
+        }
+
+        .agenda-form-card {
+            background: white;
+            margin: 0;
+            border-radius: 0;
+            box-shadow: none;
+        }
+
+        .agenda-form-body {
+            padding: 32px;
+        }
+
+        .agenda-form-section {
+            margin-bottom: 32px;
+        }
+
+        .agenda-section-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .agenda-form-group {
+            margin-bottom: 18px;
+        }
+
+        .agenda-form-label {
+            display: block;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .agenda-form-container .form-input,
+        .agenda-form-container input[type="text"],
+        .agenda-form-container input[type="email"],
+        .agenda-form-container input[type="datetime-local"],
+        .agenda-form-container select,
+        .agenda-form-container textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            background: white;
+            box-sizing: border-box;
+        }
+
+        .agenda-form-container .form-input:focus,
+        .agenda-form-container input[type="text"]:focus,
+        .agenda-form-container input[type="email"]:focus,
+        .agenda-form-container input[type="datetime-local"]:focus,
+        .agenda-form-container select:focus,
+        .agenda-form-container textarea:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .agenda-form-container textarea {
+            min-height: 110px;
+            resize: vertical;
+            font-family: inherit;
+        }
+
+        .agenda-form-container input[type="file"] {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px dashed #d1d5db;
+            border-radius: 8px;
+            font-size: 14px;
+            background: #f9fafb;
+            cursor: pointer;
+            transition: border-color 0.2s, background-color 0.2s;
+            box-sizing: border-box;
+        }
+
+        .agenda-form-container input[type="file"]:hover {
+            border-color: #3b82f6;
+            background: #f0f9ff;
+        }
+
+        .agenda-form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        .agenda-form-help {
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 4px;
+        }
+
+        .agenda-form-actions {
+            background: #f8fafc;
+            padding: 24px 32px;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+        }
+
+        .agenda-btn-primary {
+            background: #3b82f6;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            border: none;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            font-size: 14px;
+        }
+
+        .agenda-btn-primary:hover {
+            background: #2563eb;
+        }
+
+        .agenda-btn-secondary {
+            background: #6b7280;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            border: none;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            font-size: 14px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .agenda-btn-secondary:hover {
+            background: #4b5563;
+            text-decoration: none;
+            color: white;
+        }
+
+        .agenda-form-container .django-ckeditor-widget {
+            width: 100% !important;
+        }
+
+        @media (max-width: 768px) {
+            .agenda-form-header {
+                padding: 24px 16px;
+            }
+
+            .agenda-form-body {
+                padding: 24px 16px;
+            }
+
+            .agenda-form-actions {
+                padding: 16px;
+            }
+
+            .agenda-form-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+        }
+    </style>
+{% endblock %}
+
+<div class="agenda-form-container">
+    <div class="agenda-form-header">
+        {% if agenda %}
+            <h1 class="agenda-header-title">Edit Agenda</h1>
+            <p class="agenda-header-subtitle">Perbarui data agenda/kegiatan</p>
+        {% else %}
+            <h1 class="agenda-header-title">Tambah Agenda</h1>
+            <p class="agenda-header-subtitle">Lengkapi form di bawah untuk menambahkan agenda baru</p>
+        {% endif %}
+    </div>
+
+    <div class="agenda-form-card">
+        <form action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="agenda-form-body">
+                <div class="agenda-form-section">
+                    <h2 class="agenda-section-title">Informasi Dasar</h2>
+
+                    <div class="agenda-form-group">
+                        <label for="id_judul" class="agenda-form-label">Judul Kegiatan</label>
+                        {{ form.judul }}
+                        <div class="agenda-form-help">Judul agenda yang akan tampil di website</div>
+                    </div>
+
+                    <div class="agenda-form-grid">
+                        <div class="agenda-form-group">
+                            <label for="id_jenis_kegiatan" class="agenda-form-label">Jenis Kegiatan</label>
+                            {{ form.jenis_kegiatan }}
+                        </div>
+                        <div class="agenda-form-group">
+                            <label for="id_status" class="agenda-form-label">Status</label>
+                            {{ form.status }}
+                        </div>
+                    </div>
+
+                    <div class="agenda-form-group">
+                        <label for="id_deskripsi" class="agenda-form-label">Deskripsi Singkat</label>
+                        {{ form.deskripsi }}
+                        <div class="agenda-form-help">Ringkasan singkat untuk preview agenda</div>
+                    </div>
+                </div>
+
+                <div class="agenda-form-section">
+                    <h2 class="agenda-section-title">Waktu & Lokasi</h2>
+
+                    <div class="agenda-form-grid">
+                        <div class="agenda-form-group">
+                            <label for="id_tanggal_mulai" class="agenda-form-label">Tanggal & Waktu Mulai</label>
+                            {{ form.tanggal_mulai }}
+                        </div>
+                        <div class="agenda-form-group">
+                            <label for="id_tanggal_selesai" class="agenda-form-label">Tanggal & Waktu Selesai</label>
+                            {{ form.tanggal_selesai }}
+                        </div>
+                    </div>
+
+                    <div class="agenda-form-group">
+                        <label for="id_tempat" class="agenda-form-label">Tempat</label>
+                        {{ form.tempat }}
+                    </div>
+                </div>
+
+                <div class="agenda-form-section">
+                    <h2 class="agenda-section-title">Konten</h2>
+
+                    <div class="agenda-form-group">
+                        <label for="id_konten" class="agenda-form-label">Konten Lengkap</label>
+                        {{ form.konten|safe }}
+                        {{ form.media }}
+                    </div>
+                </div>
+
+                <div class="agenda-form-section">
+                    <h2 class="agenda-section-title">Media</h2>
+
+                    <div class="agenda-form-group">
+                        <label for="id_gambar" class="agenda-form-label">Gambar Poster (Opsional)</label>
+                        {{ form.gambar }}
+                    </div>
+                </div>
+
+                <div class="agenda-form-section">
+                    <h2 class="agenda-section-title">Kontak (Opsional)</h2>
+
+                    <div class="agenda-form-grid">
+                        <div class="agenda-form-group">
+                            <label for="id_kontak_person" class="agenda-form-label">Kontak Person</label>
+                            {{ form.kontak_person }}
+                        </div>
+                        <div class="agenda-form-group">
+                            <label for="id_email_kontak" class="agenda-form-label">Email Kontak</label>
+                            {{ form.email_kontak }}
+                        </div>
+                    </div>
+
+                    <div class="agenda-form-group">
+                        <label for="id_telepon_kontak" class="agenda-form-label">Telepon Kontak</label>
+                        {{ form.telepon_kontak }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="agenda-form-actions">
+                <a href="{% url 'administrator:agendaadmin' %}" class="agenda-btn-secondary">
+                    <i class="fas fa-arrow-left" style="margin-right: 8px;"></i>
+                    Kembali
+                </a>
+                <button type="submit" class="agenda-btn-primary">
+                    <i class="fas fa-save" style="margin-right: 8px;"></i>
+                    Simpan
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock content %}

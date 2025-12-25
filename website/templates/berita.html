@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+{% load static %}
+{% block body_class %}berita-page{% endblock %}
+{% block content %}
+<!--  -->
+
+<div class="modern-news-container">
+    <article class="news-article" style="background-color: transparent; box-shadow: none; border: none;">
+        <!-- Breadcrumb Navigation -->
+        <div class="breadcrumb-container" style="max-width: 1200px; margin: 0 auto 1rem; margin-bottom: -20px; padding: 0 2rem;">
+            <nav aria-label="breadcrumb" style="font-size: 0.9rem;">
+                <ol style="display: flex; list-style: none; margin: 0; padding: 0.5rem 0; color: #718096;">
+                    <li style="display: flex; align-items: center;">
+                        <a href="{% url 'home' %}" style="color: #4a5568; text-decoration: none; display: flex; align-items: center; transition: color 0.2s;">
+                            <i class="fas fa-home" style="margin-right: 8px; font-size: 1rem;"></i>
+                            Beranda
+                        </a>
+                    </li>
+                    <li style="margin: 0 8px; color: #a0aec0; display: flex; align-items: center;">/</li>
+                    <li style="color: #4a5568; display: flex; align-items: center;">
+                        <a href="{% url 'berita_list' %}" style="color: #4a5568; text-decoration: none; transition: color 0.2s;">Berita</a>
+                    </li>
+                    <li style="margin: 0 8px; color: #a0aec0; display: flex; align-items: center;">/</li>
+                    <li style="color: #2d3748; font-weight: 500; display: flex; align-items: center;">
+                        {{ berita.judul|truncatechars:30|safe }}
+                    </li>
+                </ol>
+            </nav>
+        </div>
+
+        <div class="news-layout">
+            <!-- Main Image Section with overlay -->
+            <div class="main-image-section" id="mainImageSection" style="background-color: transparent;">
+                {% if berita.gambar %}
+                <div class="title-overlay">
+                    <h1 class="news-title">{{ berita.judul|safe }}</h1>
+                </div>
+                <img id="mainImage" src="{{ berita.gambar.url }}" 
+                    alt="Gambar utama berita" 
+                    class="main-image-display" />
+                
+                <!-- Date and Read More overlay on image -->
+                <div class="image-overlay">
+                    <div class="overlay-content" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                        <div class="news-meta">
+                            <span class="news-date">
+                                Diterbitkan: {{ berita.tanggal|date:"d F Y"|default:"15 Juni 2023" }}
+                                {% if berita.penulis %}| {{ berita.penulis }}{% endif %}
+                            </span>
+                        </div>
+                        <button class="read-more-btn" onclick="toggleFullDescription()" style="margin: 0;">
+                            <span class="btn-text">Lihat Selengkapnya</span>
+                            <svg class="btn-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="m6 9 6 6 6-6"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                {% else %}
+                <div class="no-image-placeholder">
+                    <span>Gambar Tidak Tersedia</span>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Thumbnails Section -->
+            <div class="thumbnails-section" id="thumbnailsSection" style="background-color: transparent; transition: transform 0.3s ease;">
+                {% if berita.gambar %}
+                <div class="thumbnail-card active-thumbnail" 
+                     onclick="changeMainImage('{{ berita.gambar.url }}', 'Gambar utama', 'main')" 
+                     data-type="main">
+                    <img src="{{ berita.gambar.url }}" 
+                        alt="Gambar utama" 
+                        class="thumbnail-img" />
+                   
+                </div>
+                {% endif %}
+
+                {% if berita.gambar_1 %}
+                <div class="thumbnail-card" 
+                     onclick="changeMainImage('{{ berita.gambar_1.url }}', 'Gambar 1', 'gambar_1')" 
+                     data-type="gambar_1">
+                    <img src="{{ berita.gambar_1.url }}" 
+                        alt="Gambar 1" 
+                        class="thumbnail-img" />
+                   
+                </div>
+                {% endif %}
+
+                {% if berita.gambar_2 %}
+                <div class="thumbnail-card" 
+                     onclick="changeMainImage('{{ berita.gambar_2.url }}', 'Gambar 2', 'gambar_2')" 
+                     data-type="gambar_2">
+                    <img src="{{ berita.gambar_2.url }}" 
+                        alt="Gambar 2" 
+                        class="thumbnail-img" />
+                </div>
+                {% endif %}
+
+                {% if berita.gambar_3 %}
+                <div class="thumbnail-card" 
+                     onclick="changeMainImage('{{ berita.gambar_3.url }}', 'Gambar 3', 'gambar_3')" 
+                     data-type="gambar_3">
+                    <img src="{{ berita.gambar_3.url }}" 
+                        alt="Gambar 3" 
+                        class="thumbnail-img" />
+                    
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Full Description Section -->
+        <section class="full-content-section" id="fullDescription" style="display: none;">
+            <div class="content-text">
+                {{ berita.deskripsi|safe }}
+            </div>
+        </section>
+    </article>
+</div>
+{% endblock %}

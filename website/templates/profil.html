@@ -1,0 +1,175 @@
+{% extends "base.html" %}
+{% load static %}
+{% block body_class %}index-page{% endblock %}
+{% block content %}
+
+{% for row in slide  %}
+
+   <div class=" hero-pilihan">
+        <div class="hero-content">
+
+            <!-- <a href="#" class="hero-button">Mulai Sekarang</a> -->
+
+            <!-- Animasi latar belakang yang lebih profesional -->
+            <div class="particles">
+                <div class="particle" style="top: 20%; left: 10%; animation-delay: 0s;"></div>
+                <div class="particle" style="top: 30%; left: 25%; animation-delay: 2s;"></div>
+                <div class="particle" style="top: 50%; left: 15%; animation-delay: 4s;"></div>
+                <div class="particle" style="top: 70%; left: 20%; animation-delay: 1s;"></div>
+                <div class="particle" style="top: 80%; left: 40%; animation-delay: 3s;"></div>
+                <div class="particle" style="top: 40%; left: 60%; animation-delay: 5s;"></div>
+                <div class="particle" style="top: 60%; left: 50%; animation-delay: 0s;"></div>
+                <div class="particle" style="top: 10%; left: 50%; animation-delay: 2s;"></div>
+                <div class="particle" style="top: 30%; left: 70%; animation-delay: 1s;"></div>
+                <div class="particle" style="top: 60%; left: 80%; animation-delay: 3s;"></div>
+            </div>
+
+            <div class="wave wave-1"></div>
+            <div class="wave wave-2"></div>
+            <div class="wave wave-3"></div>
+
+            <!-- Dekorasi lingkaran dengan animasi -->
+            <div class="circle-decoration circle-1"></div>
+            <div class="circle-decoration circle-2"></div>
+        </div>
+
+        <div class="hero-image-container">
+            <img src="{{ row.gambar_slide.url }}" alt="Gedung Bisnis Modern" class="hero-image">
+        </div>
+    </div>
+
+    {% endfor %}
+
+        <!-- Section Title -->
+        <div class="profil-section-wrap">
+          <div class="container section-title profil-section-title" style="margin-top: 60px; margin-bottom: -40px" data-aos="fade-up">
+              <h2>Tentang Kami</h2>
+               <p>Inkubator Bisnis Universitas Nurul Jadid</p>
+          </div>
+        </div><!-- End Section Title -->
+
+<section id="features" class="features section">
+
+    <div class="container">
+        {% for row in profil %}
+        <div class="row gy-4 align-items-start features-item profil-card" data-aos="fade-up" data-aos-delay="50">
+            <span class="accent-blur"></span>
+            <div class="col-lg-5 order-2 order-lg-1" data-aos="fade-up" data-aos-delay="200">
+                <h3>{{ row.judul }}</h3>
+                <div class="profil-divider"></div>
+                <div class="profil-text">
+                  <div id="profilDesc" class="clamp-wrap clamped">{{ row.deskripsi|safe }}</div>
+                  <button id="expandBtn" class="expand-btn" type="button" aria-expanded="false" aria-controls="profilDesc">
+                    <span>Lihat selengkapnya</span>
+                    <i class="bi bi-chevron-down"></i>
+                  </button>
+                </div>
+                <script>
+                  document.addEventListener('DOMContentLoaded', function(){
+                    var desc = document.getElementById('profilDesc');
+                    var btn = document.getElementById('expandBtn');
+                    var card = btn && btn.closest('.profil-card');
+                    if (!desc || !btn) return;
+                    // Hide button if content is short
+                    var shouldClamp = desc.scrollHeight > 420;
+                    if (!shouldClamp) { btn.style.display = 'none'; desc.classList.remove('clamped'); }
+                    btn.addEventListener('click', function(){
+                      var expanded = btn.getAttribute('aria-expanded') === 'true';
+                      if (expanded){
+                        desc.classList.add('clamped');
+                        btn.setAttribute('aria-expanded','false');
+                        btn.querySelector('span').textContent = 'Lihat selengkapnya';
+                        btn.querySelector('i').className = 'bi bi-chevron-down';
+                        if (card) card.classList.remove('expanded');
+                      } else {
+                        desc.classList.remove('clamped');
+                        btn.setAttribute('aria-expanded','true');
+                        btn.querySelector('span').textContent = 'Tutup';
+                        btn.querySelector('i').className = 'bi bi-chevron-up';
+                        if (card) card.classList.add('expanded');
+                      }
+                    });
+                  });
+                </script>
+
+            </div>
+            <style>
+                .cta-btn {
+                    font-family: var(--heading-font);
+                    font-weight: 500;
+                    font-size: 18px;
+                    letter-spacing: 1px;
+                    display: inline-block;
+                    padding: 12px 30px;
+                    border-radius: 5px;
+                    transition: 0.5s;
+                    margin: 10px;
+                    border: 2px solid var(--accent-color);
+                    color: var(--accent-color);
+                }
+
+                .cta-btn:hover {
+                    background: rgb(26, 24, 24);
+                    border: 2px solid var(--contrast-color);
+                }
+            </style>
+            <div class="col-lg-7 order-1 order-lg-2 d-flex flex-wrap align-items-center sticky-media" data-aos="zoom-out"
+                data-aos-delay="100">
+                {% if row.images.all %}
+                <div class="profil-dark profil-slider-wrap">
+                  <div class="swiper profil-swiper">
+                    <div class="swiper-wrapper">
+                      {% for img in row.images.all %}
+                      <div class="swiper-slide">
+                        <div class="polaroid-stack">
+                          <div class="stack-back"></div>
+                          <img src="{{ img.gambar.url }}" alt="{{ img.keterangan|default:'Gambar Profil' }}" class="stack-front">
+                        </div>
+                      </div>
+                      {% endfor %}
+                    </div>
+                  </div>
+                  <div class="profil-info">
+                    <div class="profil-counter"><span class="profil-current">1</span>/<span class="profil-total">{{ row.images.count }}</span></div>
+                    <div class="profil-controls" style="justify-content:flex-end;">
+                      <button class="profil-btn profil-prev" aria-label="Sebelumnya"><i class="bi bi-arrow-left"></i></button>
+                      <button class="profil-btn profil-next" aria-label="Berikutnya"><i class="bi bi-arrow-right"></i></button>
+                    </div>
+                  </div>
+                </div>
+
+                <script>
+                  document.addEventListener('DOMContentLoaded', function(){
+                    if (window.Swiper) {
+                      var el = document.querySelector('.profil-swiper');
+                      if (!el) return;
+                      var currentEl = document.querySelector('.profil-current');
+                      var totalEl = document.querySelector('.profil-total');
+                      var prevBtn = document.querySelector('.profil-prev');
+                      var nextBtn = document.querySelector('.profil-next');
+                      var swiper = new Swiper(el, {
+                        slidesPerView: 1,
+                        spaceBetween: 10,
+                        on: {
+                          init: function(){ if (currentEl) currentEl.textContent = (this.realIndex + 1); },
+                          slideChange: function(){ if (currentEl) currentEl.textContent = (this.realIndex + 1); }
+                        }
+                      });
+                      if (prevBtn) prevBtn.addEventListener('click', function(){ swiper.slidePrev(); });
+                      if (nextBtn) nextBtn.addEventListener('click', function(){ swiper.slideNext(); });
+                    }
+                  });
+                </script>
+                {% else %}
+                <div class="image-stack">
+                    <img src="{{ row.gambar.url }}" alt="" class="stack-front">
+                    <img src="{{ row.gambar_2.url }}" alt="" class="stack-back">
+                </div>
+                {% endif %}
+            </div>
+        </div><!-- Features Item -->
+        {% endfor %}
+    </div>
+
+</section><!-- /Features Section -->
+{% endblock content %}

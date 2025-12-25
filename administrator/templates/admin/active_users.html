@@ -1,0 +1,27 @@
+{% extends "admin/base.html" %}
+
+{% block content %}
+<h2 class="text-2xl font-bold mb-4">Users yang sedang login</h2>
+<table class="table-auto w-full border-collapse border border-gray-300">
+    <thead>
+        <tr class="bg-gray-200">
+            <th class="border border-gray-300 px-4 py-2">Username</th>
+            <th class="border border-gray-300 px-4 py-2">Email</th>
+            <th class="border border-gray-300 px-4 py-2">Login Terakhir</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for user in users %}
+        <tr>
+            <td class="border border-gray-300 px-4 py-2">{{ user.username }}</td>
+            <td class="border border-gray-300 px-4 py-2">{{ user.email }}</td>
+            <td class="border border-gray-300 px-4 py-2">{{ user.last_login }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="3" class="text-center border border-gray-300 px-4 py-2">Tidak ada user yang login</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

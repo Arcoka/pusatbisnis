@@ -1,0 +1,41 @@
+{% extends "baseadmin.html" %}
+{% load static %}
+{% block content %}
+<div class="flex-1 p-6 transition-all duration-200 ease-in-out">
+    <header class="mb-8">
+        <h1 class="text-3xl font-bold text-gray-700">Tambah SlidePenjualan</h1>
+    </header>
+    <div class="bg-white shadow rounded-lg p-6">
+        <form action="" method="post" enctype="multipart/form-data" class="space-y-6">
+            {% csrf_token %}
+        
+           
+
+            <div class="mb-4">
+                <label for="id_nama" class="block text-gray-700 font-bold mb-2">Judul Slide</label>
+                {{ form.judul|safe }}
+            </div>
+
+            <div class="mb-4">
+                <label for="id_nama" class="block text-gray-700 font-bold mb-2">Deskripsi SlidePenjualan:</label>
+                {{ form.deskripsi }}
+                {{form.media}}
+            </div>
+        
+            <div class="mb-4">
+                <label for="id_gambar" class="block text-gray-700 font-bold mb-2">Gambar SlidePenjualan:</label>
+                {{ form.gambar }}
+            </div>
+        
+            
+            <div class="flex justify-end">
+                <button type="submit" 
+                        class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                    Simpan
+                </button>
+            </div>
+        </form>
+
+    </div>
+</div>
+{% endblock content %}

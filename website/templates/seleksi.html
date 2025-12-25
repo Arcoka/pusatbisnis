@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% load static %}
+{% block body_class %}index-page{% endblock %}
+{% block content %}
+
+{% for row in slide  %}
+
+   <div class=" hero-pilihan">
+        <div class="hero-content">
+             
+            <!-- <a href="#" class="hero-button">Mulai Sekarang</a> -->
+            
+            <!-- Animasi latar belakang yang lebih profesional -->
+            <div class="particles">
+                <div class="particle" style="top: 20%; left: 10%; animation-delay: 0s;"></div>
+                <div class="particle" style="top: 30%; left: 25%; animation-delay: 2s;"></div>
+                <div class="particle" style="top: 50%; left: 15%; animation-delay: 4s;"></div>
+                <div class="particle" style="top: 70%; left: 20%; animation-delay: 1s;"></div>
+                <div class="particle" style="top: 80%; left: 40%; animation-delay: 3s;"></div>
+                <div class="particle" style="top: 40%; left: 60%; animation-delay: 5s;"></div>
+                <div class="particle" style="top: 60%; left: 50%; animation-delay: 0s;"></div>
+                <div class="particle" style="top: 10%; left: 50%; animation-delay: 2s;"></div>
+                <div class="particle" style="top: 30%; left: 70%; animation-delay: 1s;"></div>
+                <div class="particle" style="top: 60%; left: 80%; animation-delay: 3s;"></div>
+            </div>
+            
+            <div class="wave wave-1"></div>
+            <div class="wave wave-2"></div>
+            <div class="wave wave-3"></div>
+            
+            <!-- Dekorasi lingkaran dengan animasi -->
+            <div class="circle-decoration circle-1"></div>
+            <div class="circle-decoration circle-2"></div>
+        </div>
+        
+        <div class="hero-image-container">
+            <img src="{{ row.gambar_slide.url }}" alt="Gedung Bisnis Modern" class="hero-image">
+        </div>
+    </div>
+
+    {% endfor %}
+
+ <!-- Service Details Section -->
+            <section id="service-details" class="service-details section">
+                 <!-- Section Title -->
+            <div class="container section-title" style="margin-bottom: -10px;" data-aos="fade-up">
+                <h2>Prosedur Seleksi</h2>
+            </div><!-- End Section Title -->
+                <div class="container">
+
+                    <div class="row gy-5">
+
+                        <div class="col-lg-4" data-aos="fade-up" data-aos-delay="100">
+
+                            <div class="service-box">
+                                <h4>Alur Pendaftaran Tenant</h4>
+                                <div class="services-list">
+                                    <a href="#" class="active"><i class="bi bi-arrow-right-circle"></i><span>Mengisi Formulir</span></a>
+                                    <a href="#"><i class="bi bi-arrow-right-circle"></i><span>Menyiapkan Berkas</span></a>
+                                    <a href="#"><i class="bi bi-arrow-right-circle"></i><span>Seleksi administrasi</span></a>
+                                    <a href="#"><i class="bi bi-arrow-right-circle"></i><span>Seleksi Karakteristik Kewirausahaan</span></a>
+                                </div>
+                            </div><!-- End Services List -->
+                        </div>
+
+                        <div class="col-lg-8 ps-lg-5" data-aos="fade-up" data-aos-delay="200">
+                            <img src="assets/img/me.JPG" alt="" class="img-fluid services-img">
+                            <h3>Persyaratan Umum</h3>
+                            <p>Untuk menjadi Tenant Inkubator Bisnis BIZNEST UNUJA, berikut adalah persyaratan yang
+                                harus dipenuhi:</p>
+                            <ul>
+                                <li><i class="bi bi-check-circle"></i> <span> Calon tenant adalah tim/usaha individu
+                                        dengan
+                                        usaha berjalan kurang dari dua tahun.</span></li>
+                                <li><i class="bi bi-check-circle"></i> <span>Calon tenant adalah mahasiswa dan/atau
+                                        alumni
+                                        UNUJA, serta berdomisili di Kabupaten Probolinggo.</span></li>
+                                <li><i class="bi bi-check-circle"></i> <span>Dinyatakan lulus seleksi tenant yang
+                                        dilakukan
+                                        oleh tim seleksi.</span></li>
+                                <li><i class="bi bi-check-circle"></i> <span>Menandatangani Perjanjian Tenant Inkubator
+                                        Bisnis
+                                        terkait hak dan kewajiban layanan.</span></li>
+                                <li><i class="bi bi-check-circle"></i> <span>Menandatangani Perjanjian Inkubator Bisnis
+                                        untuk
+                                        layanan berbasis pengetahuan & pendampingan.</span></li>
+                                <li><i class="bi bi-check-circle"></i> <span>Mentaati semua ketentuan peraturan
+                                        perundang-undangan yang berlaku.</span></li>
+                            </ul>
+                            
+                            <a href="{% url 'daftar_tenant' %}" class="btn btn-get-started mt-3" style="background-color: #2781da; color: #fff;">Daftar Menjadi
+                                Tenant</a>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section><!-- /Service Details Section -->
+            {% comment %} <script src="{% static 'tailwind.min.css' %}"></script> {% endcomment %}
+{% endblock content %}

@@ -1,0 +1,40 @@
+{% extends "baseadmin.html" %}
+{% load static %}
+{% block content %}
+<div class="flex-1 p-6 transition-all duration-200 ease-in-out">
+    <header class="mb-8">
+        <h1 class="text-3xl font-bold text-gray-700">Tambah Slide</h1>
+    </header>
+    <div class="bg-white shadow rounded-lg p-6">
+        <form action="" method="post" enctype="multipart/form-data" class="space-y-6">
+            {% csrf_token %}
+            <div class="mb-4">
+                <label for="id_nama" class="block text-gray-700 font-bold mb-2">Nama Slide:</label>
+                {{ form.nama }}
+            </div>
+        
+            <div class="mb-4">
+                <label for="id_nama" class="block text-gray-700 font-bold mb-2">Isi Slide:</label>
+                {{ form.teks_awal }}
+                {{form.media}}
+            </div>
+
+           
+        
+            <div class="mb-4">
+                <label for="id_gambar_slide" class="block text-gray-700 font-bold mb-2">Gambar Slide:</label>
+                {{ form.gambar_slide }}
+            </div>
+        
+            
+            <div class="flex justify-end">
+                <button type="submit" 
+                        class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                    Simpan
+                </button>
+            </div>
+        </form>
+
+    </div>
+</div>
+{% endblock content %}

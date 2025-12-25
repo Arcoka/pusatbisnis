@@ -1,0 +1,42 @@
+{% extends "baseadmin.html" %}
+{% load static %}
+{% block content %}
+<div class="flex-1 p-6 transition-all duration-200 ease-in-out">
+    <header class="mb-8">
+        <h1 class="text-3xl font-bold text-gray-700">Tambah Testimoni</h1>
+    </header>
+    <div class="bg-white shadow rounded-lg p-6">
+        <form action="" method="post" enctype="multipart/form-data" class="space-y-6">
+            {% csrf_token %}
+            <div class="mb-4">
+                <label for="id_nama" class="block text-gray-700 font-bold mb-2">Nama Pengirim:</label>
+                {{ form.nama }}
+            </div>
+            <div class="mb-4">
+                <label for="id_deskripsi" class="block text-gray-700 font-bold mb-2">Deskripsi:</label>
+                <textarea name="deskripsi" id="id_deskripsi" 
+                        class="form-textarea mt-1 block w-full rounded-md border border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200 py-2" 
+                        placeholder="Masukkan deskripsi berita" rows="4">{{testimoni.deskripsi}}</textarea>
+            </div>
+            <div class="mb-4">
+                <label for="id_nama" class="block text-gray-700 font-bold mb-2">Jabatan Pengirim:</label>
+                {{ form.jabatan }}
+            </div>
+
+            <div class="mb-4">
+                <label for="id_gambar_testimoni" class="block text-gray-700 font-bold mb-2">Gambar Testimoni:</label>
+                {{ form.gambar }}
+            </div>
+        
+            
+            <div class="flex justify-end">
+                <button type="submit" 
+                        class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                    Simpan
+                </button>
+            </div>
+        </form>
+
+    </div>
+</div>
+{% endblock content %}

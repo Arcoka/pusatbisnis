@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ judul }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="text-center mb-4">Selamat Datang di Website Kami</h1>
+            
+            <!-- Slide Penjualan -->
+            {% if slidepenjualan %}
+            <div class="mb-4">
+                <h3>Slide Penjualan</h3>
+                <div class="row">
+                    {% for slide in slidepenjualan %}
+                    <div class="col-md-4 mb-3">
+                        <div class="card">
+                            {% if slide.gambar %}
+                            <img src="{{ slide.gambar.url }}" class="card-img-top" alt="{{ slide.judul }}">
+                            {% endif %}
+                            <div class="card-body">
+                                <h5 class="card-title">{{ slide.judul }}</h5>
+                                <p class="card-text">{{ slide.deskripsi|truncatewords:20 }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Jasa -->
+            {% if jasa %}
+            <div class="mb-4">
+                <h3>Layanan Jasa</h3>
+                <div class="row">
+                    {% for layanan in jasa %}
+                    <div class="col-md-4 mb-3">
+                        <div class="card">
+                            {% if layanan.gambar %}
+                            <img src="{{ layanan.gambar.url }}" class="card-img-top" alt="{{ layanan.nama }}">
+                            {% endif %}
+                            <div class="card-body">
+                                <h5 class="card-title">{{ layanan.nama }}</h5>
+                                <p class="card-text">{{ layanan.deskripsi|truncatewords:15 }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Kategori Penjualan -->
+            {% if kategoripenjualan %}
+            <div class="mb-4">
+                <h3>Kategori Produk</h3>
+                <div class="row">
+                    {% for kategori in kategoripenjualan %}
+                    <div class="col-md-3 mb-3">
+                        <div class="card text-center">
+                            <div class="card-body">
+                                <h6 class="card-title">{{ kategori.nama }}</h6>
+                                <p class="card-text">{{ kategori.deskripsi|truncatewords:10 }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Produk -->
+            {% if produk %}
+            <div class="mb-4">
+                <h3>Produk Unggulan</h3>
+                <div class="row">
+                    {% for item in produk %}
+                    <div class="col-md-4 mb-3">
+                        <div class="card">
+                            {% if item.gambar %}
+                            <img src="{{ item.gambar.url }}" class="card-img-top" alt="{{ item.nama }}">
+                            {% endif %}
+                            <div class="card-body">
+                                <h5 class="card-title">{{ item.nama }}</h5>
+                                <p class="card-text">{{ item.deskripsi|truncatewords:15 }}</p>
+                                <a href="{% url 'produk_detail' item.slug %}" class="btn btn-primary">Lihat Detail</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

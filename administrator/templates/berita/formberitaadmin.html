@@ -1,0 +1,416 @@
+{% extends "baseadmin.html" %}
+{% load static %}
+{% block content %}
+{% block extra_head %}
+    {{ form.media }}
+    <style>
+        /* Reset hanya untuk form container, tidak global */
+        .news-form-container {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #f8fafc;
+            min-height: calc(100vh - 60px); /* Sesuaikan dengan tinggi header admin */
+        }
+        
+        .news-form-header {
+            background: white;
+            padding: 32px;
+            border-bottom: 1px solid #e2e8f0;
+            margin: 0;
+        }
+        
+        .news-header-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1e293b;
+            margin: 0 0 8px 0;
+        }
+        
+        .news-header-subtitle {
+            color: #64748b;
+            font-size: 16px;
+            margin: 0;
+        }
+        
+        .news-form-content {
+            padding: 0;
+            width: 100%;
+        }
+        
+        .news-form-card {
+            background: white;
+            margin: 0;
+            border-radius: 0;
+            box-shadow: none;
+        }
+        
+        .news-form-body {
+            padding: 32px;
+        }
+        
+        .news-form-section {
+            margin-bottom: 32px;
+        }
+        
+        .news-form-group {
+            margin-bottom: 24px;
+        }
+        
+        .news-form-label {
+            display: block;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        
+        .news-form-container .form-input,
+        .news-form-container input[type="text"],
+        .news-form-container input[type="email"],
+        .news-form-container input[type="url"] {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            background: white;
+            box-sizing: border-box;
+        }
+        
+        .news-form-container .form-input:focus,
+        .news-form-container input[type="text"]:focus,
+        .news-form-container input[type="email"]:focus,
+        .news-form-container input[type="url"]:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        .news-form-container select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 14px;
+            background: white;
+            cursor: pointer;
+            box-sizing: border-box;
+        }
+        
+        .news-form-container select:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        .news-form-container textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: 12px 16px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 14px;
+            resize: vertical;
+            font-family: inherit;
+            box-sizing: border-box;
+        }
+        
+        .news-form-container textarea:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        .news-form-container input[type="file"] {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px dashed #d1d5db;
+            border-radius: 8px;
+            font-size: 14px;
+            background: #f9fafb;
+            cursor: pointer;
+            transition: border-color 0.2s, background-color 0.2s;
+            box-sizing: border-box;
+        }
+        
+        .news-form-container input[type="file"]:hover {
+            border-color: #3b82f6;
+            background: #f0f9ff;
+        }
+        
+        .news-form-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .news-form-checkbox input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #3b82f6;
+        }
+        
+        .news-section-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        
+        .news-form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+        
+        .news-form-actions {
+            background: #f8fafc;
+            padding: 24px 32px;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+        }
+        
+        .news-btn-primary {
+            background: #3b82f6;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            border: none;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            font-size: 14px;
+        }
+        
+        .news-btn-primary:hover {
+            background: #2563eb;
+        }
+        
+        .news-btn-secondary {
+            background: #6b7280;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            border: none;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            font-size: 14px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+        }
+        
+        .news-btn-secondary:hover {
+            background: #4b5563;
+            text-decoration: none;
+            color: white;
+        }
+        
+        .news-image-preview {
+            margin-top: 12px;
+            display: none;
+        }
+        
+        .news-image-preview img {
+            max-width: 200px;
+            max-height: 150px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .news-form-help {
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 4px;
+        }
+        
+        /* Rich Text Editor Styling - hanya untuk CKEditor di form ini */
+        .news-form-container .django-ckeditor-widget {
+            width: 100% !important;
+        }
+        
+        .news-form-container .cke {
+            border: 1px solid #d1d5db !important;
+            border-radius: 8px !important;
+        }
+        
+        .news-form-container .cke:focus-within {
+            border-color: #3b82f6 !important;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1) !important;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .news-form-header {
+                padding: 24px 16px;
+            }
+            
+            .news-form-body {
+                padding: 24px 16px;
+            }
+            
+            .news-form-actions {
+                padding: 16px;
+            }
+            
+            .news-form-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+        }
+    </style>
+{% endblock %}
+
+<div class="news-form-container">
+    <!-- Header -->
+    <div class="news-form-header">
+        <h1 class="news-header-title">Tambah Berita Baru</h1>
+        <p class="news-header-subtitle">Lengkapi form di bawah untuk menambahkan berita baru</p>
+    </div>
+
+    <!-- Form Content -->
+    <div class="news-form-content">
+        <div class="news-form-card">
+            <form action="" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                
+                <div class="news-form-body">
+                    <!-- Basic Information Section -->
+                    <div class="news-form-section">
+                        <h2 class="news-section-title">Informasi Dasar</h2>
+                        
+                        <div class="news-form-grid">
+                            <div class="news-form-group">
+                                <label for="id_kategori" class="news-form-label">Kategori Berita</label>
+                                {{ form.kategori }}
+                                <div class="news-form-help">Pilih kategori yang sesuai dengan berita</div>
+                            </div>
+                            
+                            <div class="news-form-group">
+                                <label class="news-form-label">Status Publikasi</label>
+                                <div class="news-form-checkbox">
+                                    {{ form.aktif }}
+                                    <label for="id_aktif">Aktifkan berita ini</label>
+                                </div>
+                                <div class="news-form-help">Centang untuk mempublikasikan berita</div>
+                            </div>
+                        </div>
+                        
+                        <div class="news-form-group">
+                            <label for="id_judul" class="news-form-label">Judul Berita</label>
+                            {{ form.judul }}
+                            <div class="news-form-help">Masukkan judul yang menarik dan informatif</div>
+                        </div>
+                        <div class="news-form-group">
+                            <label for="id_tanggal" class="news-form-label">Tanggal Berita</label>
+                            {{ form.tanggal }}
+                            <div class="news-form-help">Pilih tanggal berita. Jika dikosongkan, akan otomatis sesuai waktu upload.</div>
+                        </div>
+                    </div>
+
+                    <!-- Content Section -->
+                    <div class="news-form-section">
+                        <h2 class="news-section-title">Konten Berita</h2>
+                        
+                        <div class="news-form-group">
+                            <label for="id_deskripsi" class="news-form-label">Isi Berita</label>
+                            {{ form.deskripsi|safe }}
+                            {{ form.media }}
+                            <div class="news-form-help">Tulis konten berita lengkap dengan format yang menarik</div>
+                        </div>
+                    </div>
+
+                    <!-- Images Section -->
+                    <div class="news-form-section">
+                        <h2 class="news-section-title">Gambar Berita</h2>
+                        
+                        <div class="news-form-grid">
+                            <div class="news-form-group">
+                                <label for="id_gambar" class="news-form-label">Gambar Utama</label>
+                                {{ form.gambar }}
+                                <div class="news-form-help">Gambar utama yang akan ditampilkan sebagai thumbnail</div>
+                                <div class="news-image-preview" id="preview-gambar"></div>
+                            </div>
+                            
+                            <div class="news-form-group">
+                                <label for="id_gambar_1" class="news-form-label">Gambar Tambahan 1</label>
+                                {{ form.gambar_1 }}
+                                <div class="news-form-help">Gambar pendukung untuk melengkapi berita</div>
+                                <div class="news-image-preview" id="preview-gambar-1"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="news-form-grid">
+                            <div class="news-form-group">
+                                <label for="id_gambar_2" class="news-form-label">Gambar Tambahan 2</label>
+                                {{ form.gambar_2 }}
+                                <div class="news-form-help">Gambar pendukung untuk melengkapi berita</div>
+                                <div class="news-image-preview" id="preview-gambar-2"></div>
+                            </div>
+                            
+                            <div class="news-form-group">
+                                <label for="id_gambar_3" class="news-form-label">Gambar Tambahan 3</label>
+                                {{ form.gambar_3 }}
+                                <div class="news-form-help">Gambar pendukung untuk melengkapi berita</div>
+                                <div class="news-image-preview" id="preview-gambar-3"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Form Actions -->
+                <div class="news-form-actions">
+                    <a href="{% url 'administrator:beritaadmin' %}" class="news-btn-secondary">
+                        <i class="fas fa-arrow-left" style="margin-right: 8px;"></i>
+                        Kembali
+                    </a>
+                    <button type="submit" class="news-btn-primary">
+                        <i class="fas fa-save" style="margin-right: 8px;"></i>
+                        Simpan Berita
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+// Image Preview Function
+function setupImagePreview(inputId, previewId) {
+    const input = document.getElementById(inputId);
+    const preview = document.getElementById(previewId);
+    
+    if (input) {
+        input.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.innerHTML = `<img src="${e.target.result}" alt="Preview">`;
+                    preview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            } else {
+                preview.style.display = 'none';
+                preview.innerHTML = '';
+            }
+        });
+    }
+}
+
+// Setup image previews
+document.addEventListener('DOMContentLoaded', function() {
+    setupImagePreview('id_gambar', 'preview-gambar');
+    setupImagePreview('id_gambar_1', 'preview-gambar-1');
+    setupImagePreview('id_gambar_2', 'preview-gambar-2');
+    setupImagePreview('id_gambar_3', 'preview-gambar-3');
+});
+</script>
+
+{% endblock content %}

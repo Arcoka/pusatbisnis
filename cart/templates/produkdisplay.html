@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <div class="isotope-layout" data-default-filter="*" data-layout="fitRows" data-sort="original-order">
+        <ul class="portfolio-filters isotope-filters" data-aos="fade-up" data-aos-delay="100">
+            <li data-filter="*" class="filter-active">Semua</li>
+            {% for kategori in kategoripenjualan %}
+            <li data-filter=".filter-{{ kategori.slug }}">{{ kategori.nama }}</li>
+            {% endfor %}
+        </ul><!-- End Portfolio Filters -->
+
+        <div class="row gy-4 isotope-container" data-aos="fade-up" data-aos-delay="200">
+            {% for row in produk %}
+            <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-{{ row.kategoripenjualan.slug|default:'none' }}">
+                <div class="portfolio-wrap">
+                    <img src="{{ row.gambar.url }}" class="img-fluid" alt="{{ row.nama }}">
+                    <div class="portfolio-info">
+                        <h4>{{ row.nama }}</h4>
+                        <p>{{ row.deskripsi|safe }}</p>
+                        <p class="text-primary fw-bold">{{ row.harga }}</p>
+                        <div class="mt-2">
+                          {% if row.token_produk %}
+                          <a class="btn btn-primary btn-sm me-2" href="#" data-cart-add="1" data-product-id="{{ row.id }}">Keranjang</a>
+                          <form method="post" action="{% url 'like_produk' token=row.token_produk %}?next={{ request.get_full_path|urlencode }}" class="d-inline">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-outline-danger btn-sm">Like</button>
+                          </form>
+                          {% else %}
+                          <a class="btn btn-primary btn-sm me-2" href="#" data-cart-add="1" data-product-id="{{ row.id }}">Keranjang</a>
+                          <form method="post" action="{% url 'like_produk_by_id' pk=row.id %}?next={{ request.get_full_path|urlencode }}" class="d-inline">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-outline-danger btn-sm">Like</button>
+                          </form>
+                          {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center">
+                <p>Belum ada produk yang tersedia.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    $(document).ready(function() {
+        // Isotope initialization with jQuery
+        var $grid = $('.isotope-container').isotope({
+            itemSelector: '.isotope-item',
+            layoutMode: 'fitRows'
+        });
+        
+        // Filter items on button click
+        $('.isotope-filters').on('click', 'li', function() {
+            var filterValue = $(this).attr('data-filter');
+            $grid.isotope({ filter: filterValue });
+            
+            // Change active class
+            $('.isotope-filters li').removeClass('filter-active');
+            $(this).addClass('filter-active');
+        });
+    });
+</script>
+{% endblock %}

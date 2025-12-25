@@ -1,0 +1,437 @@
+{% extends "baseadmin.html" %}
+{% load static %}
+{% block title %}Daftar Tenant{% endblock %}
+
+{% block content %}
+<div class="overflow-x-auto flex-1 p-2 transition-all duration-200 ease-in-out">
+    <!-- Header Mobile -->
+    <div class="md:hidden flex justify-between items-center bg-indigo-700 text-white p-4 rounded-lg mb-4 shadow-md">
+        <h1 class="text-xl font-bold">Daftar Tenant</h1>
+        <button @click="isSidebarOpen = !isSidebarOpen" class="focus:outline-none">
+            <i class="fas fa-bars"></i>
+        </button>
+    </div>
+
+    <!-- Header Desktop -->
+    <header class="mb-6">
+        <div class="flex justify-between items-center">
+            <h1 class="text-3xl font-bold text-indigo-800">📋 Daftar Tenant</h1>
+            <div class="flex space-x-2">
+                <div class="relative">
+                    <input type="text" id="searchInput" placeholder="Cari tenant..."
+                        class="pl-10 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent shadow-sm">
+                    <div class="absolute left-3 top-2.5 text-gray-400">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            viewBox="0 0 16 16">
+                            <path
+                                d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                        </svg>
+                    </div>
+                </div>
+                <select id="filterStatus"
+                    class="border rounded-lg px-4 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-transparent shadow-sm">
+                    <option value="all">Semua Status</option>
+                    <option value="active">Aktif</option>
+                    <option value="inactive">Non-Aktif</option>
+                    <option value="read">Sudah Dibaca</option>
+                    <option value="unread">Belum Dibaca</option>
+                </select>
+                {% if perms.administrator.add_daftartenant %}
+                <form action="{% url 'administrator:daftartenant_import' %}" method="post" enctype="multipart/form-data" class="inline-flex items-center space-x-2">
+                    {% csrf_token %}
+                    <label class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 cursor-pointer">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M3 3a1 1 0 011-1h4a1 1 0 010 2H5v12h10V4h-3a1 1 0 110-2h3a2 2 0 012 2v12a2 2 0 01-2 2H5a2 2 0 01-2-2V3z" clip-rule="evenodd" />
+                            <path d="M9 7a1 1 0 012 0v3.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3A1 1 0 017.293 9.293L8.5 10.586V7z" />
+                        </svg>
+                        <span>Import Excel</span>
+                        <input type="file" name="file" accept=".xlsx" class="hidden" onchange="this.form.submit()">
+                    </label>
+                </form>
+                {% endif %}
+                <a href="?export=excel" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    Export Excel
+                </a>
+            </div>
+        </div>
+        <p class="text-gray-600 mt-2">Kelola semua pendaftar tenant di satu tempat</p>
+    </header>
+
+    <!-- Card Statistik -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+        <div class="bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg shadow-md p-4">
+            <div class="flex justify-between items-center">
+                <div>
+                    <p class="text-white text-opacity-80 text-sm">Total Tenant</p>
+                    <h3 class="text-2xl font-bold">{{ daftartenant_list|length }}</h3>
+                </div>
+                <div class="bg-white bg-opacity-30 p-3 rounded-full">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                        viewBox="0 0 16 16">
+                        <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
+                        <path fill-rule="evenodd"
+                            d="M5.216 14A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.216z" />
+                        <path d="M4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z" />
+                    </svg>
+                </div>
+            </div>
+        </div>
+        <div class="bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg shadow-md p-4">
+            <div class="flex justify-between items-center">
+                <div>
+                    <p class="text-white text-opacity-80 text-sm">Tenant Aktif</p>
+                    <h3 class="text-2xl font-bold" id="activeCount">...</h3>
+                </div>
+                <div class="bg-white bg-opacity-30 p-3 rounded-full">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                        viewBox="0 0 16 16">
+                        <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
+                        <path
+                            d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />
+                    </svg>
+                </div>
+            </div>
+        </div>
+        <div class="bg-gradient-to-r from-yellow-500 to-yellow-600 text-white rounded-lg shadow-md p-4">
+            <div class="flex justify-between items-center">
+                <!-- Keterangan & Jumlah -->
+                <div>
+                    <p class="text-sm text-white text-opacity-80">Belum Dibaca</p>
+                    <h3 class="text-3xl font-semibold" id="unreadCount">...</h3>
+                </div>
+
+                <!-- Ikon Surat -->
+                <div class="bg-white bg-opacity-30 p-3 rounded-full">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                        class="text-white" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+                        <path
+                            d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2zm13 2.383-4.708 2.825L15 11.105V5.383zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741zM1 11.105l4.708-2.897L1 5.383v5.722z" />
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-gradient-to-r from-purple-500 to-purple-600 text-white rounded-lg shadow-md p-4">
+            <div class="flex justify-between items-center">
+                <div>
+                    <p class="text-white text-opacity-80 text-sm">Bulan Ini</p>
+                    <h3 class="text-2xl font-bold" id="thisMonthCount">...</h3>
+                </div>
+                <div class="bg-white bg-opacity-30 p-3 rounded-full">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                        viewBox="0 0 16 16">
+                        <path
+                            d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z" />
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tabel Tenant -->
+    <div class="bg-white shadow-md rounded-lg overflow-hidden">
+        <div class="p-4 bg-indigo-50 border-b border-gray-200">
+            <h2 class="text-lg font-semibold text-indigo-700">Daftar Pendaftar Tenant</h2>
+        </div>
+        <div class="overflow-x-auto">
+            <div class="min-w-full">
+                <table class="w-full divide-y divide-gray-200">
+                    <thead>
+                        <tr class="bg-gray-50">
+                            <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/8">Nama</th>
+                            <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/8">Kontak</th>
+                            <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/8">Jenis Usaha</th>
+                            <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/8">Form Upload</th>
+                            <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/8">Tanggal Daftar</th>
+                            <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/8">Status</th>
+                            <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/8">Aksi</th>
+                        </tr>
+                    </thead>
+                <tbody class="bg-white divide-y divide-gray-200" id="tenantTableBody">
+                    {% for daftartenant in daftartenant_list %}
+                    <tr class="hover:bg-gray-50 tenant-row {% if not daftartenant.is_read %}bg-indigo-50{% endif %}"
+                        data-active="{{ daftartenant.aktif|lower }}" data-read="{{ daftartenant.is_read|lower }}">
+                        <td class="px-3 py-4">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0 h-8 w-8 rounded-full bg-indigo-600 flex items-center justify-center text-white font-bold text-xs">
+                                    {{ daftartenant.nama|make_list|first|upper }}
+                                </div>
+                                <div class="ml-2">
+                                    <div class="text-sm font-medium text-gray-900 truncate max-w-24">{{ daftartenant.nama|truncatechars:15 }}</div>
+                                    {% if not daftartenant.is_read %}
+                                    <span class="inline-flex items-center px-1 py-0.5 rounded text-xs font-medium bg-indigo-100 text-indigo-800">
+                                        Baru
+                                    </span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-3 py-4">
+                            <div class="text-sm text-gray-900 truncate max-w-32">{{ daftartenant.email|truncatechars:20 }}</div>
+                            <div class="text-sm text-gray-500 truncate max-w-32">{{ daftartenant.telepon|truncatechars:15 }}</div>
+                        </td>
+                        <td class="px-3 py-4 text-sm text-gray-900">
+                            <span class="truncate block max-w-20">{{ daftartenant.jenisusaha|truncatechars:12 }}</span>
+                        </td>
+                        <td class="px-3 py-4 text-sm text-gray-500">
+                            {% if daftartenant.form_upload %}
+                                <a href="{{ daftartenant.form_upload.url }}" target="_blank" class="text-blue-600 hover:text-blue-900 bg-blue-50 hover:bg-blue-100 rounded-md px-2 py-1 transition-all duration-200 text-xs">
+                                    <i class="fas fa-file-alt mr-1"></i> File
+                                </a>
+                            {% else %}
+                                <span class="text-gray-400 text-xs">
+                                    <i class="fas fa-times mr-1"></i> Kosong
+                                </span>
+                            {% endif %}
+                        </td>
+                        <td class="px-3 py-4 text-sm text-gray-500">
+                            <div class="flex flex-col">
+                                <span class="text-xs">{{ daftartenant.tanggal_upload|date:"d/m/Y" }}</span>
+                                <span class="text-xs">{{ daftartenant.tanggal_upload|date:"H:i" }}</span>
+                            </div>
+                        </td>
+                        <td class="px-3 py-4">
+                            <div class="flex flex-col space-y-1">
+                                <span class="{% if daftartenant.is_read %}bg-green-100 text-green-800{% else %}bg-yellow-100 text-yellow-800{% endif %} inline-flex items-center px-1.5 py-0.5 rounded-full text-xs font-medium">
+                                    <svg class="mr-1 h-1.5 w-1.5 {% if daftartenant.is_read %}text-green-500{% else %}text-yellow-500{% endif %}" fill="currentColor" viewBox="0 0 8 8">
+                                        <circle cx="4" cy="4" r="3" />
+                                    </svg>
+                                    {% if daftartenant.is_read %}Dibaca{% else %}Belum{% endif %}
+                                </span>
+                                <form method="POST" action="{% url 'administrator:toggle_aktif' daftartenant.id %}" style="display: inline;">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="next" value="{% url 'administrator:daftartenant_list' %}">
+                                    <button type="submit" class="{% if daftartenant.aktif %}bg-green-100 text-green-800{% else %}bg-red-100 text-red-800{% endif %} inline-flex items-center px-1.5 py-0.5 rounded-full text-xs font-medium w-full">
+                                        <svg class="mr-1 h-1.5 w-1.5 {% if daftartenant.aktif %}text-green-500{% else %}text-red-500{% endif %}" fill="currentColor" viewBox="0 0 8 8">
+                                            <circle cx="4" cy="4" r="3" />
+                                        </svg>
+                                        {% if daftartenant.aktif %}Aktif{% else %}Nonaktif{% endif %}
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                        <td class="px-3 py-4 text-sm font-medium">
+                            <div class="flex flex-col space-y-1">
+                                <a href="{% url 'administrator:daftartenant_detail' daftartenant.slug %}" class="text-indigo-600 hover:text-indigo-900 bg-indigo-50 hover:bg-indigo-100 rounded-md px-2 py-1 transition-all duration-200 text-xs text-center">
+                                    <i class="fas fa-eye"></i> Lihat
+                                </a>
+                                {% if request.user.admin_panel_profile.is_superadmin %}
+                                <button type="button" class="text-red-600 hover:text-red-900 bg-red-50 hover:bg-red-100 rounded-md px-2 py-1 transition-all duration-200 text-xs w-full" onclick="confirmDelete('{{ daftartenant.slug }}', '{{ daftartenant.nama }}')">
+                                    <i class="fas fa-trash-alt"></i> Hapus
+                                </button>
+                                {% endif %}
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="7" class="px-6 py-10 text-center text-gray-500">
+                            <div class="flex flex-col items-center justify-center">
+                                <svg class="h-12 w-12 text-gray-400 mb-4" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+                                </svg>
+                                <p class="text-lg font-medium">Tidak ada pendaftar tenant ditemukan</p>
+                                <p class="text-sm text-gray-500 mt-1">Data pendaftar tenant akan muncul di sini setelah
+                                    formulir pendaftaran diisi.</p>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- Pagination -->
+        <div class="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
+            <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+                <div>
+                    <p class="text-sm text-gray-700">
+                        Menampilkan <span class="font-medium">{{ daftartenant_list|length }}</span> dari <span
+                            class="font-medium">{{ daftartenant_list|length }}</span> tenant
+                    </p>
+                </div>
+                <div>
+                    <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+                        <a href="#"
+                            class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                            <span class="sr-only">Previous</span>
+                            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                                fill="currentColor" aria-hidden="true">
+                                <path fill-rule="evenodd"
+                                    d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                        </a>
+                        <a href="#"
+                            class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+                            1 </a>
+                        <a href="#"
+                            class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                            <span class="sr-only">Next</span>
+                            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                                fill="currentColor" aria-hidden="true">
+                                <path fill-rule="evenodd"
+                                    d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                        </a>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Konfirmasi Hapus -->
+<div id="deleteModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center">
+    <div class="bg-white rounded-lg p-6 max-w-md w-full">
+        <div class="mb-4 text-center">
+            <div class="mx-auto flex items-center justify-center h-14 w-14 rounded-full bg-red-100 mb-4">
+                <svg class="h-8 w-8 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900 mb-1">Konfirmasi Hapus</h3>
+            <p class="text-gray-500">Apakah Anda yakin ingin menghapus data tenant ini?</p>
+        </div>
+        <div class="bg-gray-50 p-4 rounded-lg mb-4">
+            <div class="flex items-center">
+                <div
+                    class="flex-shrink-0 h-10 w-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-bold">
+                    <span id="tenantInitial">?</span>
+                </div>
+                <div class="ml-3">
+                    <h4 class="text-sm font-medium text-gray-900" id="daftartenantNama">Nama Tenant</h4>
+                </div>
+            </div>
+        </div>
+        <div class="flex justify-end space-x-3">
+            <button onclick="closeModal()"
+                class="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-300 transition-all duration-200">
+                Batal
+            </button>
+            <form id="deleteForm" method="POST" action="">
+                {% csrf_token %}
+                <button type="submit"
+                    class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 transition-all duration-200">
+                    Ya, Hapus
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Fungsi untuk konfirmasi hapus data
+    function confirmDelete(slug, nama) {
+        document.getElementById('deleteModal').classList.remove('hidden');
+        document.getElementById('daftartenantNama').textContent = nama;
+        document.getElementById('tenantInitial').textContent = nama.charAt(0).toUpperCase();
+        document.getElementById('deleteForm').action = "/administrator/daftartenant/" + slug + "/delete/";
+    }
+
+    function closeModal() {
+        document.getElementById('deleteModal').classList.add('hidden');
+    }
+
+    // Tutup modal jika klik di luar modal
+    window.onclick = function (event) {
+        var modal = document.getElementById('deleteModal');
+        if (event.target === modal) {
+            closeModal();
+        }
+    }
+
+    // Pencarian dan filter tenant
+    document.addEventListener('DOMContentLoaded', function () {
+        const searchInput = document.getElementById('searchInput');
+        const filterStatus = document.getElementById('filterStatus');
+        const rows = document.querySelectorAll('.tenant-row');
+
+        // Hitung jumlah data untuk card statistik
+        let activeCount = 0;
+        let unreadCount = 0;
+        let thisMonthCount = 0;
+        const currentDate = new Date();
+        const currentMonth = currentDate.getMonth();
+        const currentYear = currentDate.getFullYear();
+
+        rows.forEach(row => {
+            // Hitung tenant aktif
+            if (row.dataset.active === 'true') {
+                activeCount++;
+            }
+
+            // Hitung tenant belum dibaca
+            if (row.dataset.read === 'false') {
+                unreadCount++;
+            }
+
+            // Hitung tenant bulan ini
+            const dateCell = row.querySelector('td:nth-child(7)');
+            if (dateCell) {
+                const dateText = dateCell.textContent.trim();
+                // Ekstrak tanggal dari format "DD MMM YYYY, HH:MM"
+                const dateParts = dateText.split(',')[0].split(' ');
+                const monthNames = {
+                    'Jan': 0,
+                    'Feb': 1,
+                    'Mar': 2,
+                    'Apr': 3,
+                    'Mei': 4,
+                    'Jun': 5,
+                    'Jul': 6,
+                    'Agu': 7,
+                    'Sep': 8,
+                    'Okt': 9,
+                    'Nov': 10,
+                    'Des': 11
+                };
+
+                const month = monthNames[dateParts[1]];
+                const year = parseInt(dateParts[2]);
+
+                if (month === currentMonth && year === currentYear) {
+                    thisMonthCount++;
+                }
+            }
+        });
+
+        // Update statistik
+        document.getElementById('activeCount').textContent = activeCount;
+        document.getElementById('unreadCount').textContent = unreadCount;
+        document.getElementById('thisMonthCount').textContent = thisMonthCount;
+
+        // Fungsi filter
+        function filterTable() {
+            const searchTerm = searchInput.value.toLowerCase();
+            const filterValue = filterStatus.value;
+
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                const isActive = row.dataset.active === 'true';
+                const isRead = row.dataset.read === 'true';
+
+                let showRow = text.includes(searchTerm);
+
+                if (filterValue === 'active' && !isActive) showRow = false;
+                if (filterValue === 'inactive' && isActive) showRow = false;
+                if (filterValue === 'read' && !isRead) showRow = false;
+                if (filterValue === 'unread' && isRead) showRow = false;
+
+                row.style.display = showRow ? '' : 'none';
+            });
+        }
+
+        // Event listeners untuk pencarian dan filter
+        searchInput.addEventListener('input', filterTable);
+        filterStatus.addEventListener('change', filterTable);
+    });
+</script>
+{% endblock content %}

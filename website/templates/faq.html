@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% load static %}
+{% block body_class %}index-page{% endblock %}
+{% block content %}
+
+{% for row in slide  %}
+<div class=" hero-pilihan">
+    <div class="hero-content">
+
+        <!-- <a href="#" class="hero-button">Mulai Sekarang</a> -->
+
+        <!-- Animasi latar belakang yang lebih profesional -->
+        <div class="particles">
+            <div class="particle" style="top: 20%; left: 10%; animation-delay: 0s;"></div>
+            <div class="particle" style="top: 30%; left: 25%; animation-delay: 2s;"></div>
+            <div class="particle" style="top: 50%; left: 15%; animation-delay: 4s;"></div>
+            <div class="particle" style="top: 70%; left: 20%; animation-delay: 1s;"></div>
+            <div class="particle" style="top: 80%; left: 40%; animation-delay: 3s;"></div>
+            <div class="particle" style="top: 40%; left: 60%; animation-delay: 5s;"></div>
+            <div class="particle" style="top: 60%; left: 50%; animation-delay: 0s;"></div>
+            <div class="particle" style="top: 10%; left: 50%; animation-delay: 2s;"></div>
+            <div class="particle" style="top: 30%; left: 70%; animation-delay: 1s;"></div>
+            <div class="particle" style="top: 60%; left: 80%; animation-delay: 3s;"></div>
+        </div>
+
+        <div class="wave wave-1"></div>
+        <div class="wave wave-2"></div>
+        <div class="wave wave-3"></div>
+
+        <!-- Dekorasi lingkaran dengan animasi -->
+        <div class="circle-decoration circle-1"></div>
+        <div class="circle-decoration circle-2"></div>
+    </div>
+
+    <div class="hero-image-container">
+        <img src="{{ row.gambar_slide.url }}" alt="Gedung Bisnis Modern" class="hero-image">
+    </div>
+</div>
+
+{% endfor %}
+
+<section class="faq-section ">
+    <!-- Section Title -->
+    <div class="container section-title" data-aos="fade-up">
+        <h2>Faq</h2>
+    </div><!-- End Section Title -->
+
+    <h2 class="faq-title" style="margin-top: -80px;">Frequently Asked Questions</h2>
+    <div class="faq-item">
+
+        <div class="faq-question">
+            <span><i class="bi bi-question-circle"></i> Jika ingin mengetahui tentang konsep dan program inkubasi, kemana saya harus bertanya?</span>
+            <span class="icon"><i class="bi bi-plus-lg"></i></span>
+        </div>
+        <div class="faq-answer">Pada menu inkubasi bisnis terdapat sedikit penjelasan tentang apa itu Inkubasi bisnis. Jika ingin info lebih jelas dan detail, 
+            silahkan menghubungi kami untuk di arahkan kepada PIC program inkubasi bisnis BIZNEST UNUJA</div>
+    </div>
+
+    <div class="faq-item">
+        <div class="faq-question">
+            <span><i class="bi bi-question-circle"></i> Jika ingin melakukan kerjasama atau berkunjung ke BIZNEST UNUJA, bagaimana prosedurnya?</span>
+            <span class="icon"><i class="bi bi-plus-lg"></i></span>
+        </div>
+        <div class="faq-answer">Silahkan membuat surat ditujukan kepada kepala pusatUNUJA terkait keperluan tersebut beserta rencana waktunya. 
+            Surat di kirimkan via email ke email pusatbisnis@unuja.ac.id </div>
+    </div>
+
+    <div class="faq-item">
+        <div class="faq-question">
+            <span><i class="bi bi-question-circle"></i> Saya memiliki usaha, bagaimana caranya menjadi binaan inkubator bisnis BIZNEST UNUJA</span>
+            <span class="icon"><i class="bi bi-plus-lg"></i></span>
+        </div>
+        <div class="faq-answer">Calon tenant menghubungi pihak pengelola Inkubator Bisnis BEZNEST UNUJA untuk di arahkan kepada PIC 
+            program inkubasi bisnis untuk mendapatkan penjelasan terkait program inkubasi bisnis, kemudian akan diarahkan untuk mengisi form pendaftaran 
+            yang telah di sediakan untuk kemudian akan diseleksi oleh tim Inkubator Bisnis BIZNEST UNUJA. Hasil seleksi akan dikirimkan dalam bentuk surat pemberitahuan.</div>
+    </div>
+
+    <div class="faq-item">
+        <div class="faq-question">
+            <span><i class="bi bi-question-circle"></i> apa saja syarat menjadi start up/ tenant binaan BIZNEST UNUJA</span>
+            <span class="icon"><i class="bi bi-plus-lg"></i></span>
+        </div>
+        <div class="faq-answer">Terdapat beberapa kriteria untuk menjadi tenant binaanInkubator Bisnis BIZNEST UNUJA. 
+            diantaranya usaha harus sudah berjalan minimal 6 bulan, diutamakan mahasiswa/alumni.</div>
+    </div>
+</section>
+<script>
+    const questions = document.querySelectorAll('.faq-question');
+
+    questions.forEach(q => {
+        q.addEventListener('click', () => {
+            const answer = q.nextElementSibling;
+            const isOpen = answer.classList.contains('open');
+
+            // Close all
+            document.querySelectorAll('.faq-answer').forEach(a => a.classList.remove('open'));
+            document.querySelectorAll('.faq-question').forEach(q => q.classList.remove('active'));
+
+            // Toggle current
+            if (!isOpen) {
+                answer.classList.add('open');
+                q.classList.add('active');
+            }
+        });
+    });
+</script>
+{% endblock content %}

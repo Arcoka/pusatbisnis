@@ -1,0 +1,258 @@
+{% extends "base.html" %}
+{% load static %}
+{% block body_class %}index-page{% endblock %}
+{% block content %}
+
+{% for row in slide  %}
+<div class=" hero-pilihan">
+    <div class="hero-content">
+
+        <!-- <a href="#" class="hero-button">Mulai Sekarang</a> -->
+
+        <!-- Animasi latar belakang yang lebih profesional -->
+        <div class="particles">
+            <div class="particle" style="top: 20%; left: 10%; animation-delay: 0s;"></div>
+            <div class="particle" style="top: 30%; left: 25%; animation-delay: 2s;"></div>
+            <div class="particle" style="top: 50%; left: 15%; animation-delay: 4s;"></div>
+            <div class="particle" style="top: 70%; left: 20%; animation-delay: 1s;"></div>
+            <div class="particle" style="top: 80%; left: 40%; animation-delay: 3s;"></div>
+            <div class="particle" style="top: 40%; left: 60%; animation-delay: 5s;"></div>
+            <div class="particle" style="top: 60%; left: 50%; animation-delay: 0s;"></div>
+            <div class="particle" style="top: 10%; left: 50%; animation-delay: 2s;"></div>
+            <div class="particle" style="top: 30%; left: 70%; animation-delay: 1s;"></div>
+            <div class="particle" style="top: 60%; left: 80%; animation-delay: 3s;"></div>
+        </div>
+
+        <div class="wave wave-1"></div>
+        <div class="wave wave-2"></div>
+        <div class="wave wave-3"></div>
+
+        <!-- Dekorasi lingkaran dengan animasi -->
+        <div class="circle-decoration circle-1"></div>
+        <div class="circle-decoration circle-2"></div>
+    </div>
+
+    <div class="hero-image-container">
+        <img src="{{ row.gambar_slide.url }}" alt="Gedung Bisnis Modern" class="hero-image">
+    </div>
+</div>
+
+{% endfor %}
+
+
+<main class="main-contenn ">
+
+
+    <!-- Features Section -->
+    <section id="features" class="feature section tenant-section">
+        <!-- Section Title -->
+        <div class="container section-title" style="margin-top: 20px; margin-bottom: 0px;" data-aos="fade-up">
+            <h2>Pendaftaran Tenant</h2>
+        </div><!-- End Section Title -->
+        <div class="container">
+            <div class="contact-info bg-light p-4 rounded shadow">
+                <h5 class="fw-bold text-secondary" style="color: #000000; ">Pendaftaran Tenant harus berisi informasi berikut:</h5>
+                <ul class="list-group list-group-flush mt-3">
+                    <li class="list-group-item">📌 1. Mengisi formulir Profil Bisnis di link berikut:</li>
+                    <li class="list-group-item">📌 2. Menyiapkan berkas pendaftaran tenant meliputi:</li>
+                    <li class="list-group-item ps-4">
+                        a. Company profile (deskripsi usaha, lokasi, kontak person, strategi usaha, manajemen dan
+                        kepemilikan usaha, keuangan)<br>
+                        b. Menyerahkan copy identitas diri (KTP), legalitas usaha (jika ada)
+                    </li>
+                    <li class="list-group-item">📌 3. Mengikuti seleksi Administrasi berkas dikirimkan ke email
+                        lembaga pusat bisnis: <a href="mailto:pusatbisnis@unuja.ac.id"
+                            class="text-decoration-none fw-bold">pusatbisnis@unuja.ac.id</a></li>
+                    <li class="list-group-item">📌 4. Mengikuti seleksi Karakteristik Kewirausahaan, Prospek Usaha
+                        dan kunjungan ke lokasi usaha.</li>
+                </ul>
+            </div>
+        </div>
+        </div>
+    </section><!-- /Features Section -->
+
+    <section class="feature tenant-section" style="margin-top: -20px;">
+        <style>
+            /* Scoped styles: prefix tenant-new to avoid conflicts */
+            .tenant-new-wrap {
+                max-width: 1100px;
+                width: 100%;
+                margin: 0 auto;
+                padding: 28px 26px;
+                border-radius: 16px;
+                background: #ffffff;
+                box-shadow: 0 12px 30px rgba(0, 0, 0, 0.06);
+            }
+            .tenant-new-title {
+                margin-bottom: 18px;
+            }
+            .tenant-new-grid {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 16px 20px;
+            }
+            .tenant-new-grid.full {
+                grid-template-columns: 1fr;
+            }
+            .tenant-new-group label {
+                display: block;
+                font-weight: 600;
+                margin-bottom: 6px;
+                color: #374151;
+            }
+            .tenant-new-group input,
+            .tenant-new-group select,
+            .tenant-new-group textarea {
+                width: 100%;
+                padding: 10px 12px;
+                border: 1px solid #d1d5db;
+                border-radius: 10px;
+                font-size: 14px;
+                color: #1f2937;
+                background: #fff;
+            }
+            .tenant-new-group textarea {
+                min-height: 140px;
+                resize: vertical;
+            }
+            .tenant-new-upload {
+                width: 100%;
+                padding: 14px;
+                border: 2px dashed #93c5fd;
+                border-radius: 12px;
+                background: #f8fbff;
+                text-align: center;
+                color: #2563eb;
+                font-weight: 600;
+            }
+            .tenant-new-actions {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap: 12px;
+                margin-top: 12px;
+            }
+            .tenant-new-actions .right {
+                display: flex;
+                gap: 10px;
+                align-items: center;
+            }
+            .tenant-new-btn {
+                border: none;
+                border-radius: 10px;
+                padding: 11px 18px;
+                font-weight: 700;
+                cursor: pointer;
+                transition: transform 0.15s ease, box-shadow 0.15s ease;
+            }
+            .tenant-new-btn.primary {
+                background: linear-gradient(135deg, #2563eb, #1d4ed8);
+                color: #fff;
+                box-shadow: 0 10px 25px rgba(37, 99, 235, 0.25);
+            }
+            .tenant-new-btn.secondary {
+                background: #e5e7eb;
+                color: #111827;
+            }
+            .tenant-new-btn.link {
+                background: #f3f4f6;
+                color: #1d4ed8;
+            }
+            .tenant-new-btn:hover {
+                transform: translateY(-1px);
+                box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+            }
+            .tenant-new-note {
+                margin-top: 10px;
+                color: #4b5563;
+                font-size: 14px;
+            }
+            @media (max-width: 768px) {
+                .tenant-new-grid { grid-template-columns: 1fr; }
+                .tenant-new-actions { flex-direction: column-reverse; align-items: stretch; }
+                .tenant-new-actions .right { justify-content: space-between; }
+            }
+        </style>
+
+        <div class="tenant-new-wrap">
+            <div class="section-title tenant-new-title" data-aos="fade-up">
+                <h2 style="margin: 0;">Pendaftaran Tenant Inkubator Bisnis</h2>
+                <p style="margin: 6px 0 0; color: #4b5563; font-size: 14px;">Isi data dengan lengkap dan unggah dokumen pendaftaran.</p>
+            </div>
+
+            <form method="POST" action="" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <div class="tenant-new-grid">
+                    <div class="tenant-new-group">
+                        <label>Nama Lengkap</label>
+                        <input type="text" name="nama" required placeholder="Masukkan nama lengkap">
+                    </div>
+                    <div class="tenant-new-group">
+                        <label>No. Telepon</label>
+                        <input type="tel" name="telepon" required placeholder="08xxxxxxxxxx">
+                    </div>
+                    <div class="tenant-new-group">
+                        <label>Email</label>
+                        <input type="email" name="email" required placeholder="nama@email.com">
+                    </div>
+                    <div class="tenant-new-group">
+                        <label>Nama Usaha</label>
+                        <input type="text" name="namausaha" required placeholder="Nama usaha Anda">
+                    </div>
+                    <div class="tenant-new-group">
+                        <label>Jenis Usaha</label>
+                        <select name="jenisusaha" required>
+                            <option value="" disabled selected>Pilih Jenis</option>
+                            <option value="Makanan">Makanan/Minuman</option>
+                            <option value="Fashion">Fashion</option>
+                            <option value="Teknologi">Teknologi</option>
+                            <option value="Jasa">Jasa</option>
+                            <option value="Budidaya">Budidaya</option>
+                        </select>
+                    </div>
+                    <div class="tenant-new-group">
+                        <label>Deskripsi Singkat Usaha</label>
+                        <textarea name="deskripsi" rows="4" required placeholder="Ceritakan singkat usaha Anda"></textarea>
+                    </div>
+                </div>
+
+                <div class="tenant-new-grid full" style="margin-top: 10px;">
+                    <div class="tenant-new-group">
+                        <label>Upload Form Pendaftaran</label>
+                        <div class="tenant-new-upload">
+                            <input type="file" name="form_upload" id="form_upload" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" class="file-input" style="display:none;">
+                            <label for="form_upload" class="file-label" style="cursor:pointer; display:block;">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <span class="file-text">Pilih file atau drag & drop di sini</span>
+                            </label>
+                            <div class="file-info">
+                                <small class="text-muted">Format: PDF, DOC, DOCX, JPG, PNG (Max: 5MB)</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tenant-new-actions">
+                    <div class="left">
+                        <a href="{% url 'home' %}" class="tenant-new-btn secondary">Kembali</a>
+                    </div>
+                    <div class="right">
+                        <a href="{% static 'assets/form/FORM_PENDAFTARAN_TENANT_INKUBATOR_BISNIS_UNIVERSITAS_NURUL_JADID.docx' %}" download class="tenant-new-btn link">Download Form</a>
+                        <button type="submit" class="tenant-new-btn primary tenant-new-btn-submit">Daftar Sekarang</button>
+                    </div>
+                </div>
+
+                <div class="tenant-new-note">
+                    NB: Silakan download form untuk pendaftaran lengkapnya.
+                </div>
+            </form>
+        </div>
+    </section>
+
+    {% load static %}
+    <script src="{% static 'assets/js/tenant.js' %}"></script>
+</main>
+
+{% endblock content %}
+

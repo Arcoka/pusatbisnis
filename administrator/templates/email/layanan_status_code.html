@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kode Status Layanan</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 20px;
+        }
+        .header h1 {
+            color: #007bff;
+            margin: 0;
+        }
+        .content {
+            margin-bottom: 30px;
+        }
+        .info-box {
+            background-color: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        .code-box {
+            background-color: #f8f9fa;
+            border: 2px solid #007bff;
+            padding: 20px;
+            text-align: center;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .code {
+            font-size: 24px;
+            font-weight: bold;
+            color: #007bff;
+            letter-spacing: 2px;
+            font-family: 'Courier New', monospace;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+            font-size: 12px;
+            color: #666;
+        }
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Kode Status Layanan</h1>
+            <p>Pusat Bisnis Universitas Nurul Jadid</p>
+        </div>
+        
+        <div class="content">
+            <p>Halo <strong>{{ nama }}</strong>,</p>
+            
+            <p>Terima kasih telah menggunakan layanan kami. Berikut adalah kode status untuk permintaan layanan Anda:</p>
+            
+            <div class="info-box">
+                <strong>Detail Layanan:</strong><br>
+                Jenis Layanan: {{ jenis_layanan }}<br>
+                Tanggal Layanan: {{ tanggal_layanan|date:"d F Y" }}<br>
+                Tanggal Request: {{ tanggal_request|date:"d F Y - H:i" }}
+            </div>
+            
+            <div class="code-box">
+                <p>Kode Status Anda:</p>
+                <div class="code">{{ kode_status }}</div>
+            </div>
+            
+            <p>Simpan kode di atas sebagai <strong>kode referensi layanan</strong>. Tim kami akan menghubungi Anda melalui email atau telepon untuk informasi perkembangan berikutnya.</p>
+            
+            <p><strong>Catatan Penting:</strong></p>
+            <ul>
+                <li>Kode status ini bersifat unik dan rahasia</li>
+                <li>Jangan bagikan kode ini kepada orang lain</li>
+                <li>Kode ini digunakan sebagai referensi internal ketika kami menghubungi Anda</li>
+                <li>Hubungi kami jika ada pertanyaan</li>
+            </ul>
+        </div>
+        
+        <div class="footer">
+            <p>Email ini dikirim secara otomatis, mohon jangan membalas email ini.</p>
+            <p>&copy; 2025 Pusat Bisnis Universitas Nurul Jadid. All rights reserved.</p>
+        </div>
+    </div>
+</body>
+</html>

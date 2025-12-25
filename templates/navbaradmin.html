@@ -1,0 +1,371 @@
+<div class="flex-1 overflow-y-auto custom-scrollbar" x-init="
+    // Auto-open the relevant menu based on current context
+    (() => {
+      try {
+        const active = '{{ menu|default:"" }}';
+        const sub = '{{ submenu|default:"" }}';
+        
+        // Daftar semua menu yang ada di submenu Admin
+        const adminMenuItems = [
+          // Ambil dari link href di submenu Admin
+          'beranda', 'pesan', 'daftartenant', 'daftarlayanan', 'kategori',
+          'berita', 'agenda', 'visi_misi', 'team', 'testimoni', 'slide', 'profil',
+          'background', 'kontak', 'telegram', 'audit', 'logo', 'layanan'
+        ];
+        
+        // Daftar semua submenu di Penjualan
+        const penjualanSubmenuItems = [
+          'penjualan', 'kategoripenjualanadmin', 'pesan', 'like', 'produk',
+          'slidepenjualanadmin', 'jasa'
+        ];
+        
+        // Cek apakah menu aktif ada di Admin menu
+        if (adminMenuItems.includes(active)) {
+          openMenus.admin = true;
+        }
+        
+        // Cek apakah submenu aktif ada di Penjualan submenu
+        if (penjualanSubmenuItems.includes(sub)) {
+          openMenus.penjualan = true;
+        }
+        
+        // Jika tidak ditemukan di atas, coba cari di URL
+        if (!openMenus.admin && !openMenus.penjualan) {
+          const path = window.location.pathname;
+          if (path.includes('/admin/') || path.includes('/dashboard/')) {
+            openMenus.admin = true;
+          } else if (path.includes('/penjualan/') || path.includes('/sales/')) {
+            openMenus.penjualan = true;
+          }
+        }
+      } catch(e) {}
+    })()
+  ">
+    <nav class="p-3 space-y-0.5">
+        <!-- DASHBOARD ADMIN Section -->
+        <div>
+            <div class="section-title">Dashboard</div>
+
+            <!-- Admin Section -->
+            {% if has_admin_access %}
+            <div class="mt-1">
+                <div class="flex items-center justify-between px-3 py-1.5 rounded-xl cursor-pointer hover:bg-white hover:bg-opacity-10 transition-all"
+                    @click="toggleMenu('admin')">
+                    <div class="flex items-center space-x-2">
+                        <div class="w-6 h-6 bg-white bg-opacity-20 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-tachometer-alt text-xs"></i>
+                        </div>
+                        <span class="text-xs font-medium">Admin</span>
+                    </div>
+                    <div class="flex items-center space-x-1">
+                        <i class="fas fa-chevron-down text-xs chevron-icon transition-transform duration-200"
+                            :class="{ 'rotated': isOpen('admin') }"></i>
+                    </div>
+                </div>
+
+                <!-- Admin Submenu -->
+                <div class="ml-4 mt-2 space-y-1 overflow-hidden"
+                    x-show="isOpen('admin')"
+                    x-transition:enter="transition-all ease-out duration-300"
+                    x-transition:enter-start="opacity-0 max-h-0"
+                    x-transition:enter-end="opacity-100 max-h-screen"
+                    x-transition:leave="transition-all ease-in duration-200"
+                    x-transition:leave-start="opacity-100 max-h-screen"
+                    x-transition:leave-end="opacity-0 max-h-0">
+
+                    <!-- Dashboard Link (butuh bisa lihat minimal satu modul admin) -->
+                    <a href="{% url 'administrator:berandaadmin' %}" class="submenu-item flex items-center space-x-2 px-2 py-1 rounded-lg text-xs
+                            {% if menu == 'beranda' %}active{% endif %}">
+                        <i class="fas fa-home w-3"></i>
+                        <span>Dashboard</span>
+                    </a>
+
+                    <!-- Messages -->
+                    {% if perms.administrator.view_pesan %}
+                    <a href="{% url 'administrator:pesan_list' %}" class="submenu-item flex items-center justify-between px-2 py-1 rounded-lg text-xs
+                              {% if menu == 'pesan' %}active{% endif %}">
+                        <div class="flex items-center space-x-2">
+                            <i class="fas fa-envelope w-3"></i>
+                            <span>Pesan</span>
+                        </div>
+                    </a>
+                    {% endif %}
+
+                    <!-- Tenant Registrations -->
+                    {% if perms.administrator.view_daftartenant %}
+                    <a href="{% url 'administrator:daftartenant_list' %}" class="submenu-item flex items-center justify-between px-2 py-1 rounded-lg text-xs
+                              {% if menu == 'daftartenant' %}active{% endif %}">
+                        <div class="flex items-center space-x-2">
+                            <i class="fas fa-users w-3"></i>
+                            <span>Pendaftaran Tenant</span>
+                        </div>
+                        {% if tenant_belum_dibaca > 0 %}
+                        <span class="notification-badge">{{ tenant_belum_dibaca }}</span>
+                        {% endif %}
+                    </a>
+                    {% endif %}
+
+                    <!-- Service Requests -->
+                    {% if perms.administrator.view_daftarlayanan %}
+                    <a href="{% url 'administrator:admin_daftar_layanan' %}" class="submenu-item flex items-center justify-between px-2 py-1 rounded-lg text-xs
+                              {% if menu == 'daftarlayanan' %}active{% endif %}">
+                        <div class="flex items-center space-x-2">
+                            <i class="fas fa-concierge-bell w-3"></i>
+                            <span>Daftar Layanan</span>
+                        </div>
+                        {% if layanan_belum_dibaca > 0 %}
+                        <span class="notification-badge">{{ layanan_belum_dibaca }}</span>
+                        {% endif %}
+                    </a>
+                    {% endif %}
+
+                    <!-- Categories -->
+                    {% if perms.administrator.view_kategori %}
+                    <a href="{% url 'administrator:kategoriadmin' %}" class="submenu-item flex items-center space-x-2 px-2 py-1 rounded-lg text-xs
+                              {% if menu == 'kategori' %}active{% endif %}">
+                        <i class="fas fa-tags w-3"></i>
+                        <span>Kategori</span>
+                    </a>
+                    {% endif %}
+
+                    <!-- News -->
+                    {% if perms.administrator.view_berita %}
+                    <a href="{% url 'administrator:beritaadmin' %}" class="submenu-item flex items-center space-x-2 px-2 py-1 rounded-lg text-xs
+                              {% if menu == 'berita' %}active{% endif %}">
+                        <i class="fas fa-newspaper w-3"></i>
+                        <span>Berita</span>
+                    </a>
+                    {% endif %}
+
+                    <!-- Agenda -->
+                    {% if perms.administrator.view_agenda %}
+                    <a href="{% url 'administrator:agendaadmin' %}" class="submenu-item flex items-center space-x-2 px-2 py-1 rounded-lg text-xs
+                              {% if menu == 'agenda' %}active{% endif %}">
+                        <i class="fas fa-calendar-alt w-3"></i>
+                        <span>Agenda</span>
+                    </a>
+                    {% endif %}
+
+                    <!-- Vision & Mission -->
+                    {% if perms.administrator.view_visimisi %}
+                    <a href="{% url 'administrator:visimisiadmin' %}" class="submenu-item flex items-center space-x-2 px-2 py-1 rounded-lg text-xs
+                              {% if menu == 'visi_misi' %}active{% endif %}">
+                        <i class="fas fa-bullseye w-3"></i>
+                        <span>Visi & Misi</span>
+                    </a>
+                    {% endif %}
+
+                    <!-- Team -->
+                    {% if perms.administrator.view_team %}
+                    <a href="{% url 'administrator:teamadmin' %}" class="submenu-item flex items-center space-x-2 px-2 py-1 rounded-lg text-xs
+                              {% if menu == 'team' %}active{% endif %}">
+                        <i class="fas fa-user-friends w-3"></i>
+                        <span>Team</span>
+                    </a>
+                    {% endif %}
+
+                    <!-- Testimonials -->
+                    {% if perms.administrator.view_testimoni %}
+                    <a href="{% url 'administrator:testimoniadmin' %}" class="submenu-item flex items-center space-x-2 px-2 py-1 rounded-lg text-xs
+                              {% if menu == 'testimoni' %}active{% endif %}">
+                        <i class="fas fa-star w-3"></i>
+                        <span>Testimoni</span>
+                    </a>
+                    {% endif %}
+
+                    <!-- Slides -->
+                    {% if perms.administrator.view_slide %}
+                    <a href="{% url 'administrator:slideadmin' %}" class="submenu-item flex items-center space-x-2 px-2 py-1 rounded-lg text-xs
+                              {% if menu == 'slide' %}active{% endif %}">
+                        <i class="fas fa-images w-3"></i>
+                        <span>Slides</span>
+                    </a>
+                    {% endif %}
+
+                    <!-- Profile -->
+                    {% if perms.administrator.view_profil %}
+                    <a href="{% url 'administrator:profiladmin' %}" class="submenu-item flex items-center space-x-2 px-2 py-1 rounded-lg text-xs
+                              {% if menu == 'profil' %}active{% endif %}">
+                        <i class="fas fa-user-circle w-3"></i>
+                        <span>Profil</span>
+                    </a>
+                    {% endif %}
+
+                    <!-- Background -->
+                    {% if perms.administrator.view_baground %}
+                    <a href="{% url 'administrator:bagroundadmin' %}" class="submenu-item flex items-center space-x-2 px-2 py-1 rounded-lg text-xs
+                              {% if menu == 'background' %}active{% endif %}">
+                        <i class="fas fa-image w-3"></i>
+                        <span>Background</span>
+                    </a>
+                    {% endif %}
+
+                    <!-- Services -->
+                    {% if perms.administrator.view_layanan %}
+                    <a href="{% url 'administrator:layananadmin' %}" class="submenu-item flex items-center space-x-2 px-2 py-1 rounded-lg text-xs
+                              {% if menu == 'layanan' %}active{% endif %}">
+                        <i class="fas fa-hands-helping w-3"></i>
+                        <span>Layanan</span>
+                    </a>
+                    {% endif %}
+
+                    <!-- Contact -->
+                    {% if perms.administrator.view_kontak %}
+                    <a href="{% url 'administrator:kontakadmin' %}" class="submenu-item flex items-center space-x-2 px-2 py-1 rounded-lg text-xs
+                            {% if menu == 'kontak' %}active{% endif %}">
+                        <i class="fas fa-address-book w-3"></i>
+                        <span>Contact</span>
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Sales Section -->
+        {% if has_cart_access %}
+        <div class="mt-1">
+            <div class="flex items-center justify-between px-3 py-1.5 rounded-xl cursor-pointer hover:bg-white hover:bg-opacity-10 transition-all"
+                @click="toggleMenu('penjualan')">
+                <div class="flex items-center space-x-2">
+                    <div class="w-6 h-6 bg-white bg-opacity-20 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-shopping-cart text-xs"></i>
+                    </div>
+                    <span class="text-xs font-medium">Penjualan</span>
+                </div>
+                <i class="fas fa-chevron-down text-xs chevron-icon transition-transform duration-200"
+                    :class="{ 'rotated': isOpen('penjualan') }"></i>
+            </div>
+
+            <!-- Penjualan Submenu -->
+            <div class="ml-4 mt-1 space-y-0.5 overflow-hidden"
+                x-show="isOpen('penjualan')"
+                x-transition:enter="transition-all ease-out duration-300"
+                x-transition:enter-start="opacity-0 max-h-0"
+                x-transition:enter-end="opacity-100 max-h-screen"
+                x-transition:leave="transition-all ease-in duration-200"
+                x-transition:leave-start="opacity-100 max-h-screen"
+                x-transition:leave-end="opacity-0 max-h-0">
+
+                <!-- Sales Dashboard (butuh minimal satu permission cart) -->
+                <a href="{% url 'berandapenjualan' %}" class="submenu-item flex items-center space-x-2 px-2 py-1 rounded-lg text-xs
+                              {% if menu == 'penjualan' %}active{% endif %}">
+                    <i class="fas fa-chart-bar w-3"></i>
+                    <span>Penjualan Dashboard</span>
+                </a>
+
+                <!-- Sales Categories -->
+                {% if perms.cart.view_kategoripenjualan %}
+                <a href="{% url 'kategoripenjualanadmin' %}" class="submenu-item flex items-center space-x-2 px-2 py-1 rounded-lg text-xs
+                              {% if submenu == 'kategoripenjualanadmin' %}active{% endif %}">
+                    <i class="fas fa-list w-3"></i>
+                    <span>Categories</span>
+                </a>
+                {% endif %}
+
+                <!-- Pesan -->
+                {% if perms.cart.view_pemesanan %}
+                <a href="{% url 'pesanadmin' %}" class="submenu-item flex items-center space-x-2 px-2 py-1 rounded-lg text-xs
+                              {% if submenu == 'pesan' %}active{% endif %}">
+                    <i class="fas fa-message w-3"></i>
+                    <span>Pesan</span>
+                </a>
+                {% endif %}
+
+                <!-- Like -->
+                {% if perms.cart.view_pemesanan %}
+                <a href="{% url 'likeadmin' %}" class="submenu-item flex items-center space-x-2 px-2 py-1 rounded-lg text-xs
+                              {% if submenu == 'like' %}active{% endif %}">
+                    <i class="fas fa-heart w-3"></i>
+                    <span>Like</span>
+                </a>
+                {% endif %}
+
+                <!-- Products -->
+                {% if perms.cart.view_produk %}
+                <a href="{% url 'produkadmin' %}" class="submenu-item flex items-center space-x-2 px-2 py-1 rounded-lg text-xs
+                              {% if submenu == 'produk' %}active{% endif %}">
+                    <i class="fas fa-box w-3"></i>
+                    <span>Products</span>
+                </a>
+                {% endif %}
+
+                <!-- Slides -->
+                {% if perms.cart.view_slidepenjualan %}
+                <a href="{% url 'slidepenjualanadmin' %}" class="submenu-item flex items-center space-x-2 px-2 py-1 rounded-lg text-xs
+                              {% if submenu == 'slidepenjualanadmin' %}active{% endif %}">
+                    <i class="fas fa-images w-3"></i>
+                    <span>Slides</span>
+                </a>
+                {% endif %}
+
+                <!-- Services -->
+                {% if perms.cart.view_jasa %}
+                <a href="{% url 'jasaadmin' %}" class="submenu-item flex items-center space-x-2 px-2 py-1 rounded-lg text-xs
+                              {% if submenu == 'jasa' %}active{% endif %}">
+                    <i class="fas fa-tools w-3"></i>
+                    <span>Services</span>
+                </a>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+            {% if is_superadmin %}
+        <div class="mt-1">
+            <a href="{% url 'administrator:active_users' %}" class="flex items-center justify-between px-2 py-1 rounded-xl text-xs font-medium {% if menu == 'user' %}active{% endif %} hover:bg-white hover:bg-opacity-10 transition-all">
+                <div class="flex items-center space-x-2">
+                    <div class="w-6 h-6 bg-white bg-opacity-20 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-users-cog text-xs"></i>
+                    </div>
+                    <span>User Management</span>
+                </div>
+            </a>
+        </div>
+    {% endif %}
+    {% if is_superadmin %}
+        <div class="mt-1">
+            <a href="{% url 'administrator:telegram_list' %}" class="flex items-center justify-between px-2 py-1 rounded-xl text-xs font-medium {% if menu == 'telegram' %}active{% endif %} hover:bg-white hover:bg-opacity-10 transition-all">
+                <div class="flex items-center space-x-2">
+                    <div class="w-6 h-6 bg-white bg-opacity-20 rounded-lg flex items-center justify-center">
+                        <i class="fab fa-telegram-plane text-xs"></i>
+                    </div>
+                    <span>Penerima Telegram</span>
+                </div>
+            </a>
+        </div>
+    {% endif %}
+    
+    {% if is_superadmin %}
+
+        <div class="mt-1">
+            <a href="{% url 'administrator:log_aktivitas_list' %}" class="flex items-center justify-between px-2 py-1 rounded-xl text-xs font-medium {% if menu == 'audit' %}active{% endif %} hover:bg-white hover:bg-opacity-10 transition-all">
+                <div class="flex items-center space-x-2">
+                    <div class="w-6 h-6 bg-white bg-opacity-20 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-clipboard-list text-xs"></i>
+                    </div>
+                    <span>Log Aktivitas</span>
+                </div>
+            </a>
+        </div>
+
+    {% endif %}
+    </nav>
+
+
+
+
+
+    <!-- LOGOUT Section -->
+    <div class="border-t border-white border-opacity-20 mt-2 pt-2 px-3">
+        <div class="mt-1">
+            <a href="{% url 'logout' %}" class="flex items-center justify-between px-2 py-1 rounded-xl text-xs font-medium text-red-300 hover:bg-red-500 hover:bg-opacity-10 transition-all">
+                <div class="flex items-center space-x-2">
+                    <div class="w-6 h-6 bg-red-500 bg-opacity-20 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-sign-out-alt text-xs"></i>
+                    </div>
+                    <span>Logout</span>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>

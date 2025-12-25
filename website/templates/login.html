@@ -1,0 +1,114 @@
+{% load static %} 
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Masuk | Admin</title>
+  {% if recaptcha_site_key %}
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+  {% endif %}
+  <style>
+    :root{
+      --radius: 22px;
+      --card-bg: rgba(255,255,255,0.06); /* transparent glass */
+      --card-border: rgba(255,255,255,0.18);
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --accent: #111827;
+    }
+    html, body { height: 100%; }
+    body{
+      margin:0; color:var(--text); font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, 'Helvetica Neue', Arial;
+      display:flex; align-items:center; justify-content:center; padding: clamp(12px, 3vw, 24px);
+      background: url('{% static 'assets/img/acara/gedungputih.JPG' %}') center/cover no-repeat fixed;
+      position: relative;
+    }
+    body::before{
+      content:""; position: fixed; inset:0; background: rgba(0,0,0,0.45);
+      backdrop-filter: blur(1px); -webkit-backdrop-filter: blur(1px); z-index:0;
+    }
+    .auth-shell{ width: 100%; max-width: clamp(320px, 92vw, 520px); border-radius: var(--radius); overflow: visible; position: relative; z-index:1; }
+    .auth{ display:flex; align-items:center; justify-content:center; min-height: clamp(520px, 70vh, 720px); background: transparent; }
+    .auth-left{ display:none; }
+    .auth-right{ position:relative; background:transparent; display:flex; align-items:center; justify-content:center; }
+    .panel{ width: 100%; max-width: 520px; padding: clamp(22px, 4vw, 42px); border:1px solid var(--card-border); border-radius: 18px; background: var(--card-bg); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); box-shadow: 0 10px 30px rgba(0,0,0,.15); }
+    .title{ font-size: clamp(22px, 2.2vw, 32px); font-weight: 800; margin: 0 0 6px; color:#ffffff; }
+    .subtitle{ margin:0 0 clamp(16px, 2.5vw, 26px); color: var(--muted); font-size: clamp(12px, 1.3vw, 14px); }
+    label{ display:block; font-size:12px; color:#d1d5db; margin-bottom:8px; }
+    .field{ width:100%; padding: clamp(10px, 1.2vw, 12px) clamp(12px, 1.5vw, 14px); border-radius:10px; border:1px solid rgba(255,255,255,0.18); background: rgba(255,255,255,0.08); color:#f3f4f6; outline:none; transition: border .15s ease, box-shadow .15s ease; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+    .field::placeholder{ color:#9ca3af; }
+    .field:focus{ border-color:#60a5fa; box-shadow: 0 0 0 3px rgba(96,165,250,0.2); }
+    .row{ display:flex; gap:12px; align-items:center; justify-content:space-between; margin: 8px 0 14px; }
+    .row small a{ color:#cbd5e1; text-decoration:none; }
+    .row small a:hover{ text-decoration:underline; }
+    .checkbox{ display:flex; gap:8px; align-items:center; color:#cbd5e1; font-size: 13px; }
+    .btn{ width:100%; padding: clamp(10px, 1.4vw, 14px) clamp(14px, 2vw, 18px); border-radius:10px; border:1px solid rgba(255,255,255,0.22); background: rgba(255,255,255,0.12); color:#ffffff; font-weight:700; cursor:pointer; transition: transform .12s ease, box-shadow .12s ease, background .2s ease; font-size: clamp(14px, 1.4vw, 16px); backdrop-filter: blur(6px); }
+    .btn:hover{ transform: translateY(-1px); box-shadow: 0 12px 24px rgba(0,0,0,.25); background: rgba(255,255,255,0.18); }
+    .footer{ margin-top: 14px; text-align:center; color:#cbd5e1; font-size: 13px; }
+    .footer a{ color:#ffffff; font-weight:600; text-decoration:none; }
+    .footer a:hover{ text-decoration:underline; }
+    .back-link{ position: fixed; top:18px; left:18px; display:inline-flex; align-items:center; gap:8px; color:#e5e7eb; text-decoration:none; font-weight:600; background:rgba(0,0,0,.45); border:1px solid rgba(255,255,255,.12); padding: 8px 12px; border-radius:10px; z-index:2; }
+    .back-link:hover{ background:rgba(0,0,0,.6); }
+
+    @media (max-width: 960px){ 
+      .auth{ min-height: auto; }
+      .auth-right{ padding: clamp(16px, 4vw, 28px); }
+      .panel{ max-width: 560px; width: 100%; }
+    }
+
+    /* Layar sangat pendek (mis. landscape mobile) */
+    @media (max-height: 620px){
+      .auth{ min-height: auto; }
+      .panel{ padding: clamp(16px, 3vw, 28px); }
+      .subtitle{ margin-bottom: 14px; }
+    }
+  </style>
+</head>
+<body>
+  <a href="/" class="back-link" aria-label="Kembali ke beranda">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    Beranda
+  </a>
+  <div class="auth-shell">
+    <div class="auth">
+      <div class="auth-left" aria-hidden="true"></div>
+      <div class="auth-right">
+        <form class="panel" method="POST" action="{% url 'login' %}">
+          {% csrf_token %}
+          <h1 class="title">Selamat datang kembali</h1>
+          <p class="subtitle">Silakan masukan akun Admin Anda.</p>
+
+          <div style="margin-bottom:14px;">
+            <label for="id_username">E-mail atau Username</label>
+            <input id="id_username" class="field" type="text" name="username" placeholder="Masukan e-mail atau username" required />
+          </div>
+          <div style="margin-bottom:4px;">
+            <label for="id_password">Kata Sandi</label>
+            <input id="id_password" class="field" type="password" name="password" placeholder="Masukan kata sandi" required />
+          </div>
+
+          <div class="row">
+            <label class="checkbox"><input type="checkbox" name="remember"/> Ingat saya</label>
+            <small><a href="#">Lupa kata sandi?</a></small>
+          </div>
+
+          {% if recaptcha_site_key %}
+            <div style="margin:12px 0; display:flex; justify-content:center;">
+              <div class="g-recaptcha" data-sitekey="{{ recaptcha_site_key }}"></div>
+            </div>
+          {% endif %}
+          <button class="btn" type="submit">Masuk</button>
+
+          {% if error %}
+            <p style="color:#fca5a5; margin-top: 12px;">{{ error }}</p>
+          {% endif %}
+
+          <div class="footer">Belum punya akun? <a href="#">Daftar</a></div>
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<ul class="nav-menu flex items-center space-x-4">
+    <li><a href="{% url "home" %}" class="active">Beranda</a></li>
+
+    <!-- Profile Dropdown -->
+    <li class="dropdown">
+        <a href="#"><span>Profile</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+        <ul class="dropdown-menu">
+            <li><a href="{% url "profil" %}">Tentang Kami</a></li>
+            <li><a href="{% url "visimisi" %}">Visi & Misi</a></li>
+            <li><a href="{% url "berita_list" %}">Berita</a></li>
+
+        </ul>
+    </li>
+
+    <!-- Inkubator Bisnis Dropdown -->
+    <li class="dropdown">
+        <a href="#"><span>Inkubator Bisnis</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+        <ul class="dropdown-menu">
+            <li><a href="{% url "modelinkubasi" %}">Model Inkubasi</a></li>
+            <li><a href="{% url "seleksi" %}">Prosedur Seleksi</a></li>
+            <li><a href="{% url "tenantinkubator" %}">Tenant Inkubator</a></li>
+            <li><a href="{% url "daftar_tenant" %}">Daftar Menjadi Tenant</a></li>
+        </ul>
+    </li>
+
+    <!-- Layanan Bisnis Dropdown -->
+    <li class="dropdown">
+        <a href="#"><span>Layanan Bisnis</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+        <ul class="dropdown-menu">
+            <li><a href="{% url "jenislayanan" %}">Jenis Layanan</a></li>
+            <li><a href="{% url "submit_layanan" %}">Daftar Layanan</a></li>
+        </ul>
+    </li>
+
+    <li><a href="{% url "faq" %}">FAQ</a></li>
+    <li><a href="{% url "penjualan" %}">Katalog</a></li>
+    <li><a href="{% url "kontak" %}">Hubungi Kami</a></li>
+
+    {% if user.is_authenticated %}
+        <li>
+            <a href="{% url "user_logout" %}" title="Logout">
+                <i class="bi bi-box-arrow-right"></i> Keluar
+            </a>
+        </li>
+    {% else %}
+        <li><a href="{% url "user_login" %}?next={{ request.path|urlencode }}">Login</a></li>
+    {% endif %}
+
+</ul>

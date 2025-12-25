@@ -1,0 +1,42 @@
+
+<!-- Menu Mobile -->
+<nav class="mt-10 space-y-4">
+    <a href="{% url "home" %}" class="block text-gray-800 font-semibold">Beranda</a>
+
+    <!-- Profil -->
+    <div>
+        <button @click="submenu.profil = !submenu.profil"
+            class="block text-gray-800 font-semibold w-full text-left">
+            Profil
+        </button>
+        <div x-show="submenu.profil" x-transition class="ml-4 mt-2 space-y-2">
+            <a href="{% url "profil" %}" class="block text-gray-600">Tentang Kami</a>
+            <a href="{% url "visimisi" %}" class="block text-gray-600">Visi & Misi</a>
+            <a href="{% url "berita_list" %}">Berita</a>
+        </div>
+    </div>
+    <!-- Inkubator -->
+    <div>
+        <button @click="submenu.inkubator = !submenu.inkubator"
+            class="block text-gray-800 font-semibold w-full text-left">
+            Inkubator Bisnis
+        </button>
+        <div x-show="submenu.inkubator" x-transition class="ml-4 mt-2 space-y-2">
+            <a href="{% url "modelinkubasi" %}">Model Inkubasi</a>
+            <a href="{% url "seleksi" %}">Prosedur Seleksi</a>
+            <a href="{% url "tenantinkubator" %}">Tenant Inkubator</a>
+            <a href="{% url "daftar_tenant" %}">Daftar Menjadi Tenant</a>
+        </div>
+    </div>
+
+    
+    <a href="{% url "faq" %}" class="block text-gray-800 font-semibold">FAQ</a>
+    <a href="{% url "kontak" %}" class="block text-gray-800 font-semibold">Hubungi Kami</a>
+
+    {% if user.is_authenticated %}
+      <li><a href="{% url "user_logout" %}">Logout</a></li>
+    {% else %}
+      <li><a href="{% url "user_login" %}?next={{ request.path|urlencode }}">Login</a></li>
+    {% endif %}
+    
+</nav>

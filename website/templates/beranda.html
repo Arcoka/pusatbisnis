@@ -1,0 +1,1261 @@
+{% extends "base.html" %}
+{% load static %}
+{% block body_class %}index-page{% endblock %}
+{% block content %}
+
+
+<main class="main">
+    {% for row in slide %}
+    <div class="heros-container">
+        <style>
+            /* Hero background image moved from inline to CSS to satisfy linter */
+            .heros-bg {
+                background-image: url("{% static 'assets/img/acara/gedungputih.JPG' %}");
+            }
+        </style>
+        <div class="heros-bg"></div>
+        <div class="heros-overlay"></div>
+        <div class="floating-elements">
+            <div class="floating-element"></div>
+            <div class="floating-element"></div>
+            <div class="floating-element"></div>
+        </div>
+        <div class="heros-content">
+            <div class="heros-text">
+                <p class="heros-subtitle">Selamat Datang di</p>
+                <h1 class="heros-title">Inkubator Bisnis<br>Universitas Nurul Jadid</h1>
+                
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+
+
+
+    <section id="features" class="features section">
+        <!-- Section Title -->
+        <div class="container section-title" style="margin-bottom: -10px;" data-aos="fade-up">
+            <h2>Tentang Kami</h2>
+            <p>Inkubator Bisnis Universitas Nurul Jadid</p>
+        </div><!-- End Section Title -->
+        <div class="container">
+            {% for row in profil %}
+            <style>
+                /* Make section inherit global gradient */
+                .home-profil-card {
+                    position: relative;
+                    background: transparent;
+                    border-radius: 18px;
+                    padding: 26px;
+                    overflow: hidden;
+                }
+
+                .home-profil-card .accent-blur {
+                    position: absolute;
+                    right: -60px;
+                    top: -60px;
+                    width: 220px;
+                    height: 220px;
+                    border-radius: 50%;
+                    filter: blur(50px);
+                    pointer-events: none;
+                }
+
+                .home-profil-card h3 {
+                    color: #0f172a;
+                    font-family: var(--heading-font, 'Truculenta'), sans-serif;
+                    font-weight: 800;
+                }
+
+                .home-profil-divider {
+                    width: 56px;
+                    height: 3px;
+                    background: var(--accent-color, #22d3ee);
+                    border-radius: 6px;
+                    margin: 12px 0 14px;
+                    opacity: .85;
+                }
+
+                .home-profil-text {
+                    max-width: 620px;
+                }
+
+                .home-profil-text p {
+                    margin: 10px 0 0;
+                    font-size: 1.02rem;
+                    line-height: 1.85;
+                }
+
+                .clamp-wrap {
+                    position: relative;
+                }
+
+                .clamped {
+                    max-height: 300px;
+                    overflow: hidden;
+                }
+
+                /* Remove white fade so background doesn't look white */
+                .clamped:after {
+                    content: "";
+                    position: absolute;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    height: 64px;
+                    background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0));
+                }
+
+                /* Keep button readable on gradient but slightly translucent */
+                .expand-btn {
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 8px;
+                    margin-top: 12px;
+                    padding: 8px 12px;
+                    border: 1px solid #e5e7eb;
+                    border-radius: 999px;
+                    background: rgba(255, 255, 255, 0.9);
+                    color: #111827;
+                    font-size: 14px;
+                }
+
+                .expand-btn:hover {
+                    background: #f9fafb;
+                }
+
+                .sticky-media {
+                    position: sticky;
+                    top: 96px;
+                }
+
+                @media (max-width: 992px) {
+                    .sticky-media {
+                        position: static;
+                        top: auto;
+                    }
+                }
+
+                .polaroid-stack {
+                    position: relative;
+                    width: 100%;
+                }
+
+                .polaroid-stack .stack-back {
+                    position: absolute;
+                    inset: 0;
+                    transform: rotate(8deg);
+                    border-radius: 14px;
+                    background: linear-gradient(145deg, #f3f4f6, #e5e7eb);
+                    box-shadow: 0 18px 40px rgba(0, 0, 0, .12);
+                }
+
+                .polaroid-stack .stack-front {
+                    position: relative;
+                    display: block;
+                    width: 100%;
+                    border-radius: 14px;
+                    transform: rotate(-4deg);
+                    box-shadow: 0 18px 40px rgba(0, 0, 0, .18);
+                    border: 6px solid rgba(255, 255, 255, .9);
+                }
+
+                .home-profil-swiper {
+                    width: 100%;
+                    max-width: 520px;
+                }
+
+                .home-profil-swiper .swiper-slide {
+                    padding: 24px;
+                }
+            </style>
+            <div class="row gy-4 align-items-start features-item home-profil-card" data-aos="fade-up"
+                data-aos-delay="50">
+                <span class="accent-blur"></span>
+                <div class="col-lg-5 order-2 order-lg-1" data-aos="fade-up" data-aos-delay="200">
+                    <h3>{{ row.judul }}</h3>
+                    <div class="home-profil-divider"></div>
+                    <div class="home-profil-text">
+                        <div id="homeProfilDesc{{ forloop.counter }}" class="clamp-wrap clamped">
+                            {{ row.deskripsi|safe }}</div>
+                        <div class="flex items-center gap-3 mt-3">
+                            <a href="{% url 'profil' %}" class="cta-btn"
+                                style="background-color: var(--accent-color); color: var(--contrast-color);">Lebih
+                                Banyak Tentang Kami</a>
+                        </div>
+                    </div>
+                </div>
+                <style>
+                    .cta-btn {
+                        font-family: var(--heading-font);
+                        font-weight: 500;
+                        font-size: 18px;
+                        letter-spacing: 1px;
+                        display: inline-block;
+                        padding: 12px 30px;
+                        border-radius: 5px;
+                        transition: 0.5s;
+                        margin: 10px;
+                        border: 2px solid var(--accent-color);
+                        color: var(--accent-color);
+                    }
+
+                    .cta-btn:hover {
+                        background: rgb(26, 24, 24);
+                        border: 2px solid var(--contrast-color);
+                    }
+                </style>
+                <div class="col-lg-7 order-1 order-lg-2 d-flex flex-wrap align-items-center sticky-media"
+                    data-aos="zoom-out" data-aos-delay="100">
+                    {% if row.images.all %}
+                    <div class="swiper home-profil-swiper">
+                        <div class="swiper-wrapper">
+                            {% for img in row.images.all %}
+                            <div class="swiper-slide">
+                                <div class="polaroid-stack">
+                                    <div class="stack-back"></div>
+                                    <img src="{{ img.gambar.url }}" alt="{{ img.keterangan|default:'Gambar Profil' }}"
+                                        class="stack-front" loading="lazy">
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="polaroid-stack" style="padding:24px;">
+                        <div class="stack-back"></div>
+                        <img src="{% if row.gambar %}{{ row.gambar.url }}{% else %}https://via.placeholder.com/600x450?text=No+Image{% endif %}"
+                            class="stack-front" loading="lazy">
+                    </div>
+                    {% endif %}
+                </div>
+            </div><!-- Features Item -->
+            {% endfor %}
+        </div>
+    </section><!-- /Features Section -->
+
+
+
+    <!-- About Section -->
+    <section id="about" class="about section dark-background" style="margin-top: -40px;" >
+        <!-- Section Title -->
+        <div class="container-9 section-title" style="margin-bottom: -10px;" data-aos="fade-up">
+            <h2 style="color: #000000ff">Bergabung Bersama Kami dan Dapatkan</h2>
+            <p>Kami percaya pekerjaan sebenarnya dimulai setelah investasi dilakukan</p>
+        </div><!-- End Section Title -->
+        <div class="container" data-aos="fade-up" data-aos-delay="100">
+            <div class="row g-4">
+                <!-- Menambahkan gap antar kolom -->
+                <!-- Kotak 1 -->
+                <!-- Kotak 1 -->
+                <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="200">
+                    <div class="icon-boxs hover-box text-center p-4">
+                        <i class="bi bi-graph-up-arrow"></i>
+                        <h3>PENDANAAN</h3>
+                        <p>Kami menyediakan dukungan finansial bagi wirausahawan untuk mengembangkan usaha rintisan
+                            digital
+                            mereka.</p>
+                    </div>
+                </div>
+                <!-- Kotak 2 -->
+                <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="300">
+                    <div class="icon-boxs hover-box text-center p-4">
+                        <i class="bi bi-clipboard-pulse"></i>
+                        <h3>JARINGAN</h3>
+                        <p>Kami menghubungkan startup dengan sumber daya global serta memberikan panduan bisnis yang
+                            bermanfaat.
+                        </p>
+                    </div>
+                </div>
+                <!-- Kotak 3 -->
+                <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="400">
+                    <div class="icon-boxs hover-box text-center p-4">
+                        <i class="bi bi-command"></i>
+                        <h3>BIMBINGAN</h3>
+                        <p>Kami mendampingi wirausahawan dengan strategi dan arahan yang tepat untuk mencapai kesuksesan
+                            bisnis.
+                        </p>
+                    </div>
+                </div>
+                <!-- Kotak 4 -->
+                <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="500">
+                    <div class="icon-boxs hover-box text-center p-4">
+                        <i class="bi bi-buildings"></i>
+                        <h3>DUKUNGAN</h3>
+                        <p>Kami menghadirkan keahlian industri, operasional, dan investasi untuk membantu pertumbuhan
+                            startup.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section><!-- /About Section -->
+
+
+
+    <!-- TAMBAHAN: AUTO-SCROLL VERSION -->
+    <section class="container-team">
+        <div class="container section-title" style="margin-top: -10px; margin-bottom: -40px;" data-aos="fade-up">
+            <h2>Temui Tim kami</h2>
+            <p>Club Wirausaha Universitas Nurul Jadid</p>
+        </div><!-- End Section Title -->
+        <div class="team-scroll-container">
+            <div class="pause-indicator">
+                <i class="fas fa-pause"></i> Hover to pause
+            </div>
+            <div class="team-scroll-wrapper" id="teamScrollWrapper">
+                <!-- Loop Django Original -->
+                {% for row in team %}
+                <div class="team-member-wrapper">
+                    <div class="team-member">
+                        <div class="member-image">
+                            {% if row.gambar %}
+                            <img src="{{ row.gambar.url }}" alt="{{ row.nama }}" loading="lazy">
+                            {% else %}
+                            <img src="https://via.placeholder.com/280x280?text=No+Image" alt="{{ row.nama }}"
+                                loading="lazy">
+                            {% endif %}
+                        </div>
+                        <p style="font-size: 18px; color: #272727 !important;">{{ row.nama }}</p>
+                        <h5 style="font-size: 16px;">{{ row.jabatan }}</h5>
+                        <div class="sociall-icons">
+                            <a href="#" target="_blank">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                            <a href="#" target="_blank">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                            <a href="#" target="_blank">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                <!-- Duplicate untuk seamless loop -->
+                {% for row in team %}
+                <div class="team-member-wrapper">
+                    <div class="team-member">
+                        <div class="member-image">
+                            <img src="{{ row.gambar.url }}" alt="{{ row.nama }}">
+                        </div>
+                        <p style="font-size: 18px; color: #000000;">{{ row.nama }}</p>
+                        <h5 style="font-size: 16px;">{{ row.jabatan }}</h5>
+                        <div class="sociall-icons">
+                            <a href="{{ row.facebook }}" target="_blank">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                            <a href="{{ row.twitter }}" target="_blank">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                            <a href="{{ row.instagram }}" target="_blank">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- Call To Action Section -->
+    {% for row in baground %}
+    <section id="call-to-action" class="call-to-action section dark-background" style="margin-top: -20px;">
+        <img src="{% if row.gambar_baground %}{{ row.gambar_baground.url }}{% else %}https://via.placeholder.com/1600x500?text=Background+Missing{% endif %}"
+            alt="" loading="lazy">
+
+        <div class="container">
+            <div class="row justify-content-center" data-aos="zoom-in" data-aos-delay="100">
+                <div class="col-xl-10">
+                    <div class="text-center">
+                        <div class="container section-title" style="margin-top: -10px; margin-bottom: -40px;"
+                            data-aos="fade-up">
+                            <h2>Bergabunglah Sebagai Tenant Inkubator Kami!</h2>
+                            <p style="color: #ffffff;">Jangan lewatkan kesempatan untuk mempercepat perkembangan usaha
+                                Anda.</p>
+                            <a class="cta-btn" href="{% url "daftar_tenant" %}">Daftar Sekarang</a>
+                        </div><!-- End Section Title -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section><!-- /Call To Action Section -->
+    {% endfor %}
+
+
+    <!-- Testimonials Section -->
+     <!-- Section Title -->
+        <div class="container-9 section-title" style="margin-bottom: -70px; margin-top: 100px;" data-aos="fade-up">
+            <h2 style="color: #000000ff">Testimoni</h2>
+            
+        </div><!-- End Section Title -->
+    <section class="testimonial-section" data-aos="fade-up">
+        
+        <div class="testimonial-container">
+            
+
+            <div class="testimonial-carousel">
+                <div class="testimonial-track">
+                    {% for row in testimoni %}
+                    <div class="testimonial-card">
+                        <div class="tst-image-wrap" aria-hidden="true">
+                            <span class="tst-image-frame-back"></span>
+                            <span class="tst-image-frame-front"></span>
+                            {% if row.gambar %}
+                                <img src="{{ row.gambar.url }}" alt="{{ row.nama }}" class="tst-image" loading="lazy">
+                            {% else %}
+                                <img src="https://via.placeholder.com/360x450?text=No+Image" alt="{{ row.nama }}" class="tst-image" loading="lazy">
+                            {% endif %}
+                        </div>
+                        <div class="testimonial-content">
+                            <h4 class="author-name">{{ row.nama }}</h4>
+                            <p class="author-position">{{ row.jabatan }}</p>
+                            <div class="quote-icon">
+                                <svg width="36" height="30" viewBox="0 0 42 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M16.8 0H9.3C4.2 0 0 4.2 0 9.3V16.8C0 21.9 4.2 26.1 9.3 26.1H11.55C12.6 26.1 13.65 27.15 13.65 28.2V33.6C13.65 34.65 14.7 35.7 15.75 35.7H16.8C17.85 35.7 18.9 34.65 18.9 33.6V28.2C18.9 27.15 17.85 26.1 16.8 26.1V21C16.8 19.95 15.75 18.9 14.7 18.9H9.3C7.2 18.9 5.25 16.95 5.25 14.85V11.55C5.25 9.45 7.2 7.5 9.3 7.5H16.8C17.85 7.5 18.9 6.45 18.9 5.4V2.1C18.9 0.9 17.85 0 16.8 0ZM40.95 0H33.45C28.35 0 24.15 4.2 24.15 9.3V16.8C24.15 21.9 28.35 26.1 33.45 26.1H35.7C36.75 26.1 37.8 27.15 37.8 28.2V33.6C37.8 34.65 38.85 35.7 39.9 35.7H40.95C42 35.7 43.05 34.65 43.05 33.6V28.2C43.05 27.15 42 26.1 40.95 26.1V21C40.95 19.95 39.9 18.9 38.85 18.9H33.45C31.35 18.9 29.4 16.95 29.4 14.85V11.55C29.4 9.45 31.35 7.5 33.45 7.5H40.95C42 7.5 43.05 6.45 43.05 5.4V2.1C43.05 0.9 42 0 40.95 0Z" fill="#8B8B8B" />
+                                </svg>
+                            </div>
+                            <p class="testimonial-text">{{ row.deskripsi|safe }}</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <div class="testimonial-controls">
+                    <button class="prev-button" aria-label="Sebelumnya">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M15 19L8 12L15 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </button>
+                    <div class="slash-indicator">/</div>
+                    <button class="next-button" aria-label="Berikutnya">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M9 5L16 12L9 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Recent Posts Section -->
+    <section id="recent-posts" class="recent-posts section">
+        <!-- Section Title -->
+        <div class="container section-title" style="margin-bottom: -10px;" data-aos="fade-up">
+            <h2>Berita & Acara</h2>
+            <p>Tetap terhubung dengan berita dan informasi terbaru</p>
+            <p>di Inkubator Bisnis Universitas Nurul Jadid</p>
+        </div><!-- End Section Title -->
+
+
+
+        <div class="container">
+            <style>
+                .home-berita-acara-wrap {
+                    display: grid;
+                    grid-template-columns: 1.25fr .75fr;
+                    gap: 22px;
+                    align-items: start;
+                }
+
+                @media (max-width: 992px) {
+                    .home-berita-acara-wrap {
+                        grid-template-columns: 1fr;
+                    }
+                }
+
+                .agenda-featured {
+                    position: relative;
+                    border-radius: 18px;
+                    overflow: hidden;
+                    height: 380px;
+                    background: #0b1220;
+                    box-shadow: 0 12px 30px rgba(0, 0, 0, .12);
+                }
+
+                .agenda-featured img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                    display: block;
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    z-index: 1;
+                }
+
+                .agenda-overlay {
+                    position: absolute;
+                    inset: 0;
+                    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.1) 30%, rgba(0, 0, 0, 0.4) 60%, rgba(0, 0, 0, 0.8) 100%);
+                    z-index: 2;
+                }
+
+                .agenda-content {
+                    position: absolute;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    color: #fff;
+                    z-index: 3;
+                    background: linear-gradient(to top,rgba(0, 0, 0, 0.65) 0%,rgba(0, 0, 0, 0.45) 25%,rgba(0, 0, 0, 0.25) 50%,rgba(0, 0, 0, 0.1) 70%,transparent 100%);
+                    padding: 20px 18px 16px;
+                    border-radius: 0 0 18px 18px;
+                    backdrop-filter: blur(2px);
+                }
+
+                .agenda-badge {
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 8px;
+                    padding: 6px 10px;
+                    border-radius: 999px;
+                    background: rgba(13, 110, 253, .95);
+                    font-size: 12px;
+                    font-weight: 700;
+                    letter-spacing: .3px;
+                    margin-bottom: 10px;
+                    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+                    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+                }
+
+                .agenda-title {
+                    font-size: 1.6rem;
+                    line-height: 1.25;
+                    font-weight: 800;
+                    margin: 0 0 10px;
+                    color: #fff;
+                    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8), 0 1px 3px rgba(0, 0, 0, 0.9);
+                }
+
+                .agenda-meta {
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 8px;
+                    font-size: 13px;
+                    opacity: .95;
+                    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8), 0 1px 2px rgba(0, 0, 0, 0.9);
+                }
+
+                .agenda-link {
+                    position: absolute;
+                    inset: 0;
+                    z-index: 2;
+                    text-indent: -9999px;
+                }
+
+                .agenda-detail-btn {
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 6px;
+                    padding: 8px 14px;
+                    background: rgba(255, 255, 255, 0.95);
+                    border: 1px solid rgba(255, 255, 255, 0.5);
+                    border-radius: 8px;
+                    color: #0f172a;
+                    font-size: 13px;
+                    font-weight: 600;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                    margin-top: 8px;
+                    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4), 0 1px 3px rgba(0, 0, 0, 0.3);
+                    backdrop-filter: blur(4px);
+                }
+
+                .agenda-detail-btn:hover {
+                    background: rgba(255, 255, 255, 1);
+                    transform: translateY(-1px);
+                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5), 0 2px 6px rgba(0, 0, 0, 0.4);
+                }
+
+                .agenda-modal-overlay {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: rgba(0, 0, 0, 0.8);
+                    z-index: 9999;
+                    display: none;
+                    align-items: center;
+                    justify-content: center;
+                    padding: 20px;
+                    backdrop-filter: blur(4px);
+                }
+
+                .agenda-modal-overlay.active {
+                    display: flex;
+                }
+
+                .agenda-modal-content {
+                    background: white;
+                    border-radius: 16px;
+                    max-width: 600px;
+                    width: 100%;
+                    max-height: 90vh;
+                    overflow-y: auto;
+                    position: relative;
+                    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+                    animation: modalSlideIn 0.3s ease-out;
+                }
+
+                @keyframes modalSlideIn {
+                    from {
+                        opacity: 0;
+                        transform: translateY(-30px) scale(0.95);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: translateY(0) scale(1);
+                    }
+                }
+
+                .agenda-modal-header {
+                    position: relative;
+                    height: 200px;
+                    border-radius: 16px 16px 0 0;
+                    overflow: hidden;
+                }
+
+                .agenda-modal-header img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                }
+
+                .agenda-modal-header-overlay {
+                    position: absolute;
+                    inset: 0;
+                    background: linear-gradient(180deg, rgba(0,0,0,0) 50%, rgba(0,0,0,0.7) 100%);
+                }
+
+                .agenda-modal-close {
+                    position: absolute;
+                    top: 15px;
+                    right: 15px;
+                    width: 36px;
+                    height: 36px;
+                    background: rgba(255, 255, 255, 0.9);
+                    border: none;
+                    border-radius: 50%;
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    transition: all 0.3s ease;
+                    z-index: 10;
+                }
+
+                .agenda-modal-close:hover {
+                    background: white;
+                    transform: scale(1.1);
+                }
+
+                .agenda-modal-body {
+                    padding: 24px;
+                }
+
+                .agenda-modal-title {
+                    font-size: 1.5rem;
+                    font-weight: 800;
+                    color: #0f172a;
+                    margin: 0 0 16px;
+                }
+
+                .agenda-modal-info {
+                    display: grid;
+                    gap: 12px;
+                    margin-bottom: 20px;
+                }
+
+                .agenda-modal-info-item {
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    color: #475569;
+                    font-size: 14px;
+                }
+
+                .agenda-modal-info-item i {
+                    width: 20px;
+                    color: #3b82f6;
+                }
+
+                .agenda-modal-description {
+                    color: #334155;
+                    line-height: 1.6;
+                    margin-bottom: 20px;
+                }
+
+                .agenda-modal-content-full {
+                    color: #1e293b;
+                    line-height: 1.7;
+                }
+
+                .agenda-modal-content-full h3,
+                .agenda-modal-content-full h2 {
+                    color: #0f172a;
+                    margin: 20px 0 12px;
+                }
+
+                .agenda-modal-content-full p {
+                    margin: 0 0 16px;
+                }
+
+                .agenda-modal-content-full ul,
+                .agenda-modal-content-full ol {
+                    margin: 0 0 16px 20px;
+                }
+
+                .image-modal-overlay {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: rgba(0, 0, 0, 0.9);
+                    z-index: 10000;
+                    display: none;
+                    align-items: center;
+                    justify-content: center;
+                    padding: 20px;
+                    backdrop-filter: blur(2px);
+                }
+
+                .image-modal-overlay.active {
+                    display: flex;
+                }
+
+                .image-modal-content {
+                    position: relative;
+                    max-width: 90vw;
+                    max-height: 90vh;
+                    animation: imageModalSlideIn 0.3s ease-out;
+                }
+
+                @keyframes imageModalSlideIn {
+                    from {
+                        opacity: 0;
+                        transform: scale(0.8);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: scale(1);
+                    }
+                }
+
+                .image-modal-content img {
+                    max-width: 100%;
+                    max-height: 90vh;
+                    object-fit: contain;
+                    border-radius: 8px;
+                    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+                }
+
+                .image-modal-close {
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    width: 44px;
+                    height: 44px;
+                    background: rgba(255, 255, 255, 0.9);
+                    border: none;
+                    border-radius: 50%;
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    transition: all 0.3s ease;
+                    z-index: 10001;
+                    font-size: 20px;
+                    color: #1f2937;
+                }
+
+                .image-modal-close:hover {
+                    background: white;
+                    transform: scale(1.1);
+                }
+
+                @media (max-width: 576px) {
+                    .image-modal-close {
+                        top: 10px;
+                        right: 10px;
+                        width: 36px;
+                        height: 36px;
+                        font-size: 16px;
+                    }
+                }
+
+                @media (max-width: 576px) {
+                    .agenda-modal-content {
+                        margin: 0;
+                        border-radius: 16px 16px 0 0;
+                        max-height: 95vh;
+                    }
+
+                    .agenda-modal-header {
+                        height: 150px;
+                    }
+
+                    .agenda-modal-body {
+                        padding: 20px;
+                    }
+                }
+
+                .berita-side {
+                    border-radius: 18px;
+                    background: rgba(255, 255, 255, .7);
+                    backdrop-filter: blur(6px);
+                    box-shadow: 0 12px 26px rgba(0, 0, 0, .06);
+                    overflow: hidden;
+                }
+
+                .berita-side-header {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    padding: 14px 16px;
+                    border-bottom: 1px solid rgba(15, 23, 42, .08);
+                }
+
+                .berita-side-header h3 {
+                    margin: 0;
+                    font-size: 1.05rem;
+                    font-weight: 800;
+                    color: #0f172a;
+                }
+
+                .berita-side-list {
+                    padding: 10px 10px 6px;
+                }
+
+                .berita-item {
+                    display: flex;
+                    gap: 12px;
+                    padding: 10px;
+                    border-radius: 14px;
+                    transition: .2s ease;
+                }
+
+                .berita-item:hover {
+                    background: rgba(13, 110, 253, .06);
+                }
+
+                .berita-thumb {
+                    width: 118px;
+                    height: 78px;
+                    flex: 0 0 auto;
+                    border-radius: 12px;
+                    overflow: hidden;
+                    background: #e5e7eb;
+                }
+
+                .berita-thumb img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                    display: block;
+                }
+
+                .berita-info {
+                    min-width: 0;
+                }
+
+                .berita-title {
+                    margin: 0 0 6px;
+                    font-size: 14px;
+                    font-weight: 800;
+                    color: #0f172a;
+                    display: -webkit-box;
+                    line-clamp: 2;
+                    -webkit-line-clamp: 2;
+                    -webkit-box-orient: vertical;
+                    overflow: hidden;
+                }
+
+                .berita-meta {
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 8px;
+                    font-size: 12px;
+                    color: rgba(15, 23, 42, .75);
+                }
+
+                .berita-cta {
+                    padding: 12px 16px 14px;
+                    border-top: 1px solid rgba(15, 23, 42, .08);
+                    text-align: right;
+                }
+
+                .berita-cta a {
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 8px;
+                    font-weight: 700;
+                    text-decoration: none;
+                }
+
+                @media (max-width: 576px) {
+                    .agenda-featured {
+                        min-height: 320px;
+                    }
+
+                    .berita-thumb {
+                        width: 96px;
+                        height: 64px;
+                    }
+                }
+            </style>
+
+            <div class="home-berita-acara-wrap">
+                {% if agenda_terbaru %}
+                <div class="agenda-featured" data-aos="fade-up">
+                    {% if agenda_terbaru.slug %}
+                    <a href="{% url 'administrator:agendaadmin' %}" class="agenda-link">Agenda</a>
+                    {% endif %}
+                    {% if agenda_terbaru.gambar %}
+                    <img src="{{ agenda_terbaru.gambar.url }}" alt="Gambar Agenda" style="width: 100%; height: 100%; object-fit: cover; display: block; position: absolute; top: 0; left: 0; z-index: 3; cursor: pointer;" loading="lazy" onclick="showFullImage('{{ agenda_terbaru.gambar.url }}')" onerror="console.error('Gambar gagal dimuat:', this.src); this.onerror=null; this.style.display='none'; var placeholder = this.parentElement.querySelector('.agenda-placeholder'); if(placeholder) placeholder.style.display='flex';">
+                    {% endif %}
+                    {% if not agenda_terbaru.gambar %}
+                    <div class="agenda-placeholder" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); height: 380px; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5rem; font-weight: bold; position: absolute; top: 0; left: 0; width: 100%; z-index: 1;">
+                        AGENDA
+                    </div>
+                    {% else %}
+                    <div class="agenda-placeholder" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); height: 380px; display: none; align-items: center; justify-content: center; color: white; font-size: 1.5rem; font-weight: bold; position: absolute; top: 0; left: 0; width: 100%; z-index: 1;">
+                        AGENDA
+                    </div>
+                    {% endif %}
+                    <div class="agenda-overlay"></div>
+                    <div class="agenda-content">
+                        <span class="agenda-badge">
+                            <i class="bi bi-calendar-event"></i>
+                            Agenda
+                        </span>
+                        <h3 class="agenda-title">{{ agenda_terbaru.judul }}</h3>
+                        <div class="agenda-meta">
+                            <i class="bi bi-calendar3"></i>
+                            <time datetime="{{ agenda_terbaru.tanggal_mulai|date:'Y-m-d' }}">{{ agenda_terbaru.tanggal_mulai|date:"M d, Y H:i" }}</time>
+                        </div>
+                        <button class="agenda-detail-btn" onclick="showAgendaDetail()">
+                            <i class="bi bi-info-circle"></i>
+                            Lihat Detail
+                        </button>
+                    </div>
+                </div>
+
+                <aside class="berita-side" data-aos="fade-up" data-aos-delay="100">
+                    <div class="berita-side-header">
+                        <h3>Berita Terbaru</h3>
+                        <a href="{% url 'berita_list' %}" class="small">Lihat semua</a>
+                    </div>
+                    <div class="berita-side-list">
+                        {% for row in berita %}
+                        <div class="berita-item">
+                            <div class="berita-thumb">
+                                {% if row.gambar %}
+                                <img src="{{ row.gambar.url }}" alt="Gambar Berita" loading="lazy">
+                                {% else %}
+                                <img src="https://via.placeholder.com/600x400?text=No+Image" alt="Tidak ada gambar" loading="lazy">
+                                {% endif %}
+                            </div>
+                            <div class="berita-info">
+                                {% if row.slug %}
+                                <a href="{% url 'berita_detail' row.slug %}" style="text-decoration:none;">
+                                    <div class="berita-title">{{ row.judul }}</div>
+                                </a>
+                                {% else %}
+                                <div class="berita-title">{{ row.judul }}</div>
+                                {% endif %}
+                                <div class="berita-meta">
+                                    <i class="bi bi-calendar3"></i>
+                                    <time datetime="{{ row.tanggal|date:'Y-m-d' }}">{{ row.tanggal|date:"M d, Y" }}</time>
+                                </div>
+                            </div>
+                        </div>
+                        {% empty %}
+                        <div style="padding: 10px 6px; color: rgba(15,23,42,.7);">Belum ada berita terbaru.</div>
+                        {% endfor %}
+                    </div>
+                    <div class="berita-cta">
+                        <a href="{% url 'berita_list' %}">Lihat Semua Berita <i class="bi bi-arrow-right"></i></a>
+                    </div>
+                </aside>
+                {% else %}
+                <div style="padding: 18px; border-radius: 18px; background: rgba(255,255,255,.7);">Belum ada agenda / berita.</div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Agenda Detail Modal -->
+        <div class="agenda-modal-overlay" id="agendaModal">
+            <div class="agenda-modal-content">
+                <div class="agenda-modal-header">
+                    {% if agenda_terbaru.gambar %}
+                    <img src="{{ agenda_terbaru.gambar.url }}" alt="{{ agenda_terbaru.judul }}">
+                    {% else %}
+                    <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); height: 100%; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5rem; font-weight: bold;">
+                        AGENDA
+                    </div>
+                    {% endif %}
+                    <div class="agenda-modal-header-overlay"></div>
+                    <button class="agenda-modal-close" onclick="hideAgendaDetail()">
+                        <i class="bi bi-x-lg"></i>
+                    </button>
+                </div>
+                <div class="agenda-modal-body">
+                    <h2 class="agenda-modal-title">{{ agenda_terbaru.judul }}</h2>
+                    
+                    <div class="agenda-modal-info">
+                        <div class="agenda-modal-info-item">
+                            <i class="bi bi-calendar-event"></i>
+                            <span><strong>Tanggal Mulai:</strong> {{ agenda_terbaru.tanggal_mulai|date:"d F Y, H:i" }}</span>
+                        </div>
+                        {% if agenda_terbaru.tanggal_selesai %}
+                        <div class="agenda-modal-info-item">
+                            <i class="bi bi-calendar-check"></i>
+                            <span><strong>Tanggal Selesai:</strong> {{ agenda_terbaru.tanggal_selesai|date:"d F Y, H:i" }}</span>
+                        </div>
+                        {% endif %}
+                        {% if agenda_terbaru.tempat %}
+                        <div class="agenda-modal-info-item">
+                            <i class="bi bi-geo-alt"></i>
+                            <span><strong>Tempat:</strong> {{ agenda_terbaru.tempat }}</span>
+                        </div>
+                        {% endif %}
+                        {% if agenda_terbaru.jenis_kegiatan %}
+                        <div class="agenda-modal-info-item">
+                            <i class="bi bi-tag"></i>
+                            <span><strong>Jenis Kegiatan:</strong> {{ agenda_terbaru.get_jenis_kegiatan_display }}</span>
+                        </div>
+                        {% endif %}
+                        {% if agenda_terbaru.kontak_person %}
+                        <div class="agenda-modal-info-item">
+                            <i class="bi bi-person"></i>
+                            <span><strong>Kontak Person:</strong> {{ agenda_terbaru.kontak_person }}</span>
+                        </div>
+                        {% endif %}
+                        {% if agenda_terbaru.email_kontak %}
+                        <div class="agenda-modal-info-item">
+                            <i class="bi bi-envelope"></i>
+                            <span><strong>Email:</strong> {{ agenda_terbaru.email_kontak }}</span>
+                        </div>
+                        {% endif %}
+                    </div>
+                    
+                    {% if agenda_terbaru.deskripsi %}
+                    <div class="agenda-modal-description">
+                        {{ agenda_terbaru.deskripsi|safe }}
+                    </div>
+                    {% endif %}
+                    
+                    {% if agenda_terbaru.konten %}
+                    <div class="agenda-modal-content-full">
+                        {{ agenda_terbaru.konten|safe }}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Image Modal -->
+        <div class="image-modal-overlay" id="imageModal">
+            <div class="image-modal-content">
+                <img id="modalImage" src="" alt="Full Size Image">
+            </div>
+            <button class="image-modal-close" onclick="hideFullImage()">
+                <i class="bi bi-x-lg"></i>
+            </button>
+        </div>
+
+    </section><!-- /Recent Posts Section -->
+
+
+
+
+    <!-- /Contact Section -->
+
+</main>
+
+<script>
+function showAgendaDetail() {
+    const modal = document.getElementById('agendaModal');
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function hideAgendaDetail() {
+    const modal = document.getElementById('agendaModal');
+    modal.classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+// Close modal when clicking outside
+document.addEventListener('click', function(event) {
+    const modal = document.getElementById('agendaModal');
+    if (event.target === modal) {
+        hideAgendaDetail();
+    }
+});
+
+// Close modal with Escape key
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+        hideAgendaDetail();
+        hideFullImage();
+    }
+});
+
+// Image Modal Functions
+function showFullImage(imageSrc) {
+    const modal = document.getElementById('imageModal');
+    const modalImage = document.getElementById('modalImage');
+    modalImage.src = imageSrc;
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function hideFullImage() {
+    const modal = document.getElementById('imageModal');
+    modal.classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+// Close image modal when clicking outside
+document.addEventListener('click', function(event) {
+    const imageModal = document.getElementById('imageModal');
+    if (event.target === imageModal) {
+        hideFullImage();
+    }
+});
+</script>
+<script>
+    // JavaScript untuk auto-scroll functionality
+    const teamContainer = document.querySelector('.team-scroll-container');
+    const teamWrapper = document.querySelector('.team-scroll-wrapper');
+
+    if (teamContainer && teamWrapper) {
+        // Touch events untuk mobile
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        teamContainer.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+            teamWrapper.style.animationPlayState = 'paused';
+        });
+
+        teamContainer.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            setTimeout(() => {
+                teamWrapper.style.animationPlayState = 'running';
+            }, 1000);
+        });
+
+        // Mouse events untuk desktop
+        teamContainer.addEventListener('mouseenter', () => {
+            teamWrapper.style.animationPlayState = 'paused';
+        });
+
+        teamContainer.addEventListener('mouseleave', () => {
+            teamWrapper.style.animationPlayState = 'running';
+        });
+    }
+</script>
+<script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const track = document.querySelector('.testimonial-track');
+            const cards = document.querySelectorAll('.testimonial-card');
+            const dots = document.querySelectorAll('.dot'); // might be empty after redesign
+            const prevButton = document.querySelector('.prev-button');
+            const nextButton = document.querySelector('.next-button');
+
+        // Normalize warna teks testimoni: hapus inline color yang berasal dari editor
+        try {
+            document.querySelectorAll('.testimonial-text, .testimonial-text *').forEach(function(el){
+                if (el.style && el.style.color) {
+                    el.style.removeProperty('color');
+                }
+                el.classList.remove('text-white','text-light');
+            });
+        } catch(e) { /* no-op */ }
+
+        let currentIndex = 0;
+        const cardCount = cards.length;
+
+        if (!track || cardCount === 0) return;
+        // Initial render
+        updateCarousel();
+
+        // Buttons
+        if (prevButton) {
+            prevButton.addEventListener('click', function () {
+                currentIndex = (currentIndex - 1 + cardCount) % cardCount;
+                updateCarousel();
+            });
+        }
+        if (nextButton) {
+            nextButton.addEventListener('click', function () {
+                currentIndex = (currentIndex + 1) % cardCount;
+                updateCarousel();
+            });
+        }
+
+        // Dots (only if exist)
+        if (dots && dots.length) {
+            dots.forEach((dot, index) => {
+                dot.addEventListener('click', function () {
+                    currentIndex = index;
+                    updateCarousel();
+                });
+            });
+        }
+
+        // Auto slide every 5 seconds
+        let interval = setInterval(() => {
+            currentIndex = (currentIndex + 1) % cardCount;
+            updateCarousel();
+        }, 5000);
+
+        // Pause auto slide on hover
+        const carousel = document.querySelector('.testimonial-carousel');
+        if (carousel) {
+            carousel.addEventListener('mouseenter', () => { clearInterval(interval); });
+            carousel.addEventListener('mouseleave', () => {
+                interval = setInterval(() => {
+                    currentIndex = (currentIndex + 1) % cardCount;
+                    updateCarousel();
+                }, 5000);
+            });
+
+            // Touch swipe
+            let touchStartX = 0;
+            let touchEndX = 0;
+            carousel.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; });
+            carousel.addEventListener('touchend', e => { touchEndX = e.changedTouches[0].screenX; handleSwipe(); });
+
+            function handleSwipe() {
+                const swipeThreshold = 50;
+                if (touchEndX < touchStartX - swipeThreshold) {
+                    currentIndex = (currentIndex + 1) % cardCount;
+                    updateCarousel();
+                } else if (touchEndX > touchStartX + swipeThreshold) {
+                    currentIndex = (currentIndex - 1 + cardCount) % cardCount;
+                    updateCarousel();
+                }
+            }
+        }
+
+        function updateCarousel() {
+            track.style.transform = `translateX(${-currentIndex * 100}%)`;
+            if (dots && dots.length) {
+                dots.forEach((dot, index) => {
+                    dot.classList.toggle('active', index === currentIndex);
+                });
+            }
+        }
+    });
+</script>
+
+{% endblock content %}

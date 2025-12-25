@@ -1,0 +1,245 @@
+{% extends "baseadmin.html" %}
+{% load static %}
+{% block content %}
+
+<style>
+  :root {
+    --primary: #2563eb; /* blue-600 */
+    --primary-600: #2563eb;
+    --primary-700: #1d4ed8;
+    --gray-900: #111827;
+    --gray-700: #374151;
+    --gray-500: #6b7280;
+    --gray-300: #d1d5db;
+    --gray-200: #e5e7eb;
+    --gray-100: #f3f4f6;
+    --white: #ffffff;
+    --shadow: 0 1px 2px rgba(0,0,0,.06);
+    --radius: 10px;
+  }
+  .container {
+    max-width: 960px;
+    margin: 16px auto 24px;
+    padding: 24px;
+    font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+    color: var(--gray-900);
+    background: transparent; /* ikut base background agar simetris dengan halaman lain */
+  }
+  .card {
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    border: 1px solid var(--gray-200);
+  }
+  .card-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--gray-200);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #fff;
+    color: var(--gray-900);
+  }
+  .card-header h4 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 700;
+  }
+  .card-header a {
+    background: #fff;
+    color: var(--primary-700);
+    padding: 8px 14px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: .92rem;
+    border: 1px solid var(--gray-300);
+    transition: all .15s ease;
+  }
+  .card-header a:hover { border-color: var(--primary-600); color: var(--primary-600); }
+  .card-body { padding: 20px; }
+  .section-title {
+    font-size: .85rem;
+    font-weight: 800;
+    color: var(--gray-700);
+    padding-bottom: 8px;
+    margin: 4px 0 16px;
+    border-bottom: 1px solid var(--gray-200);
+    letter-spacing: .02em;
+    text-transform: uppercase;
+  }
+  label {
+    font-weight: 600;
+    margin-bottom: 6px;
+    display: block;
+    color: var(--gray-700);
+    font-size: .9rem;
+  }
+  input[type="text"],
+  input[type="number"],
+  input[type="file"],
+  select,
+  textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--gray-300);
+    border-radius: 8px;
+    font-size: .95rem;
+    margin-bottom: 14px;
+    background: #fff;
+    outline: none;
+  }
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--primary-600);
+    box-shadow: 0 0 0 3px rgba(37,99,235,.1);
+  }
+  .grid-two { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .input-group { display: flex; }
+  .input-group span {
+    background: var(--gray-100);
+    padding: 10px 12px;
+    border: 1px solid var(--gray-300);
+    border-right: none;
+    border-radius: 8px 0 0 8px;
+    color: var(--gray-700);
+  }
+  .input-group input { border-left: none; border-radius: 0 8px 8px 0; flex: 1; }
+  .form-check { display: flex; align-items: center; gap: 8px; margin-top: 6px; }
+  .hint { font-size: .8rem; color: var(--gray-500); margin-top: -8px; margin-bottom: 12px; }
+  .btn-primary {
+    background: var(--primary-600);
+    color: white;
+    padding: 10px 18px;
+    border: none;
+    border-radius: 8px;
+    font-size: .95rem;
+    cursor: pointer;
+    font-weight: 700;
+  }
+  .media-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+  .thumb { width: 160px; height: auto; border-radius: 8px; border: 1px solid var(--gray-200); }
+  .preview-box { width: 160px; min-height: 90px; border: 1px dashed var(--gray-300); border-radius: 8px; display:flex;align-items:center;justify-content:center;background:#fff }
+  .actions { display:flex; justify-content:flex-end; gap:10px; margin-top: 18px; }
+  .btn-secondary { background:#fff; border:1px solid var(--gray-300); color:var(--gray-700); padding:10px 14px; border-radius:8px; font-weight:600; text-decoration:none }
+  @media (max-width: 900px) { .grid-two { grid-template-columns: 1fr; } .container { padding: 16px; } }
+</style>
+
+<div class="container">
+  <div class="card">
+    <div class="card-header">
+      <h4>{% if produk %}Edit Produk{% else %}Tambah Produk{% endif %}</h4>
+      <a href="{% url 'produkadmin' %}">Kembali ke Daftar</a>
+    </div>
+    <div class="card-body">
+      <form method="POST" action="{% if produk %}{% url 'editprodukadmin' token=produk.token_produk %}{% else %}{% url 'formprodukadmin' %}{% endif %}" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <!-- Informasi Produk -->
+        <div class="section-title">Informasi Produk</div>
+        <div class="grid-two">
+          <div>
+            <label for="nama">Nama Produk</label>
+            <input type="text" id="nama" name="nama" value="{% if produk %}{{ produk.nama }}{% endif %}" placeholder="Nama produk" required>
+          </div>
+          <div>
+            <label for="kategori">Kategori</label>
+            <select id="kategori" name="kategori">
+              <option value="">Pilih kategori</option>
+              {% for kategori in kategoripenjualan %}
+              <option value="{{ kategori.id }}" {% if produk and produk.kategoripenjualan.id == kategori.id %}selected{% endif %}>{{ kategori.nama }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+        <label for="deskripsi">Deskripsi</label>
+        <textarea id="deskripsi" name="deskripsi" rows="5" placeholder="Deskripsi singkat">{% if produk %}{{ produk.deskripsi|striptags }}{% endif %}</textarea>
+
+        <!-- Harga & Stok -->
+        <div class="section-title" style="margin-top:16px;">Harga & Stok</div>
+        <div class="grid-two">
+          <div>
+            <label for="harga">Harga</label>
+            <div class="input-group">
+              <span>Rp</span>
+              <input type="text" id="harga" name="harga" value="{% if produk %}{{ produk.harga }}{% endif %}" inputmode="numeric" placeholder="0" required>
+            </div>
+            <div class="hint">Gunakan angka saja, akan diformat otomatis.</div>
+          </div>
+          <div>
+            <label for="stok">Stok Produk</label>
+            <input type="number" id="stok" name="stok" min="0" value="{% if produk %}{{ produk.stok }}{% else %}0{% endif %}" required>
+          </div>
+        </div>
+
+        <!-- Media -->
+        <div class="section-title" style="margin-top:16px;">Media</div>
+        <label for="gambar">Gambar Produk 1</label>
+        <input type="file" id="gambar" name="gambar" accept="image/*" {% if not produk %}required{% endif %}>
+        <div id="preview1" class="preview-box">
+          {% if produk and produk.gambar %}
+          <img src="{{ produk.gambar.url }}" alt="Gambar 1" class="thumb">
+          {% endif %}
+        </div>
+
+        <div class="media-grid">
+          <div>
+            <label for="gambar2">Gambar Produk 2 (opsional)</label>
+            <input type="file" id="gambar2" name="gambar2" accept="image/*">
+            <div id="preview2" class="preview-box"></div>
+          </div>
+          <div>
+            <label for="gambar3">Gambar Produk 3 (opsional)</label>
+            <input type="file" id="gambar3" name="gambar3" accept="image/*">
+            <div id="preview3" class="preview-box"></div>
+          </div>
+        </div>
+
+        <!-- Status -->
+        <div class="section-title" style="margin-top:16px;">Status</div>
+        <div class="form-check">
+          <input type="checkbox" id="aktif" name="aktif" {% if not produk or produk.aktif %}checked{% endif %}>
+          <label for="aktif">Aktif</label>
+        </div>
+
+        <button type="submit" class="btn-primary">Simpan</button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  // Inisialisasi CKEditor jika tersedia
+  document.addEventListener('DOMContentLoaded', function() {
+    if (window.CKEDITOR && document.getElementById('deskripsi')) {
+      CKEDITOR.replace('deskripsi');
+    }
+  });
+
+  // Format harga (ribuan) saat ketik
+  document.addEventListener('DOMContentLoaded', function(){
+    var harga = document.getElementById('harga');
+    if (harga) {
+      harga.addEventListener('input', function(){
+        var clean = (this.value||'').replace(/[^0-9]/g,'');
+        this.value = clean.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+      });
+    }
+
+    function bindPreview(inputId, previewId){
+      var inp = document.getElementById(inputId);
+      var prev = document.getElementById(previewId);
+      if(!inp || !prev) return;
+      inp.addEventListener('change', function(){
+        if (!this.files || !this.files[0]) return;
+        var url = URL.createObjectURL(this.files[0]);
+        prev.innerHTML = '<img src="'+url+'" alt="preview" class="thumb" />';
+      });
+    }
+    bindPreview('gambar','preview1');
+    bindPreview('gambar2','preview2');
+    bindPreview('gambar3','preview3');
+  });
+</script>
+{% endblock %}

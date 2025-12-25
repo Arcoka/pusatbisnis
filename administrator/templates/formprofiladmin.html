@@ -1,0 +1,65 @@
+{% extends "baseadmin.html" %}
+{% load static %}
+{% block content %}
+<div class="flex-1 p-6 transition-all duration-200 ease-in-out">
+    <header class="mb-8">
+        <h1 class="text-3xl font-bold text-gray-700">Tambah Profil</h1>
+    </header>
+    <div class="bg-white shadow rounded-lg p-6">
+        <form action="" method="post" enctype="multipart/form-data" class="space-y-6">
+            {% csrf_token %}
+            <div class="mb-4">
+                <label for="id_nama" class="block text-gray-700 font-bold mb-2">Judul Profil:</label>
+                {{ form.judul }}
+            </div>
+            <div class="mb-4">
+                <label for="id_nama" class="block text-gray-700 font-bold mb-2">Isi Profil</label>
+                {{ form.deskripsi }}
+                {{form.media}}
+            </div>
+        
+            <div class="mb-4">
+                <label for="id_gambar_profil" class="block text-gray-700 font-bold mb-2">Gambar Profil:</label>
+                {{ form.gambar }}
+            </div>
+            <div class="mb-4">
+                <label for="id_gambar_profil" class="block text-gray-700 font-bold mb-2">Gambar_2 Profil:</label>
+                {{ form.gambar_2 }}
+            </div>
+
+            <div class="mb-4">
+                <label class="block text-gray-700 font-bold mb-2">Gambar Tambahan (bisa pilih banyak):</label>
+                <input type="file" name="images" multiple accept="image/*"
+                    class="mt-1 block w-full rounded-md border border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200 py-2" />
+                <p class="text-xs text-gray-500 mt-1">Tip: Tahan Ctrl/Cmd saat memilih untuk memilih banyak file sekaligus.</p>
+            </div>
+
+            
+            <div class="flex justify-end">
+                <button type="submit" 
+                        class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                    Simpan
+                </button>
+            </div>
+        </form>
+
+        {% if profil_images %}
+        <div class="mt-6">
+            <label class="block text-gray-700 font-bold mb-2">Gambar yang sudah ada:</label>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                {% for img in profil_images %}
+                <div class="border rounded p-2 flex flex-col items-center">
+                    <img src="{{ img.gambar.url }}" alt="" class="h-24 object-cover rounded mb-2">
+                    <form method="post" action="{% url 'delete_profil_image' profil.token_profil img.id %}" onsubmit="return confirm('Hapus gambar ini?');">
+                        {% csrf_token %}
+                        <button type="submit" class="text-red-600 text-sm hover:underline">Hapus</button>
+                    </form>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+    </div>
+</div>
+{% endblock content %}

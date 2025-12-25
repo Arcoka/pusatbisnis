@@ -1,0 +1,169 @@
+{% extends "base.html" %}
+{% load static %}
+{% load humanize %}
+
+{% block body_class %}produk-deskripsi-page{% endblock %}
+
+{% block content %}
+<style>
+  /* Layout */
+  .pd-container { max-width: 1200px; margin: 0 auto; padding: 16px; }
+  .pd-grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
+  @media (min-width: 992px) { .pd-grid { grid-template-columns: 420px 1fr; gap: 28px; } }
+
+  /* Gallery */
+  .pd-gallery { display: grid; grid-template-columns: 84px 1fr; gap: 14px; }
+  .pd-thumbs { display: flex; flex-direction: column; gap: 10px; max-height: 480px; overflow: auto; }
+  .pd-thumb { width: 84px; height: 84px; border-radius: 10px; overflow: hidden; border: 1px solid #e5e7eb; cursor: pointer; background: #fff; }
+  .pd-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.25s ease; }
+  .pd-thumb:hover img { transform: scale(1.06); }
+
+  .pd-hero { position: relative; border-radius: 12px; overflow: hidden; border: 1px solid #e5e7eb; background: #fff; }
+  .pd-hero img { width: 100%; height: 480px; object-fit: cover; display: block; transition: transform 0.35s ease; transform-origin: center; }
+  .pd-hero:hover img { transform: scale(1.08); }
+
+  /* Optional magnifier icon (lower-left) */
+  .pd-zoom-icon { position: absolute; bottom: 12px; left: 12px; width: 40px; height: 40px; border-radius: 9999px; background: #ffffff; color: #111827; display: inline-flex; align-items: center; justify-content: center; border: 1px solid #e5e7eb; box-shadow: 0 8px 24px rgba(0,0,0,0.12); }
+  .pd-zoom-icon svg { width: 18px; height: 18px; display: block; }
+
+  /* Details */
+  .pd-title { font-size: 28px; font-weight: 700; color: #111827; margin: 0; }
+  .pd-price { font-size: 22px; font-weight: 700; color: #0a7a3d; margin: 10px 0 14px; }
+  .pd-desc { color: #4b5563; line-height: 1.7; font-size: 15px; }
+  .pd-meta { margin-top: 14px; color: #6b7280; font-size: 14px; }
+
+  .pd-actions { display: flex; gap: 10px; align-items: center; margin-top: 16px; }
+  .btn-primary { background: #0a7a3d; color: #fff; border: 1px solid #0a7a3d; padding: 10px 16px; border-radius: 8px; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; }
+  .btn-primary:hover { opacity: 0.95; }
+  .btn-outline { background: #fff; color: #111827; border: 1px solid #e5e7eb; padding: 10px 14px; border-radius: 8px; text-decoration: none; }
+  .btn-outline:hover { background: #f9fafb; }
+</style>
+
+<div class="pd-container">
+  <div class="pd-grid">
+    <!-- Left: Gallery -->
+    <div>
+      <div class="pd-gallery">
+        <div class="pd-thumbs" id="pd-thumbs">
+          {# Thumbnails: prefer gallery_images list from context #}
+          {% if gallery_images %}
+            {% for img in gallery_images %}
+              <div class="pd-thumb" data-img="{{ img.url|default:img }}">
+                <img src="{{ img.url|default:img }}" alt="Thumbnail {{ forloop.counter }}" />
+              </div>
+            {% endfor %}
+          {% else %}
+            {# Fallback thumbs from main image repeated #}
+            <div class="pd-thumb" data-img="{% if main_image_url %}{{ main_image_url }}{% elif produk and produk.gambar %}{{ produk.gambar.url }}{% elif product and product.image %}{{ product.image.url }}{% else %}{% static 'assets/img/stats.jpg' %}{% endif %}">
+              <img src="{% if main_image_url %}{{ main_image_url }}{% elif produk and produk.gambar %}{{ produk.gambar.url }}{% elif product and product.image %}{{ product.image.url }}{% else %}{% static 'assets/img/stats.jpg' %}{% endif %}" alt="Preview" />
+            </div>
+          {% endif %}
+        </div>
+        <div class="pd-hero">
+          <img id="pd-hero-img" src="{% if main_image_url %}{{ main_image_url }}{% elif produk and produk.gambar %}{{ produk.gambar.url }}{% elif product and product.image %}{{ product.image.url }}{% else %}{% static 'assets/img/stats.jpg' %}{% endif %}" alt="Gambar Produk" />
+          <span class="pd-zoom-icon" title="Zoom">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M21 21l-4.35-4.35" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/>
+            </svg>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: Details -->
+    <div>
+      <h1 class="pd-title">{{ produk.nama|default:product.name|default:"Nama Produk" }}</h1>
+      <div class="pd-price">
+        {% if produk and produk.harga %}
+          Rp {{ produk.harga|floatformat:0|intcomma }}
+        {% elif product and product.price %}
+          ${{ product.price }}
+        {% else %}
+          Hubungi kami
+        {% endif %}
+      </div>
+
+      <div class="pd-desc">
+        {% if produk and produk.deskripsi %}
+          {{ produk.deskripsi|safe }}
+        {% elif product and product.description %}
+          {{ product.description|safe }}
+        {% else %}
+          Deskripsi produk belum tersedia.
+        {% endif %}
+      </div>
+
+      <div class="pd-actions">
+        <a href="#" class="btn-primary" id="btn-add-to-cart" data-product-id="{{ produk.id|default:product.id }}">
+          Tambah ke Keranjang
+        </a>
+        <a href="#" class="btn-outline">Tambah ke Wishlist</a>
+      </div>
+
+      <div class="pd-meta">
+        <div><strong>Kategori:</strong>
+          {% if produk and produk.kategori %}
+            {{ produk.kategori.nama|default:produk.kategori }}
+          {% elif product and product.category %}
+            {{ product.category.name|default:product.category }}
+          {% else %}
+            -
+          {% endif %}
+        </div>
+        {% if produk and produk.kode %}
+          <div><strong>Kode Produk:</strong> {{ produk.kode }}</div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  
+  {% if related_products %}
+  <div style="margin-top:32px;">
+    <h3 style="margin-bottom:12px;">Produk Terkait</h3>
+    <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;">
+      {% for r in related_products %}
+      <a href="{% url 'deskripsi_produk' r.slug %}" style="border:1px solid #e5e7eb;border-radius:10px;overflow:hidden;background:#fff;text-decoration:none;color:inherit;">
+        <img src="{{ r.gambar.url|default:r.image.url }}" alt="{{ r.nama|default:r.name }}" style="width:100%;height:120px;object-fit:cover;display:block;"/>
+        <div style="padding:8px 10px 12px;">
+          <div style="font-weight:600;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ r.nama|default:r.name }}</div>
+          {% if r.harga or r.price %}
+          <div style="color:#0a7a3d;font-weight:700;font-size:13px;">{% if r.harga %}Rp {{ r.harga|floatformat:0|intcomma }}{% else %}${{ r.price }}{% endif %}</div>
+          {% endif %}
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+</div>
+
+<script>
+  // Thumbnails click -> switch hero image
+  const thumbs = document.getElementById('pd-thumbs');
+  const heroImg = document.getElementById('pd-hero-img');
+  if (thumbs && heroImg) {
+    thumbs.addEventListener('click', (e) => {
+      const item = e.target.closest('.pd-thumb');
+      if (!item) return;
+      const src = item.getAttribute('data-img');
+      if (src) heroImg.src = src;
+    });
+  }
+
+  // Optional: simple keyboard nav between thumbs
+  document.addEventListener('keydown', (e) => {
+    if (!thumbs || !heroImg) return;
+    const all = [...thumbs.querySelectorAll('.pd-thumb')];
+    if (!all.length) return;
+    const currentIndex = all.findIndex(t => t.getAttribute('data-img') === heroImg.src);
+    if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+      const next = all[(currentIndex + 1 + all.length) % all.length];
+      heroImg.src = next.getAttribute('data-img');
+    } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+      const prev = all[(currentIndex - 1 + all.length) % all.length];
+      heroImg.src = prev.getAttribute('data-img');
+    }
+  });
+</script>
+{% endblock content %}

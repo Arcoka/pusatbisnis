@@ -1,0 +1,73 @@
+{% extends 'baseadmin.html' %}
+{% block content %}
+<div class="flex items-center justify-between mb-4">
+  <h1 class="text-xl font-semibold text-gray-800">Log Aktivitas</h1>
+  <form method="get" class="flex items-center gap-2">
+    <input type="text" name="q" value="{{ q }}" placeholder="Cari path / user / ip" class="border rounded px-3 py-2 text-sm"/>
+    <select name="method" class="border rounded px-2 py-2 text-sm">
+      <option value="">Method</option>
+      <option value="GET" {% if method == 'GET' %}selected{% endif %}>GET</option>
+      <option value="POST" {% if method == 'POST' %}selected{% endif %}>POST</option>
+      <option value="PUT" {% if method == 'PUT' %}selected{% endif %}>PUT</option>
+      <option value="PATCH" {% if method == 'PATCH' %}selected{% endif %}>PATCH</option>
+      <option value="DELETE" {% if method == 'DELETE' %}selected{% endif %}>DELETE</option>
+    </select>
+    <input type="number" name="status" value="{{ status }}" placeholder="Status" class="border rounded px-2 py-2 w-24 text-sm"/>
+    <select name="action" class="border rounded px-2 py-2 text-sm">
+      <option value="">Action</option>
+      <option value="ACCESS" {% if action == 'ACCESS' %}selected{% endif %}>ACCESS</option>
+      <option value="CREATE" {% if action == 'CREATE' %}selected{% endif %}>CREATE</option>
+      <option value="UPDATE" {% if action == 'UPDATE' %}selected{% endif %}>UPDATE</option>
+      <option value="DELETE" {% if action == 'DELETE' %}selected{% endif %}>DELETE</option>
+      <option value="OTHER" {% if action == 'OTHER' %}selected{% endif %}>OTHER</option>
+    </select>
+    <button class="px-3 py-2 rounded bg-blue-600 text-white text-sm">Filter</button>
+  </form>
+</div>
+
+<div class="overflow-x-auto">
+  <table class="min-w-full divide-y divide-gray-200">
+    <thead class="bg-gray-50">
+      <tr>
+        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Started At</th>
+        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">User</th>
+        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Method</th>
+        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Path</th>
+        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Duration (ms)</th>
+        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">IP</th>
+        <th class="px-4 py-2"></th>
+      </tr>
+    </thead>
+    <tbody class="bg-white divide-y divide-gray-200">
+      {% for it in items %}
+      <tr class="hover:bg-gray-50">
+        <td class="px-4 py-2 text-sm text-gray-700">{{ it.started_at|date:'Y-m-d H:i:s' }}</td>
+        <td class="px-4 py-2 text-sm text-gray-700">{{ it.user|default:'anon' }}</td>
+        <td class="px-4 py-2 text-sm"><span class="px-2 py-1 rounded text-white bg-gray-700">{{ it.method }}</span></td>
+        <td class="px-4 py-2 text-sm text-gray-700 truncate max-w-xs" title="{{ it.path }}">{{ it.path }}</td>
+        <td class="px-4 py-2 text-sm text-gray-700">{{ it.status_code }}</td>
+        <td class="px-4 py-2 text-sm text-gray-700">{{ it.duration_ms }}</td>
+        <td class="px-4 py-2 text-sm text-gray-700">{{ it.ip_address }}</td>
+        <td class="px-4 py-2 text-right"><a class="text-blue-600 hover:underline" href="{% url 'administrator:log_aktivitas_detail' it.id %}">Detail</a></td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="8" class="px-4 py-6 text-center text-gray-500">Tidak ada data</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<div class="flex items-center justify-between mt-4 text-sm">
+  <div>Total: {{ total }}</div>
+  <div class="space-x-2">
+    {% if page > 1 %}
+    <a class="px-2 py-1 border rounded" href="?q={{ q }}&method={{ method }}&status={{ status }}&action={{ action }}&page={{ page|add:-1 }}">Prev</a>
+    {% endif %}
+    <span>Hal {{ page }} / {{ total_pages }}</span>
+    {% if page < total_pages %}
+    <a class="px-2 py-1 border rounded" href="?q={{ q }}&method={{ method }}&status={{ status }}&action={{ action }}&page={{ page|add:1 }}">Next</a>
+    {% endif %}
+  </div>
+</div>
+{% endblock content %}

@@ -1,0 +1,44 @@
+{% extends 'baseadmin.html' %}
+{% block content %}
+<h1 class="text-xl font-semibold text-gray-800 mb-4">Detail Log Aktivitas</h1>
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+  <div class="bg-white rounded border p-4">
+    <h2 class="text-sm font-semibold text-gray-600 mb-2">Informasi Utama</h2>
+    <dl class="text-sm text-gray-800 space-y-1">
+      <div class="flex justify-between"><dt>Waktu Mulai</dt><dd>{{ item.started_at|date:'Y-m-d H:i:s' }}</dd></div>
+      <div class="flex justify-between"><dt>Waktu Selesai</dt><dd>{{ item.finished_at|date:'Y-m-d H:i:s' }}</dd></div>
+      <div class="flex justify-between"><dt>Durasi</dt><dd>{{ item.duration_ms }} ms</dd></div>
+      <div class="flex justify-between"><dt>User</dt><dd>{{ item.user|default:'anon' }}</dd></div>
+      <div class="flex justify-between"><dt>IP</dt><dd>{{ item.ip_address }}</dd></div>
+      <div class="flex justify-between"><dt>User Agent</dt><dd class="truncate max-w-xs" title="{{ item.user_agent }}">{{ item.user_agent }}</dd></div>
+    </dl>
+  </div>
+  <div class="bg-white rounded border p-4">
+    <h2 class="text-sm font-semibold text-gray-600 mb-2">Request/Response</h2>
+    <dl class="text-sm text-gray-800 space-y-1">
+      <div class="flex justify-between"><dt>Method</dt><dd>{{ item.method }}</dd></div>
+      <div class="flex justify-between"><dt>Path</dt><dd class="truncate max-w-xs" title="{{ item.path }}">{{ item.path }}</dd></div>
+      <div class="flex justify-between"><dt>Status</dt><dd>{{ item.status_code }}</dd></div>
+      <div>
+        <dt class="mb-1">Payload (ringkas)</dt>
+        <dd><pre class="bg-gray-50 border rounded p-3 overflow-auto text-xs">{{ item.request_data|default:'-' }}</pre></dd>
+      </div>
+    </dl>
+  </div>
+  <div class="bg-white rounded border p-4 md:col-span-2">
+    <h2 class="text-sm font-semibold text-gray-600 mb-2">Konteks</h2>
+    <dl class="text-sm text-gray-800 grid grid-cols-1 md:grid-cols-3 gap-2">
+      <div><dt>Action</dt><dd>{{ item.action_type }}</dd></div>
+      <div><dt>App</dt><dd>{{ item.app_label|default:'-' }}</dd></div>
+      <div><dt>Model</dt><dd>{{ item.model_name|default:'-' }}</dd></div>
+      <div><dt>Object ID</dt><dd>{{ item.object_id|default:'-' }}</dd></div>
+      <div class="md:col-span-3"><dt>Extra</dt><dd><pre class="bg-gray-50 border rounded p-3 overflow-auto text-xs">{{ item.extra|default:'-' }}</pre></dd></div>
+    </dl>
+  </div>
+</div>
+
+<div class="mt-4">
+  <a href="{% url 'administrator:log_aktivitas_list' %}" class="px-3 py-2 border rounded text-sm">Kembali</a>
+</div>
+{% endblock content %}

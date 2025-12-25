@@ -1,0 +1,257 @@
+{% extends "baseadmin.html" %}
+{% load static %}
+
+{% block title %}Tambah Pengguna Admin{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-2xl font-bold text-green-800">
+            ➕ Tambah Pengguna Admin Baru
+        </h1>
+        <a href="{% url 'administrator:active_users' %}" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded">
+            ← Kembali ke Daftar User
+        </a>
+    </div>
+
+    {% if messages %}
+    <div class="mb-4">
+        {% for message in messages %}
+        <div class="text-sm px-4 py-2 rounded {{ message.tags }}"
+            style="background:#f8d7da; color:#842029; border:1px solid #f5c2c7; margin-bottom:6px;">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="bg-white rounded-lg shadow p-6">
+        <div class="mb-4 p-3 bg-green-50 border border-green-200 rounded">
+            <p class="text-sm text-green-800">
+                <strong>📝 Form Tambah User:</strong> Isi data user admin baru dengan lengkap dan benar.
+            </p>
+        </div>
+
+        <form method="post" novalidate autocomplete="off">
+            {% csrf_token %}
+            
+            <!-- Foto Profil Section -->
+            <div class="md:col-span-2 mb-6">
+                <div class="flex items-center space-x-6">
+                    <div class="relative">
+                        <div id="image-preview" class="w-24 h-24 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
+                            <span class="text-gray-400">No image</span>
+                        </div>
+                        <input type="file" name="foto_profil" id="id_foto_profil" accept="image/*" class="hidden" onchange="previewImage(this)">
+                        <label for="id_foto_profil" class="absolute -bottom-2 -right-2 bg-blue-600 text-white rounded-full p-2 cursor-pointer hover:bg-blue-700 transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M4 5a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2V7a2 2 0 00-2-2h-1.586a1 1 0 01-.707-.293l-1.121-1.121A2 2 0 0011.172 3H8.828a2 2 0 00-1.414.586L6.293 4.707A1 1 0 015.586 5H4zm6 9a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd" />
+                            </svg>
+                        </label>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-medium text-gray-900">Foto Profil</h3>
+                        <p class="text-sm text-gray-500">Unggah foto profil untuk user ini (opsional). Format: JPG, PNG. Maksimal 2MB.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label for="id_username" class="block text-sm font-medium text-gray-700 mb-2">
+                        Username <span class="text-red-500">*</span>
+                    </label>
+                    <input type="text" name="username" id="id_username" autocomplete="off" value=""
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                        required>
+                </div>
+
+            <script>
+                // Bersihkan nilai input saat halaman dimuat untuk mencegah autofill cache
+                document.addEventListener('DOMContentLoaded', function(){
+                    ['id_username','id_email','id_first_name','id_last_name','id_password','id_password2'].forEach(function(id){
+                        var el = document.getElementById(id);
+                        if (el) { el.value = ''; }
+                    });
+                    var supercb = document.getElementById('id_is_superadmin');
+                    if (supercb) { supercb.checked = false; }
+                });
+            </script>
+
+                <div>
+                    <label for="id_email" class="block text-sm font-medium text-gray-700 mb-2">
+                        Email
+                    </label>
+                    <input type="email" name="email" id="id_email" autocomplete="off" value=""
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
+                </div>
+
+                <div>
+                    <label for="id_first_name" class="block text-sm font-medium text-gray-700 mb-2">
+                        Nama Depan
+                    </label>
+                    <input type="text" name="first_name" id="id_first_name" autocomplete="off" value=""
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
+                </div>
+
+                <div>
+                    <label for="id_last_name" class="block text-sm font-medium text-gray-700 mb-2">
+                        Nama Belakang
+                    </label>
+                    <input type="text" name="last_name" id="id_last_name" autocomplete="off" value=""
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
+                </div>
+
+                <div>
+                    <label for="id_password" class="block text-sm font-medium text-gray-700 mb-2">
+                        Password <span class="text-red-500">*</span>
+                    </label>
+                    <input type="password" name="password" id="id_password" autocomplete="new-password" value=""
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                        required>
+                    <p class="text-xs text-gray-500 mt-1">Password minimal 8 karakter.</p>
+                </div>
+
+                <div>
+                    <label for="id_password2" class="block text-sm font-medium text-gray-700 mb-2">
+                        Konfirmasi Password <span class="text-red-500">*</span>
+                    </label>
+                    <input type="password" name="password2" id="id_password2" autocomplete="new-password" value=""
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                        required>
+                    <p class="text-xs text-gray-500 mt-1">Masukkan password yang sama seperti di atas, untuk verifikasi.</p>
+                </div>
+
+                {% if can_edit_superadmin %}
+                <div class="md:col-span-2 space-y-4">
+                    <div class="border-t border-gray-200 pt-4">
+                        <h3 class="text-lg font-medium text-gray-900 mb-4">Hak Akses</h3>
+                        
+                        <div class="flex items-center mb-4">
+                            <input type="checkbox" 
+                                   name="is_superadmin" 
+                                   id="id_is_superadmin" 
+                                   class="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300 rounded"
+                                   onchange="document.getElementById('role-select').disabled = this.checked; if(this.checked) { document.getElementById('role-select').value = ''; }">
+                            <label for="id_is_superadmin" class="ml-2 block text-sm font-medium text-gray-700">
+                                Jadikan sebagai Superadmin
+                            </label>
+                        </div>
+                        
+                        <div class="mb-2">
+                            <label for="role" class="block text-sm font-medium text-gray-700 mb-1">
+                                Role
+                            </label>
+                            <select name="role" 
+                                    id="role-select" 
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
+                                <option value="">-- Pilih Role --</option>
+                                {% for role in roles %}
+                                    <option value="{{ role.id }}">{{ role.name }}</option>
+                                {% empty %}
+                                    <option value="" disabled>Tidak ada role tersedia</option>
+                                {% endfor %}
+                            </select>
+                            <p class="text-xs text-gray-500 mt-1">
+                                Pilih role untuk user ini (opsional). 
+                                Superadmin akan mengabaikan role yang dipilih.
+                            </p>
+                        </div>
+                        
+                        <div class="bg-blue-50 border-l-4 border-blue-400 p-4 mt-4">
+                            <div class="flex">
+                                <div class="flex-shrink-0">
+                                    <svg class="h-5 w-5 text-blue-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+                                    </svg>
+                                </div>
+                                <div class="ml-3">
+                                    <p class="text-sm text-blue-700">
+                                        <strong>Superadmin</strong> memiliki akses penuh ke semua fitur admin.
+                                        <br>
+                                        <strong>Role</strong> digunakan untuk membatasi akses berdasarkan izin yang ditentukan.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="mt-6 flex justify-end space-x-3">
+                <a href="{% url 'administrator:active_users' %}"
+                    class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded">
+                    Batal
+                </a>
+                <button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded">
+                    💾 Simpan User
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+function previewImage(input) {
+    const preview = document.getElementById('image-preview');
+    const file = input.files[0];
+    const reader = new FileReader();
+    
+    reader.onloadend = function() {
+        preview.innerHTML = `<img src="${reader.result}" class="w-full h-full object-cover" alt="Preview">`;
+    }
+    
+    if (file) {
+        reader.readAsDataURL(file);
+    } else {
+        preview.innerHTML = '<span class="text-gray-400">No image</span>';
+    }
+}
+
+// Form validation
+const form = document.querySelector('form');
+if (form) {
+    form.addEventListener('submit', function(e) {
+        const username = document.getElementById('id_username').value.trim();
+        const email = document.getElementById('id_email').value.trim();
+        const password = document.getElementById('id_password').value;
+        const confirmPassword = document.getElementById('id_password2').value;
+        
+        // Validate username
+        if (!username) {
+            e.preventDefault();
+            alert('Username tidak boleh kosong');
+            return false;
+        }
+        
+        // Validate email
+        if (!email) {
+            e.preventDefault();
+            alert('Email tidak boleh kosong');
+            return false;
+        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            e.preventDefault();
+            alert('Format email tidak valid');
+            return false;
+        }
+        
+        // Validate password
+        if (password && password.length < 8) {
+            e.preventDefault();
+            alert('Password minimal 8 karakter');
+            return false;
+        }
+        
+        // Validate password confirmation
+        if (password !== confirmPassword) {
+            e.preventDefault();
+            alert('Konfirmasi password tidak cocok');
+            return false;
+        }
+        
+        return true;
+    });
+}
+</script>
+{% endblock %}

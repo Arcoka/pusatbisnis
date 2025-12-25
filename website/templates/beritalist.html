@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block body_class %}berita-page{% endblock %}
+
+{% block content %}
+
+
+
+<div class="berita-container">
+    <!-- Section Title -->
+    <div class="container section-title" style="margin-bottom: -10px;" data-aos="fade-up">
+        <h2>Berita & Acara</h2>
+
+    </div><!-- End Section Title -->
+
+
+    <!-- Responsive news grid -->
+    <div id="news-container" class="berita-display-grid">
+        {% for berita in berita_list %}
+        <div class="berita-grid-item" data-aos="fade-up" data-aos-delay="{{ forloop.counter|add:"99" }}">
+            <article class="berita-card">
+                <div class="berita-card-image">
+                    <div class="berita-post-img">
+                        <img src="{{ berita.gambar.url }}" alt="Gambar Berita" class="img-fluid">
+                    </div>
+                    <div class="berita-category-badge">
+                        <span>{{ berita.kategori }}</span>
+                    </div>
+                </div>
+
+                <div class="berita-card-content">
+                    <h2 class="berita-title">
+                        <a href="{% if berita.slug %}{% url 'berita_detail' berita.slug %}{% else %}#{% endif %}">
+                            <h2 class="title">
+                                <a> {{ berita.judul }}</a>
+                            </h2>
+                        </a>
+                    </h2>
+
+                    <p class="berita-excerpt">{{ berita.isi|truncatewords:20 }}</p>
+
+                    <div class="berita-footer">
+                        <div class="berita-date">
+                            <i class="bi bi-calendar3"></i>
+                            <time datetime="{{ berita.tanggal|date:'Y-m-d' }}">
+                                {{ berita.tanggal|date:"M d, Y" }}
+                            </time>
+                        </div>
+
+                        <div class="berita-read-more">
+                            {% if berita.slug %}
+                            <a href="{% url 'berita_detail' berita.slug %}" class="berita-link">
+                                <span>Selengkapnya</span>
+                                <i class="bi bi-arrow-right"></i>
+                            </a>
+                            {% else %}
+                            <span class="berita-no-link">Tidak ada link</span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+            </article>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Pagination -->
+    <div class="berita-pagination">
+        <ul class="berita-pagination-list">
+            {% if berita_list.has_previous %}
+            <li class="berita-page-item">
+                <a href="?page={{ berita_list.previous_page_number }}" class="berita-page-link">
+                    <i class="bi bi-chevron-left"></i>
+                </a>
+            </li>
+            {% else %}
+            <li class="berita-page-item berita-disabled">
+                <span class="berita-page-link"><i class="bi bi-chevron-left"></i></span>
+            </li>
+            {% endif %}
+
+            {% for num in berita_list.paginator.page_range %}
+            {% if berita_list.number == num %}
+            <li class="berita-page-item berita-active">
+                <a href="#" class="berita-page-link">{{ num }}</a>
+            </li>
+            {% elif num > berita_list.number|add:"-3" and num < berita_list.number|add:"3" %}
+            <li class="berita-page-item">
+                <a href="?page={{ num }}" class="berita-page-link">{{ num }}</a>
+            </li>
+            {% elif num == 1 or num == berita_list.paginator.num_pages %}
+            <li class="berita-page-item">
+                <a href="?page={{ num }}" class="berita-page-link">{{ num }}</a>
+            </li>
+            {% elif num == berita_list.number|add:"-3" or num == berita_list.number|add:"3" %}
+            <li class="berita-page-item berita-disabled">
+                <span class="berita-page-link">...</span>
+            </li>
+            {% endif %}
+            {% endfor %}
+
+            {% if berita_list.has_next %}
+            <li class="berita-page-item">
+                <a href="?page={{ berita_list.next_page_number }}" class="berita-page-link">
+                    <i class="bi bi-chevron-right"></i>
+                </a>
+            </li>
+            {% else %}
+            <li class="berita-page-item berita-disabled">
+                <span class="berita-page-link"><i class="bi bi-chevron-right"></i></span>
+            </li>
+            {% endif %}
+        </ul>
+    </div>
+</div>
+{% endblock content %}

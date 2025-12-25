@@ -1,0 +1,210 @@
+{% extends "base.html" %}
+{% load static %}
+{% block body_class %}index-page{% endblock %}
+{% block content %}
+
+{% for row in slide  %}
+
+<div class=" hero-pilihan">
+    <div class="hero-content">
+
+        <!-- <a href="#" class="hero-button">Mulai Sekarang</a> -->
+
+        <!-- Animasi latar belakang yang lebih profesional -->
+        <div class="particles">
+            <div class="particle" style="top: 20%; left: 10%; animation-delay: 0s;"></div>
+            <div class="particle" style="top: 30%; left: 25%; animation-delay: 2s;"></div>
+            <div class="particle" style="top: 50%; left: 15%; animation-delay: 4s;"></div>
+            <div class="particle" style="top: 70%; left: 20%; animation-delay: 1s;"></div>
+            <div class="particle" style="top: 80%; left: 40%; animation-delay: 3s;"></div>
+            <div class="particle" style="top: 40%; left: 60%; animation-delay: 5s;"></div>
+            <div class="particle" style="top: 60%; left: 50%; animation-delay: 0s;"></div>
+            <div class="particle" style="top: 10%; left: 50%; animation-delay: 2s;"></div>
+            <div class="particle" style="top: 30%; left: 70%; animation-delay: 1s;"></div>
+            <div class="particle" style="top: 60%; left: 80%; animation-delay: 3s;"></div>
+        </div>
+    </div>
+
+    <div class="hero-image-container">
+        <img src="{{ row.gambar_slide.url }}" alt="Gedung Bisnis Modern" class="hero-image">
+    </div>
+</div>
+
+{% endfor %}
+<section class="contact">
+    <div class="container">
+        <!-- Section Title -->
+        <div class="section-title" style="margin-bottom: -10px;">
+            <h2>Hubungi Kami</h2>
+            <p>Kami siap membantu Anda. Hubungi kami melalui informasi kontak di bawah ini atau isi form untuk mengirim
+                pesan langsung.</p>
+        </div>
+        <div class="row align-items-start">
+            <!-- Left: Info cards grid -->
+            <div class="col-lg-6 mb-5">
+                {% for row in kontak  %}
+                <div class="row gy-4">
+                    <div class="col-md-6 col-sm-6 col-12">
+                        <div class="info-item">
+                            <i class="bi bi-geo-alt"></i>
+                            <h3>Alamat</h3>
+                            <p>{{ row.alamat }}</p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-sm-6 col-12">
+                        <div class="info-item">
+                            <i class="bi bi-telephone"></i>
+                            <h3>Telepon</h3>
+                            <p>{{ row.no_1 }}</p>
+                            <p>{{ row.no_2 }}</p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-sm-6 col-12">
+                        <div class="info-item">
+                            <i class="bi bi-envelope"></i>
+                            <h3>Email</h3>
+                            <p>{{ row.email }}</p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-sm-6 col-12">
+                        <div class="info-item">
+                            <i class="bi bi-clock"></i>
+                            <h3>Jam Operasional</h3>
+                            <p>{{ row.hari }}</p>
+                            <p>{{ row.jam }}</p>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- Right: Contact Form -->
+            <div class="col-lg-6">
+                <div class="contact-form-wrapper">
+                    <div class="card-header">
+                        <h2 class="card-title text-center" >Kirim Pesan</h2>
+                    </div>
+                    <div class="card-body">
+                        <!-- FORM DJANGO - TIDAK ADA YANG DIUBAH -->
+                        <form method="post">
+                           {% csrf_token %} 
+
+                            <div class="form-group mb-3">
+                                <label for="id_nama">Nama</label>
+                                {{ form.nama }} 
+                               
+                                {% if form.nama.errors %}
+                                    <div class="text-danger">
+                                        {{ form.nama.errors }}
+                                    </div>
+                                    {% endif %}
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <label for="id_email">Email</label>
+                                {{ form.email }}
+                                
+                                {% if form.email.errors %}
+                                    <div class="text-danger">
+                                        {{ form.email.errors }}
+                                    </div>
+                                    {% endif %}
+                            </div>
+
+                            <div class="form-group mb-4">
+                                <label for="id_pesan">Pesan</label>
+                                {{ form.pesan }}
+                                
+                                {% if form.pesan.errors %}
+                                    <div class="text-danger">
+                                        {{ form.pesan.errors }}
+                                    </div>
+                                    {% endif %}
+                            </div>
+
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-primary" style="color: #fff;">
+                                    <i class="bi bi-send me-2"></i>Kirim Pesan
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Django Messages - Diperbaiki untuk tampilan yang lebih halus -->
+                {% if messages %}
+                    {% for message in messages %}
+                        {% if 'admin-only' not in message.tags %}
+                        {% if message.tags == 'success' %}
+                        <div class="alert alert-success mt-4" style="border-radius: 12px; border: none; box-shadow: 0 4px 12px rgba(0,0,0,0.1); padding: 1.5rem; background: linear-gradient(135deg, #d4edda, #c3e6cb);">
+                            <div style="display: flex; align-items: center;">
+                                <div style="margin-right: 1rem;">
+                                    <div style="width: 48px; height: 48px; background: #28a745; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                        <i class="bi bi-check-circle" style="color: white; font-size: 1.25rem;"></i>
+                                    </div>
+                                </div>
+                                <div style="flex: 1;">
+                                    <h5 style="margin: 0 0 0.5rem 0; font-weight: 600; color: #155724;">
+                                        Pesan Berhasil Dikirim!
+                                    </h5>
+                                    <p style="margin: 0; color: #155724; line-height: 1.5;">
+                                        {{ message }}
+                                        <br><small style="opacity: 0.8;">Tim kami akan segera merespons pesan Anda. Terima kasih!</small>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        {% elif message.tags == 'error' %}
+                        <div class="alert alert-danger mt-4" style="border-radius: 12px; border: none; box-shadow: 0 4px 12px rgba(0,0,0,0.1); padding: 1.5rem; background: linear-gradient(135deg, #f8d7da, #f5c6cb);">
+                            <div style="display: flex; align-items: center;">
+                                <div style="margin-right: 1rem;">
+                                    <div style="width: 48px; height: 48px; background: #dc3545; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                        <i class="bi bi-exclamation-circle" style="color: white; font-size: 1.25rem;"></i>
+                                    </div>
+                                </div>
+                                <div style="flex: 1;">
+                                    <h5 style="margin: 0 0 0.5rem 0; font-weight: 600; color: #721c24;">
+                                        Terjadi Kesalahan
+                                    </h5>
+                                    <p style="margin: 0; color: #721c24; line-height: 1.5;">
+                                        {{ message }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        {% else %}
+                        <div class="alert alert-info mt-4" style="border-radius: 12px; border: none; box-shadow: 0 4px 12px rgba(0,0,0,0.1); padding: 1.5rem; background: linear-gradient(135deg, #d1ecf1, #bee5eb);">
+                            <div style="display: flex; align-items: center;">
+                                <div style="margin-right: 1rem;">
+                                    <div style="width: 48px; height: 48px; background: #17a2b8; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                        <i class="bi bi-info-circle" style="color: white; font-size: 1.25rem;"></i>
+                                    </div>
+                                </div>
+                                <div style="flex: 1;">
+                                    <h5 style="margin: 0 0 0.5rem 0; font-weight: 600; color: #0c5460;">
+                                        Informasi
+                                    </h5>
+                                    <p style="margin: 0; color: #0c5460; line-height: 1.5;">
+                                        {{ message }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                {% endif %} 
+
+                <!-- Demo Alert -->
+                <div class="alert alert-success mt-4" style="display: none;">
+                    <i class="bi bi-check-circle me-2"></i>Pesan Anda berhasil dikirim! Kami akan segera merespons.
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock content %}

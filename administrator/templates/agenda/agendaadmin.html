@@ -1,0 +1,334 @@
+{% extends "baseadmin.html" %}
+{% load static %}
+{% block content %}
+{% block extra_head %}
+<style>
+    .admin-container {
+        min-height: 100vh;
+        background: #f8fafc;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+    }
+
+    .header-section {
+        background: white;
+        padding: 32px;
+        border-bottom: 1px solid #e2e8f0;
+        margin-bottom: 24px;
+    }
+
+    .header-title {
+        font-size: 28px;
+        font-weight: 700;
+        color: #1e293b;
+        margin: 0 0 8px 0;
+    }
+
+    .header-subtitle {
+        color: #64748b;
+        font-size: 16px;
+        margin: 0;
+    }
+
+    .btn-primary {
+        background: #3b82f6;
+        color: white;
+        padding: 12px 24px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 500;
+        display: inline-flex;
+        align-items: center;
+        transition: background-color 0.2s;
+    }
+
+    .btn-primary:hover {
+        background: #2563eb;
+        text-decoration: none;
+        color: white;
+    }
+
+    .data-table-container {
+        background: white;
+        border-radius: 0;
+        overflow: hidden;
+        box-shadow: none;
+        border: none;
+        width: 100%;
+    }
+
+    .table-header {
+        background: #f1f5f9;
+        padding: 20px 32px;
+        border-bottom: 1px solid #e2e8f0;
+    }
+
+    .table-header h3 {
+        margin: 0;
+        font-size: 18px;
+        font-weight: 600;
+        color: #1e293b;
+    }
+
+    .table-stats {
+        color: #64748b;
+        font-size: 14px;
+        margin-top: 4px;
+    }
+
+    .data-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 0;
+    }
+
+    .data-table th {
+        background: #f8fafc;
+        padding: 16px 24px;
+        text-align: left;
+        font-weight: 600;
+        font-size: 13px;
+        color: #374151;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        border-bottom: 1px solid #e2e8f0;
+    }
+
+    .data-table td {
+        padding: 18px 24px;
+        border-bottom: 1px solid #f1f5f9;
+        vertical-align: middle;
+    }
+
+    .data-table tr:hover {
+        background: #f8fafc;
+    }
+
+    .row-number {
+        width: 32px;
+        height: 32px;
+        background: #3b82f6;
+        color: white;
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        font-size: 14px;
+    }
+
+    .status-badge {
+        padding: 6px 10px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 700;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        border: 1px solid transparent;
+        text-transform: uppercase;
+        letter-spacing: .3px;
+    }
+
+    .status-draft { background: #f1f5f9; color: #334155; border-color: #e2e8f0; }
+    .status-published { background: #ecfdf5; color: #047857; border-color: #d1fae5; }
+    .status-cancelled { background: #fef2f2; color: #b91c1c; border-color: #fee2e2; }
+    .status-completed { background: #eef2ff; color: #4338ca; border-color: #e0e7ff; }
+
+    .agenda-title {
+        font-weight: 700;
+        color: #0f172a;
+        line-height: 1.35;
+        max-width: 360px;
+    }
+
+    .agenda-meta {
+        font-size: 12px;
+        color: #64748b;
+        margin-top: 4px;
+    }
+
+    .agenda-image {
+        width: 64px;
+        height: 48px;
+        object-fit: cover;
+        border-radius: 6px;
+        border: 1px solid #e2e8f0;
+    }
+
+    .no-image {
+        width: 64px;
+        height: 48px;
+        background: #f1f5f9;
+        border: 2px dashed #cbd5e1;
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #94a3b8;
+    }
+
+    .actions {
+        display: flex;
+        gap: 8px;
+        justify-content: center;
+    }
+
+    .btn-edit {
+        background: #3b82f6;
+        color: white;
+        padding: 8px 12px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-size: 14px;
+        transition: background-color 0.2s;
+    }
+
+    .btn-edit:hover {
+        background: #2563eb;
+        text-decoration: none;
+        color: white;
+    }
+
+    .btn-delete {
+        background: #ef4444;
+        color: white;
+        padding: 8px 12px;
+        border-radius: 6px;
+        border: none;
+        font-size: 14px;
+        cursor: pointer;
+        transition: background-color 0.2s;
+    }
+
+    .btn-delete:hover {
+        background: #dc2626;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 80px 32px;
+        color: #6b7280;
+    }
+
+    .empty-icon {
+        width: 64px;
+        height: 64px;
+        background: #f3f4f6;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 24px;
+        font-size: 24px;
+        color: #9ca3af;
+    }
+
+    .empty-title {
+        font-size: 18px;
+        font-weight: 600;
+        color: #374151;
+        margin: 0 0 12px 0;
+    }
+
+    .empty-description {
+        margin: 0 0 24px 0;
+        color: #6b7280;
+    }
+
+    @media (max-width: 768px) {
+        .header-section { padding: 24px 16px; }
+        .data-table th, .data-table td { padding: 12px 16px; }
+    }
+</style>
+{% endblock %}
+
+<div class="admin-container">
+    <div class="header-section flex items-center justify-between">
+        <div>
+            <h1 class="header-title">{{ judul }}</h1>
+            <p class="header-subtitle">Kelola agenda/kegiatan lembaga</p>
+        </div>
+        <a href="{% url 'administrator:formagendaadmin' %}" class="btn-primary flex items-center">
+            <i class="fas fa-plus mr-2"></i>
+            Tambah Agenda
+        </a>
+    </div>
+
+    <div class="main-content">
+        <div class="data-table-container">
+            <div class="table-header">
+                <h3>Daftar Agenda</h3>
+                <div class="table-stats">{{ agenda_list|length }} agenda tersedia</div>
+            </div>
+
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th style="width: 80px;">No</th>
+                        <th>Agenda</th>
+                        <th style="width: 170px;">Mulai</th>
+                        <th style="width: 170px;">Selesai</th>
+                        <th style="width: 130px;">Status</th>
+                        <th style="width: 110px;">Gambar</th>
+                        <th style="width: 120px; text-align: center;">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for a in agenda_list %}
+                    <tr>
+                        <td><div class="row-number">{{ forloop.counter }}</div></td>
+                        <td>
+                            <div class="agenda-title">{{ a.judul }}</div>
+                            <div class="agenda-meta">
+                                {{ a.tempat }} • {{ a.get_jenis_kegiatan_display }}
+                            </div>
+                        </td>
+                        <td>{{ a.tanggal_mulai|date:"d M Y H:i" }}</td>
+                        <td>{{ a.tanggal_selesai|date:"d M Y H:i" }}</td>
+                        <td>
+                            <span class="status-badge status-{{ a.status }}">{{ a.status }}</span>
+                        </td>
+                        <td>
+                            {% if a.gambar %}
+                                <img src="{{ a.gambar.url }}" alt="Gambar Agenda" class="agenda-image" loading="lazy">
+                            {% else %}
+                                <div class="no-image"><i class="fas fa-image"></i></div>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <div class="actions">
+                                <a href="{% url 'administrator:editagendaadmin' a.slug %}" class="btn-edit" title="Edit">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <form action="{% url 'administrator:deleteagendaadmin' a.slug %}" method="post" style="display:inline;">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn-delete" onclick="return confirm('Apakah Anda yakin ingin menghapus agenda ini?');" title="Hapus">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="7">
+                            <div class="empty-state">
+                                <div class="empty-icon"><i class="fas fa-calendar"></i></div>
+                                <h3 class="empty-title">Belum ada agenda</h3>
+                                <p class="empty-description">Mulai dengan menambahkan agenda pertama.</p>
+                                <a href="{% url 'administrator:formagendaadmin' %}" class="btn-primary">
+                                    <i class="fas fa-plus" style="margin-right: 8px;"></i>
+                                    Tambah Agenda
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock content %}

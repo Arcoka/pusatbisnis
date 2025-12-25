@@ -1,0 +1,242 @@
+{% extends "base.html" %}
+{% load static %}
+{% load humanize %}
+{% block content %}
+
+<!-- Header sama seperti halaman penjualan -->
+<div class="page-header">
+  <div class="container">
+    <div class="row">
+      <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+        <div class="page-caption">
+          <div class="container section-title" data-aos="fade-up">
+            <h2 style="color: #ffffff; margin-top: -60px;">Deskripsi Produk</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="pd-container">
+  <div id="sent-alert" class="alert alert-success" style="display:none; margin-bottom:12px;">Detail pemesanan berhasil dikirim. Admin akan segera menghubungi Anda ke nomor yang telah Anda masukkan.</div>
+  <div id="liked-alert" class="alert alert-success" style="display:none; margin-bottom:12px;">Terima kasih! Like Anda sudah tersimpan.</div>
+  <div class="breadcrumb-nav">
+    <a href="{% url 'home' %}" class="breadcrumb-link">Beranda</a>
+    <span class="breadcrumb-separator">/</span>
+    <a href="{% url 'penjualan' %}" class="breadcrumb-link">Semua Produk</a>
+    <span class="breadcrumb-separator">/</span>
+    <span class="breadcrumb-current">{{ produk.nama|upper }}</span>
+  </div>
+
+  <div class="pd-grid">
+    {% if produk.gambar or produk.gambar2 or produk.gambar3 %}
+    <!-- Left: Gallery (hanya tampil jika ada gambar) -->
+    <div class="gallery">
+      <div class="main-photo">
+        <div id="main-photo-wrap" class="image-wrap">
+          {% if produk.gambar %}
+            <img id="main-photo-img" src="{{ produk.gambar.url }}" alt="{{ produk.nama }}">
+          {% elif produk.gambar2 %}
+            <img id="main-photo-img" src="{{ produk.gambar2.url }}" alt="{{ produk.nama }}">
+          {% else %}
+            <img id="main-photo-img" src="{{ produk.gambar3.url }}" alt="{{ produk.nama }}">
+          {% endif %}
+        </div>
+      </div>
+      <div class="thumbs">
+        {% if produk.gambar %}
+        <div class="thumb selected">
+          <img src="{{ produk.gambar.url }}" alt="{{ produk.nama }}">
+        </div>
+        {% endif %}
+        {% if not produk.gambar and produk.gambar2 %}
+        <div class="thumb selected">
+          <img src="{{ produk.gambar2.url }}" alt="{{ produk.nama }}">
+        </div>
+        {% elif produk.gambar2 %}
+        <div class="thumb">
+          <img src="{{ produk.gambar2.url }}" alt="{{ produk.nama }}">
+        </div>
+        {% endif %}
+        {% if not produk.gambar and not produk.gambar2 and produk.gambar3 %}
+        <div class="thumb selected">
+          <img src="{{ produk.gambar3.url }}" alt="{{ produk.nama }}">
+        </div>
+        {% elif produk.gambar3 %}
+        <div class="thumb">
+          <img src="{{ produk.gambar3.url }}" alt="{{ produk.nama }}">
+        </div>
+        {% endif %}
+      </div>
+    </div>
+    {% else %}
+    <!-- Fallback jika tidak ada gambar sama sekali -->
+    <div class="no-media">Tidak ada gambar untuk produk ini. <strong>Segera hadir.</strong></div>
+    {% endif %}
+
+    <!-- Right: Detail Panel -->
+    <div class="panel">
+      <!-- Product Name -->
+      <h1 class="product-title">{{ produk.nama|title }}</h1>
+      
+      <!-- Stock and SKU Info -->
+      <div class="product-meta">
+        {% if produk.stok > 0 %}
+          <span class="stock-status">Stok: {{ produk.stok }} unit</span>
+        {% else %}
+          <span class="stock-status" style="color: #dc2626;">Stok Habis</span>
+        {% endif %}
+        <span class="sku">SKU: {{ produk.id|stringformat:"05d" }}</span>
+      </div>
+      <!-- Product Description -->
+      <div class="product-description">
+        {{ produk.deskripsi|safe|default:"Tersedia berbagai variasi produk berkualitas tinggi dengan desain modern dan fungsional yang dapat memenuhi kebutuhan Anda." }}
+      </div>
+      <div class="mb-3">
+        {% if produk.token_produk %}
+        <a class="btn btn-primary btn-sm d-inline-flex align-items-center me-2" href="{% url 'pesan_produk' token=produk.token_produk %}">
+          <i class="bi bi-cart-plus me-1"></i>
+          Beli
+        </a>
+        <form method="post" action="{% url 'like_produk' token=produk.token_produk %}?next={{ request.get_full_path|urlencode }}" class="d-inline">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-outline-danger btn-sm d-inline-flex align-items-center">
+            <i class="bi bi-heart me-1"></i>
+            Like
+          </button>
+        </form>
+        {% else %}
+        <a class="btn btn-primary btn-sm d-inline-flex align-items-center me-2" href="{% url 'pesan_produk_by_id' pk=produk.id %}">
+          <i class="bi bi-cart-plus me-1"></i>
+          Beli
+        </a>
+        <form method="post" action="{% url 'like_produk_by_id' pk=produk.id %}?next={{ request.get_full_path|urlencode }}" class="d-inline">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-outline-danger btn-sm d-inline-flex align-items-center">
+            <i class="bi bi-heart me-1"></i>
+            Like
+          </button>
+        </form>
+        {% endif %}
+      </div>
+      
+
+      <!-- Pricing -->
+      <div class="pricing">
+        <div class="current-price">Rp {{ produk.harga|floatformat:0|intcomma }}</div>
+        <div class="original-price">Rp {{ produk.harga|add:produk.harga|floatformat:0|intcomma }}</div>
+      </div>
+      <!-- Categories and Tags -->
+      <div class="product-categories">
+        <div class="category-info">
+          {% if produk.kategoripenjualan %}
+            <span>Kategori: {{ produk.kategoripenjualan.nama }}</span>
+          {% endif %}
+         
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+  <script>
+    (function() {
+      const wrap = document.getElementById('main-photo-wrap');
+      const mainImg = document.getElementById('main-photo-img');
+      const thumbs = document.querySelectorAll('.thumbs .thumb img');
+
+      if (!wrap || !mainImg) return;
+
+      // Helper to set main image and background for zooming
+      function setMain(src) {
+        mainImg.src = src;
+        wrap.style.backgroundImage = `url('${src}')`;
+        // ukur ulang tinggi setelah gambar baru dimuat
+        const probe = new Image();
+        probe.onload = () => updateWrapHeight(probe.naturalWidth, probe.naturalHeight);
+        probe.src = src;
+      }
+
+      // Hitung tinggi wrapper berdasarkan rasio gambar dan lebar wrapper
+      function updateWrapHeight(nw, nh) {
+        const w = wrap.clientWidth || 600;
+        let h = w; // default square
+        if (nw && nh) {
+          const ratio = nw / nh; // >1 landscape, <1 portrait
+          h = w / ratio;
+        }
+        // batas minimum/maximum agar tidak ekstrim
+        const minH = 280;
+        const maxH = 720;
+        h = Math.max(minH, Math.min(maxH, Math.round(h)));
+        wrap.style.height = h + 'px';
+      }
+
+      // Initialize background image dan ukur tinggi awal dari gambar aktif
+      if (mainImg.complete && mainImg.naturalWidth) {
+        updateWrapHeight(mainImg.naturalWidth, mainImg.naturalHeight);
+      } else {
+        mainImg.addEventListener('load', () => updateWrapHeight(mainImg.naturalWidth, mainImg.naturalHeight), { once: true });
+      }
+      setMain(mainImg.src);
+
+      // Recalculate on window resize
+      window.addEventListener('resize', () => updateWrapHeight(mainImg.naturalWidth, mainImg.naturalHeight));
+
+    // Handle thumbnail click
+    document.querySelectorAll('.thumbs .thumb').forEach((el) => {
+      el.addEventListener('click', () => {
+        document.querySelectorAll('.thumbs .thumb').forEach(t => t.classList.remove('selected'));
+        el.classList.add('selected');
+        const img = el.querySelector('img');
+        if (img && img.src) setMain(img.src);
+      });
+    });
+
+      // Magnifier zoom follow cursor
+      let isZooming = false;
+      function updatePosition(e) {
+        const rect = wrap.getBoundingClientRect();
+        const x = ((e.clientX - rect.left) / rect.width) * 100; // 0-100
+        const y = ((e.clientY - rect.top) / rect.height) * 100; // 0-100
+      wrap.style.backgroundPosition = `${x}% ${y}%`;
+    }
+
+    wrap.addEventListener('mouseenter', () => {
+      isZooming = true;
+      wrap.classList.add('zooming');
+    });
+    wrap.addEventListener('mousemove', (e) => {
+      if (!isZooming) return;
+      updatePosition(e);
+    });
+    wrap.addEventListener('mouseleave', () => {
+      isZooming = false;
+      wrap.classList.remove('zooming');
+      // reset to center when leaving
+      wrap.style.backgroundPosition = 'center';
+    });
+  })();
+</script>
+<script>
+  (function(){
+    try {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('sent') === '1') {
+        var el = document.getElementById('sent-alert');
+        if (el) {
+          el.style.display = 'block';
+          setTimeout(function(){ el.style.display = 'none'; }, 5000);
+        }
+      }
+      if (params.get('liked') === '1') {
+        var el2 = document.getElementById('liked-alert');
+        if (el2) {
+          el2.style.display = 'block';
+          setTimeout(function(){ el2.style.display = 'none'; }, 5000);
+        }
+      }
+    } catch (e) {}
+  })();
+</script>
+{% endblock content %}

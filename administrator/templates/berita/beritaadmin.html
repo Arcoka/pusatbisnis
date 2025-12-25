@@ -1,0 +1,521 @@
+{% extends "baseadmin.html" %}
+{% load static %}
+{% block content %}
+{% block extra_head %}
+    {{ form.media }}
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+        
+        .admin-container {
+            min-height: 100vh;
+            background: #f8fafc;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+        }
+        
+        .main-content {
+            padding: 0;
+            max-width: 100%;
+            width: 100%;
+        }
+        
+        .header-section {
+            background: white;
+            padding: 32px;
+            border-bottom: 1px solid #e2e8f0;
+            margin-bottom: 24px;
+        }
+        
+        .header-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1e293b;
+            margin: 0 0 8px 0;
+        }
+        
+        .header-subtitle {
+            color: #64748b;
+            font-size: 16px;
+            margin: 0;
+        }
+        
+        .action-bar {
+            background: white;
+            padding: 20px 32px;
+            border-bottom: 1px solid #e2e8f0;
+            margin-bottom: 0;
+        }
+        
+        .btn-primary {
+            background: #3b82f6;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            transition: background-color 0.2s;
+        }
+        
+        .btn-primary:hover {
+            background: #2563eb;
+            text-decoration: none;
+            color: white;
+        }
+        
+        .data-table-container {
+            background: white;
+            border-radius: 0;
+            overflow: hidden;
+            box-shadow: none;
+            border: none;
+            width: 100%;
+        }
+        
+        .table-header {
+            background: #f1f5f9;
+            padding: 20px 32px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .table-header h3 {
+            margin: 0;
+            font-size: 18px;
+            font-weight: 600;
+            color: #1e293b;
+        }
+        
+        .table-stats {
+            color: #64748b;
+            font-size: 14px;
+            margin-top: 4px;
+        }
+        
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0;
+        }
+        
+        .data-table th {
+            background: #f8fafc;
+            padding: 16px 24px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 13px;
+            color: #374151;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .data-table td {
+            padding: 20px 24px;
+            border-bottom: 1px solid #f1f5f9;
+            vertical-align: middle;
+        }
+        
+        .data-table tr:hover {
+            background: #f8fafc;
+        }
+        
+        .row-number {
+            width: 32px;
+            height: 32px;
+            background: #3b82f6;
+            color: white;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .category-badge {
+            background: #ecfdf5;
+            color: #047857;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 500;
+            border: 1px solid #d1fae5;
+        }
+        
+        .news-title {
+            font-weight: 500;
+            color: #1e293b;
+            line-height: 1.4;
+            max-width: 300px;
+        }
+        
+        .news-image {
+            width: 64px;
+            height: 48px;
+            object-fit: cover;
+            border-radius: 6px;
+            border: 1px solid #e2e8f0;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .news-image:hover {
+            transform: scale(1.05);
+        }
+        
+        .no-image {
+            width: 64px;
+            height: 48px;
+            background: #f1f5f9;
+            border: 2px dashed #cbd5e1;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #94a3b8;
+        }
+        
+        .date-info {
+            font-size: 14px;
+            color: #4b5563;
+        }
+        
+        .date-day {
+            font-weight: 500;
+            color: #1e293b;
+        }
+        
+        .date-time {
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 2px;
+        }
+        
+        .actions {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .btn-edit {
+            background: #3b82f6;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 14px;
+            transition: background-color 0.2s;
+        }
+        
+        .btn-edit:hover {
+            background: #2563eb;
+            text-decoration: none;
+            color: white;
+        }
+        
+        .btn-delete {
+            background: #ef4444;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: none;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .btn-delete:hover {
+            background: #dc2626;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 80px 32px;
+            color: #6b7280;
+        }
+        
+        .empty-icon {
+            width: 64px;
+            height: 64px;
+            background: #f3f4f6;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px;
+            font-size: 24px;
+            color: #9ca3af;
+        }
+        
+        .empty-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #374151;
+            margin: 0 0 12px 0;
+        }
+        
+        .empty-description {
+            margin: 0 0 24px 0;
+            color: #6b7280;
+        }
+        
+        .table-footer {
+            background: #f8fafc;
+            padding: 16px 32px;
+            border-top: 1px solid #e2e8f0;
+            color: #6b7280;
+            font-size: 14px;
+        }
+        
+        /* Modal Styles */
+        .image-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 50;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+        
+        .modal-content {
+            position: relative;
+            max-width: 90vw;
+            max-height: 90vh;
+        }
+        
+        .modal-image {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            border-radius: 8px;
+        }
+        
+        .modal-close {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 8px;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 0;
+            }
+            
+            .header-section {
+                padding: 24px 16px;
+            }
+            
+            .action-bar {
+                padding: 16px;
+            }
+            
+            .data-table th,
+            .data-table td {
+                padding: 12px 16px;
+            }
+        }
+    </style>
+{% endblock %}
+
+<div class="admin-container">
+    <!-- Header -->
+    <div class="header-section flex items-center justify-between">
+    <div>
+        <h1 class="header-title">{{ judul }}</h1>
+        <p class="header-subtitle">Kelola berita dengan mudah dan profesional</p>
+    </div>
+    <a href="{% url 'administrator:formberitaadmin' %}" class="btn-primary flex items-center">
+        <i class="fas fa-plus mr-2"></i>
+        Tambah Berita Baru
+    </a>
+</div>
+
+
+    <!-- Action Bar -->
+    {% comment %} <div class="action-bar">
+        <a href="{% url 'administrator:formberitaadmin' %}" class="btn-primary">
+            <i class="fas fa-plus" style="margin-right: 8px;"></i>
+            Tambah Berita Baru
+        </a>
+    </div> {% endcomment %}
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="data-table-container">
+            <!-- Table Header -->
+            <div class="table-header">
+                <h3>Daftar Berita</h3>
+                <div class="table-stats">{{ berita_list|length }} artikel tersedia</div>
+            </div>
+
+            <!-- Table -->
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th style="width: 80px;">No</th>
+                        <th style="width: 120px;">Kategori</th>
+                        <th>Judul Berita</th>
+                        <th style="width: 100px;">Gambar</th>
+                        <th style="width: 160px;">Tanggal Upload</th>
+                        <th style="width: 120px; text-align: center;">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for berita in berita_list %}
+                    <tr>
+                        <td>
+                            <div class="row-number">{{ forloop.counter }}</div>
+                        </td>
+                        <td>
+                            <span class="category-badge">{{ berita.kategori.nama }}</span>
+                        </td>
+                        <td>
+                            <div class="news-title">{{ berita.judul }}</div>
+                        </td>
+                        <td>
+                            {% if berita.gambar %}
+                                <img src="{{ berita.gambar.url }}" 
+                                     alt="Gambar Berita" 
+                                     class="news-image"
+                                     onclick="openImageModal('{{ berita.gambar.url }}')">
+                            {% else %}
+                                <div class="no-image">
+                                    <i class="fas fa-image"></i>
+                                </div>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <div class="date-info">
+                                <div class="date-day">
+                                    {% with berita.tanggal_upload|date:"w" as hari %}
+                                    {% if hari == "0" %}Minggu
+                                    {% elif hari == "1" %}Senin
+                                    {% elif hari == "2" %}Selasa
+                                    {% elif hari == "3" %}Rabu
+                                    {% elif hari == "4" %}Kamis
+                                    {% elif hari == "5" %}Jumat
+                                    {% elif hari == "6" %}Sabtu
+                                    {% endif %}
+                                    {% endwith %}
+                                </div>
+                                <div>
+                                    {{ berita.tanggal_upload|date:"j" }}
+                                    {% with berita.tanggal_upload|date:"n" as bulan %}
+                                    {% if bulan == "1" %}Jan
+                                    {% elif bulan == "2" %}Feb
+                                    {% elif bulan == "3" %}Mar
+                                    {% elif bulan == "4" %}Apr
+                                    {% elif bulan == "5" %}Mei
+                                    {% elif bulan == "6" %}Jun
+                                    {% elif bulan == "7" %}Jul
+                                    {% elif bulan == "8" %}Agu
+                                    {% elif bulan == "9" %}Sep
+                                    {% elif bulan == "10" %}Okt
+                                    {% elif bulan == "11" %}Nov
+                                    {% elif bulan == "12" %}Des
+                                    {% endif %}
+                                    {% endwith %} {{ berita.tanggal_upload|date:"Y" }}
+                                </div>
+                                <div class="date-time">{{ berita.tanggal_upload|date:"H:i" }}</div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="actions">
+                                <a href="{% url 'administrator:editberitaadmin' berita.token_berita %}" 
+                                   class="btn-edit" title="Edit Berita">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <form action="{% url 'administrator:deleteberitaadmin' berita.token_berita %}" method="post" style="display: inline;">
+                                    {% csrf_token %}
+                                    <button type="submit" 
+                                            class="btn-delete"
+                                            onclick="return confirm('Apakah Anda yakin ingin menghapus berita ini?');"
+                                            title="Hapus Berita">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6">
+                            <div class="empty-state">
+                                <div class="empty-icon">
+                                    <i class="fas fa-newspaper"></i>
+                                </div>
+                                <h3 class="empty-title">Belum ada berita</h3>
+                                <p class="empty-description">Mulai dengan menambahkan berita pertama Anda</p>
+                                <a href="{% url 'administrator:formberitaadmin' %}" class="btn-primary">
+                                    <i class="fas fa-plus" style="margin-right: 8px;"></i>
+                                    Tambah Berita
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <!-- Table Footer -->
+            {% if berita_list %}
+            <div class="table-footer">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span>Menampilkan {{ berita_list|length }} berita</span>
+                    <span>Data terbaru</span>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Image Modal -->
+<div id="imageModal" class="image-modal hidden" onclick="closeImageModal()">
+    <div class="modal-content">
+        <button onclick="closeImageModal()" class="modal-close">
+            <i class="fas fa-times"></i>
+        </button>
+        <img id="modalImage" src="" alt="Preview" class="modal-image">
+    </div>
+</div>
+
+<script>
+function openImageModal(imageSrc) {
+    document.getElementById('modalImage').src = imageSrc;
+    document.getElementById('imageModal').classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeImageModal() {
+    document.getElementById('imageModal').classList.add('hidden');
+    document.body.style.overflow = 'auto';
+}
+
+// Close modal with Escape key
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        closeImageModal();
+    }
+});
+</script>
+
+{% endblock content %}

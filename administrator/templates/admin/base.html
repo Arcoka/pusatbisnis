@@ -1,0 +1,22 @@
+{% extends "admin/base_site.html" %}
+
+{% block extrastyle %}
+{{ block.super }}
+<style>
+    .user-icon {
+        position: absolute;
+        top: 15px;
+        right: 20px;
+        font-size: 20px;
+        color: white;
+        text-decoration: none;
+    }
+</style>
+{% endblock %}
+
+{% block usertools %}
+{{ block.super }}
+<a href="{% url 'administrator:active_users' %}" class="user-icon">
+    👤 <!-- Ikon user -->
+</a>
+{% endblock %}

@@ -1,0 +1,280 @@
+{% extends 'baseadmin.html' %}
+{% load static %}
+{% block content %}
+
+<!-- Content (inherits layout from baseadmin) -->
+<div class="transition-all duration-200 ease-in-out">
+    <!-- Mobile Header -->
+    <div class="md:hidden flex justify-between items-center bg-gradient-to-r from-blue-600 to-blue-800 text-white p-4 shadow-md">
+        <h1 class="text-xl font-bold">{{judul}}</h1>
+        <button @click="isSidebarOpen = !isSidebarOpen" class="focus:outline-none">
+            <i class="fas fa-bars"></i>
+        </button>
+    </div>
+
+    <div class="p-6">
+        <header class="mb-8 ">
+            <div class="bg-gradient-to-r from-blue-600 to-purple-700 text-white rounded-xl shadow-lg p-6 mb-8">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-4">
+                        <div class="p-4 bg-white bg-opacity-20 rounded-full">
+                            <i class="fas fa-store text-3xl"></i>
+                        </div>
+                        <div>
+                            <h1 class="text-3xl font-bold">Selamat Datang, Penjualan</h1>
+                            <p class="text-blue-100 mt-1">Kelola penjualan dan katalog dengan mudah</p>
+                            <div class="flex items-center mt-2">
+                                <span class="inline-block w-2 h-2 bg-green-400 rounded-full mr-2"></span>
+                                <span class="text-sm text-blue-100">Sistem Berjalan Normal</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="hidden md:block">
+                    <div class="text-right">
+                        <div class="text-2xl font-bold">{{ "now"|date:"H:i" }}</div>
+                        <div class="text-blue-200 text-sm">{{ "now"|date:"d M Y" }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Statistics (selaras admin) -->
+        <div class="px-6 mb-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Pesan -->
+                <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-green-500 hover:shadow-lg transition-shadow">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-500">Total Pesan</p>
+                            <h3 class="text-3xl font-bold text-gray-800">{{ pesan }}</h3>
+                            <p class="text-xs text-green-600 mt-1">
+                                <i class="fas fa-message mr-1"></i>Pesan
+                            </p>
+                        </div>
+                        <div class="p-3 bg-green-100 rounded-full">
+                            <i class="fas fa-message text-2xl text-green-600"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Like -->
+                <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-orange-500 hover:shadow-lg transition-shadow">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-500">Total Like</p>
+                            <h3 class="text-3xl font-bold text-gray-800">{{ like }}</h3>
+                            <p class="text-xs text-orange-600 mt-1">
+                                <i class="fas fa-heart mr-1"></i>Like
+                            </p>
+                        </div>
+                        <div class="p-3 bg-orange-100 rounded-full">
+                            <i class="fas fa-heart text-2xl text-orange-600"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Produk -->
+                <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-purple-500 hover:shadow-lg transition-shadow">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-500">Total Produk</p>
+                            <h3 class="text-3xl font-bold text-gray-800">{{ produk }}</h3>
+                            <p class="text-xs text-purple-600 mt-1">
+                                <i class="fas fa-box-open mr-1"></i>Katalog
+                            </p>
+                        </div>
+                        <div class="p-3 bg-purple-100 rounded-full">
+                            <i class="fas fa-box-open text-2xl text-purple-600"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Kategori Penjualan -->
+                <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-blue-500 hover:shadow-lg transition-shadow">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-500">Kategori Penjualan</p>
+                            <h3 class="text-3xl font-bold text-gray-800">{{ kategoripenjualan }}</h3>
+                            <p class="text-xs text-blue-600 mt-1">
+                                <i class="fas fa-tags mr-1"></i>Kategori
+                            </p>
+                        </div>
+                        <div class="p-3 bg-blue-100 rounded-full">
+                            <i class="fas fa-tags text-2xl text-blue-600"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Content Management Penjualan -->
+        <div class="px-6">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl font-bold text-gray-800 flex items-center">
+                    <i class="fas fa-th-large mr-2 text-blue-600"></i>
+                    Content Management
+                </h2>
+                <div>
+                    <button class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition flex items-center">
+                        <i class="fas fa-plus mr-2"></i> Add New
+                    </button>
+                </div>
+            </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Visi & Misi -->
+                    <div class="bg-white rounded-lg shadow hover:shadow-lg transition-all duration-300 overflow-hidden">
+                        <div class="bg-gradient-to-r from-purple-400 to-purple-600 p-4 text-white flex justify-between items-center">
+                            <div class="flex items-center">
+                                <div class="p-2 bg-white rounded-lg">
+                                    <i class="fas fa-bullseye text-xl text-purple-600"></i>
+                                </div>
+                                <h3 class="ml-3 font-semibold">Kategori</h3>
+                            </div>
+                            <span class="px-2 py-1 bg-white text-purple-600 rounded-full text-xs font-bold">{{ kategoripenjualan }}</span>
+                        </div>
+                        <div class="p-4">
+                            <div class="flex justify-between items-center mb-2">
+                                <p class="text-sm text-gray-600">Last updated:</p>
+                                <p class="text-sm font-medium">Today, 10:30 AM</p>
+                            </div>
+                            <div class="flex mt-4 justify-between">
+                                <a href="{% url 'kategoripenjualanadmin' %}" class="px-3 py-1 bg-gray-100 text-gray-700 rounded hover:bg-gray-200 text-sm flex items-center">
+                                    <i class="fas fa-eye mr-1"></i> View
+                                </a>
+                                <a href="{% url 'formkategoripenjualanadmin' %}" class="px-3 py-1 bg-blue-100 text-blue-700 rounded hover:bg-blue-200 text-sm flex items-center">
+                                    <i class="fas fa-edit mr-1"></i> Edit
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Struktur -->
+                    <div class="bg-white rounded-lg shadow hover:shadow-lg transition-all duration-300 overflow-hidden">
+                        <div class="bg-gradient-to-r from-blue-400 to-blue-600 p-4 text-white flex justify-between items-center">
+                            <div class="flex items-center">
+                                <div class="p-2 bg-white rounded-lg">
+                                    <i class="fas fa-sitemap text-xl text-blue-600"></i>
+                                </div>
+                                <h3 class="ml-3 font-semibold">Slide</h3>
+                            </div>
+                            <span class="px-2 py-1 bg-white text-blue-600 rounded-full text-xs font-bold">{{ slidepenjualan }}</span>
+                        </div>
+                        <div class="p-4">
+                            <div class="flex justify-between items-center mb-2">
+                                <p class="text-sm text-gray-600">Last updated:</p>
+                                <p class="text-sm font-medium">Yesterday, 2:15 PM</p>
+                            </div>
+                            <div class="flex mt-4 justify-between">
+                                <a href="{% url 'slidepenjualanadmin' %}" class="px-3 py-1 bg-gray-100 text-gray-700 rounded hover:bg-gray-200 text-sm flex items-center">
+                                    <i class="fas fa-eye mr-1"></i> View
+                                </a>
+                                <a href="{% url 'formslidepenjualanadmin' %}" class="px-3 py-1 bg-blue-100 text-blue-700 rounded hover:bg-blue-200 text-sm flex items-center">
+                                    <i class="fas fa-edit mr-1"></i> Edit
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Team -->
+                    <div class="bg-white rounded-lg shadow hover:shadow-lg transition-all duration-300 overflow-hidden">
+                        <div class="bg-gradient-to-r from-indigo-400 to-indigo-600 p-4 text-white flex justify-between items-center">
+                            <div class="flex items-center">
+                                <div class="p-2 bg-white rounded-lg">
+                                    <i class="fas fa-users text-xl text-indigo-600"></i>
+                                </div>
+                                <h3 class="ml-3 font-semibold">Jasa</h3>
+                            </div>
+                            <span class="px-2 py-1 bg-white text-indigo-600 rounded-full text-xs font-bold">{{ jasa }}</span>
+                        </div>
+                        <div class="p-4">
+                            <div class="flex justify-between items-center mb-2">
+                                <p class="text-sm text-gray-600">Last updated:</p>
+                                <p class="text-sm font-medium">May 15, 2025</p>
+                            </div>
+                            <div class="flex mt-4 justify-between">
+                                <a href="{% url 'jasaadmin' %}" class="px-3 py-1 bg-gray-100 text-gray-700 rounded hover:bg-gray-200 text-sm flex items-center">
+                                    <i class="fas fa-eye mr-1"></i> View
+                                </a>
+                                <a href="{% url 'formjasaadmin' %}" class="px-3 py-1 bg-blue-100 text-blue-700 rounded hover:bg-blue-200 text-sm flex items-center">
+                                    <i class="fas fa-edit mr-1"></i> Edit
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                   
+
+                    <!-- Kategori -->
+                    <div class="bg-white rounded-lg shadow hover:shadow-lg transition-all duration-300 overflow-hidden">
+                        <div class="bg-gradient-to-r from-green-400 to-green-600 p-4 text-white flex justify-between items-center">
+                            <div class="flex items-center">
+                                <div class="p-2 bg-white rounded-lg">
+                                    <i class="fas fa-folder text-xl text-green-600"></i>
+                                </div>
+                                <h3 class="ml-3 font-semibold">Kategori</h3>
+                            </div>
+                            <span class="px-2 py-1 bg-white text-green-600 rounded-full text-xs font-bold">{{ kategori }}</span>
+                        </div>
+                        <div class="p-4">
+                            <div class="flex justify-between items-center mb-2">
+                                <p class="text-sm text-gray-600">Last updated:</p>
+                                <p class="text-sm font-medium">May 10, 2025</p>
+                            </div>
+                            <div class="flex mt-4 justify-between">
+                                <a href="{% url 'kategoripenjualanadmin' %}" class="px-3 py-1 bg-gray-100 text-gray-700 rounded hover:bg-gray-200 text-sm flex items-center">
+                                    <i class="fas fa-eye mr-1"></i> View
+                                </a>
+                                <a href="{% url 'formkategoripenjualanadmin' %}" class="px-3 py-1 bg-blue-100 text-blue-700 rounded hover:bg-blue-200 text-sm flex items-center">
+                                    <i class="fas fa-edit mr-1"></i> Edit
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                   
+                </div>
+
+                <!-- Recent Activity -->
+            </div>
+        </header>
+    </div>
+    
+    <!-- Aksi Cepat (selaras dengan admin) -->
+    <div class="px-6 mb-8">
+        <div class="bg-gradient-to-r from-gray-800 to-gray-900 rounded-xl shadow-lg p-6">
+            <h2 class="text-xl font-bold text-white mb-4 flex items-center">
+                <i class="fas fa-bolt mr-2 text-yellow-400"></i>
+                Aksi Cepat
+            </h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                <a href="{% url 'formkategoripenjualanadmin' %}" class="bg-white bg-opacity-10 hover:bg-opacity-20 rounded-lg p-4 text-center transition-all group">
+                    <i class="fas fa-tags text-2xl text-green-400 group-hover:text-green-300 mb-2"></i>
+                    <p class="text-white text-sm font-medium">Tambah Kategori</p>
+                </a>
+                <a href="{% url 'formslidepenjualanadmin' %}" class="bg-white bg-opacity-10 hover:bg-opacity-20 rounded-lg p-4 text-center transition-all group">
+                    <i class="fas fa-image text-2xl text-blue-400 group-hover:text-blue-300 mb-2"></i>
+                    <p class="text-white text-sm font-medium">Tambah Slide</p>
+                </a>
+                <a href="{% url 'formjasaadmin' %}" class="bg-white bg-opacity-10 hover:bg-opacity-20 rounded-lg p-4 text-center transition-all group">
+                    <i class="fas fa-tools text-2xl text-indigo-400 group-hover:text-indigo-300 mb-2"></i>
+                    <p class="text-white text-sm font-medium">Tambah Jasa</p>
+                </a>
+                <a href="{% url 'kategoripenjualanadmin' %}" class="bg-white bg-opacity-10 hover:bg-opacity-20 rounded-lg p-4 text-center transition-all group">
+                    <i class="fas fa-list text-2xl text-yellow-400 group-hover:text-yellow-300 mb-2"></i>
+                    <p class="text-white text-sm font-medium">Kelola Kategori</p>
+                </a>
+                <a href="{% url 'slidepenjualanadmin' %}" class="bg-white bg-opacity-10 hover:bg-opacity-20 rounded-lg p-4 text-center transition-all group">
+                    <i class="fas fa-images text-2xl text-cyan-400 group-hover:text-cyan-300 mb-2"></i>
+                    <p class="text-white text-sm font-medium">Kelola Slide</p>
+                </a>
+                <a href="{% url 'jasaadmin' %}" class="bg-white bg-opacity-10 hover:bg-opacity-20 rounded-lg p-4 text-center transition-all group">
+                    <i class="fas fa-toolbox text-2xl text-red-400 group-hover:text-red-300 mb-2"></i>
+                    <p class="text-white text-sm font-medium">Kelola Jasa</p>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

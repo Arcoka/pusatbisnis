@@ -1,0 +1,45 @@
+{% extends "baseadmin.html" %}
+{% load static %}
+{% block content %}
+<div class="flex-1 p-6 transition-all duration-200 ease-in-out">
+    <header class="mb-8">
+        <h1 class="text-3xl font-bold text-gray-700">Tambah Kontak</h1>
+    </header>
+    <div class="bg-white shadow rounded-lg p-6">
+        <form action="" method="post" enctype="multipart/form-data" class="space-y-6">
+            {% csrf_token %}
+            <div class="mb-4">
+                <label for="id_alamat" class="block text-gray-700 font-bold mb-2">Alamat:</label>
+                {{ form.alamat }}
+            </div>
+            <div class="mb-4">
+                <label for="id_no_1" class="block text-gray-700 font-bold mb-2">Nomor Telepon 1:</label>
+                {{ form.no_1 }}
+            </div>
+            <div class="mb-4">
+                <label for="id_no_2" class="block text-gray-700 font-bold mb-2">Nomor Telepon 2 (Opsional):</label>
+                {{ form.no_2 }}
+            </div>
+            <div class="mb-4">
+                <label for="id_email" class="block text-gray-700 font-bold mb-2">Email:</label>
+                {{ form.email }}
+            </div>
+            <div class="mb-4">
+                <label for="id_hari" class="block text-gray-700 font-bold mb-2">Hari Operasional:</label>
+                {{ form.hari }}
+            </div>
+            <div class="mb-4">
+                <label for="id_jam" class="block text-gray-700 font-bold mb-2">Jam Operasional:</label>
+                {{ form.jam }}
+            </div>
+            
+            <div class="flex justify-end">
+                <button type="submit" 
+                        class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                    Simpan
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock content %}

@@ -1,0 +1,240 @@
+{% extends 'baseadmin.html' %}
+{% load static %}
+
+{% block title %}Detail Pendaftaran Tenant{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <div class="flex justify-between items-center mb-6">
+        <h2 class="text-2xl font-bold">Detail Pendaftaran Tenant</h2>
+        <div>
+            <a href="{% url 'administrator:daftartenant_list' %}" class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                </svg>
+                Kembali ke Daftar
+            </a>
+        </div>
+    </div>
+    
+    {% if messages %}
+    <div class="mb-6">
+        {% for message in messages %}
+        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-2" role="alert">
+            <span class="block sm:inline">{{ message }}</span>
+            <button type="button" class="absolute top-0 right-0 px-4 py-3" onclick="this.parentElement.remove()">
+                <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                </svg>
+            </button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    
+    <div class="flex flex-col md:flex-row gap-6">
+        <div class="w-full md:w-2/3">
+            <div class="bg-white rounded-lg shadow-md mb-6">
+                <div class="border-b px-6 py-4">
+                    <h5 class="font-semibold text-lg">Informasi Tenant</h5>
+                </div>
+                <div class="p-6">
+                    <div class="grid md:grid-cols-2 gap-6 mb-6">
+                        <div>
+                            <table class="w-full">
+                                <tbody>
+                                    <tr class="border-b border-gray-100">
+                                        <th class="text-left py-2 w-2/5 text-gray-600">ID Tenant</th>
+                                        <td class="py-2">{{ daftartenant.id }}</td>
+                                    </tr>
+                                    <tr class="border-b border-gray-100">
+                                        <th class="text-left py-2 text-gray-600">Nama</th>
+                                        <td class="py-2">{{ daftartenant.nama }}</td>
+                                    </tr>
+                                    <tr class="border-b border-gray-100">
+                                        <th class="text-left py-2 text-gray-600">Email</th>
+                                        <td class="py-2">
+                                            <a href="mailto:{{ daftartenant.email }}" class="text-blue-600 hover:underline">{{ daftartenant.email }}</a>
+                                        </td>
+                                    </tr>
+                                    <tr class="border-b border-gray-100">
+                                        <th class="text-left py-2 text-gray-600">Telepon</th>
+                                        <td class="py-2">
+                                            <a href="tel:{{ daftartenant.telepon }}" class="text-blue-600 hover:underline">{{ daftartenant.telepon }}</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div>
+                            <table class="w-full">
+                                <tbody>
+                                    <tr class="border-b border-gray-100">
+                                        <th class="text-left py-2 w-2/5 text-gray-600">Jenis Usaha</th>
+                                        <td class="py-2">{{ daftartenant.jenisusaha|default:"Tidak tersedia" }}</td>
+                                    </tr>
+                                    <tr class="border-b border-gray-100">
+                                        <th class="text-left py-2 text-gray-600">Tanggal Pendaftaran</th>
+                                        <td class="py-2">{{ daftartenant.tanggal_upload|date:"d F Y - H:i" }}</td>
+                                    </tr>
+                                    <tr class="border-b border-gray-100">
+                                        <th class="text-left py-2 text-gray-600">Status Baca</th>
+                                        <td class="py-2">
+                                            {% if daftartenant.is_read %}
+                                                <span class="bg-green-100 text-green-800 px-2 py-1 rounded text-sm">Sudah Dibaca</span>
+                                            {% else %}
+                                                <span class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded text-sm">Belum Dibaca</span>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    {% if daftartenant.alamat %}
+                    <div class="mb-6">
+                        <h6 class="font-semibold mb-2">Alamat:</h6>
+                        <div class="p-3 bg-gray-50 rounded">
+                            {{ daftartenant.alamat|linebreaks }}
+                        </div>
+                    </div>
+                    {% endif %}
+                    
+                    {% if daftartenant.deskripsi %}
+                    <div class="mb-6">
+                        <h6 class="font-semibold mb-2">Deskripsi Usaha:</h6>
+                        <div class="p-3 bg-gray-50 rounded">
+                            {{ daftartenant.deskripsi|linebreaks }}
+                        </div>
+                    </div>
+                    {% endif %}
+                    
+                    {% if daftartenant.form_upload %}
+                    <div class="mb-6">
+                        <h6 class="font-semibold mb-2">Form Upload:</h6>
+                        <div class="p-3 bg-blue-50 border border-blue-200 rounded">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <svg class="w-6 h-6 text-blue-600 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd"/>
+                                    </svg>
+                                    <div>
+                                        <p class="font-medium text-blue-900">Form Pendaftaran</p>
+                                        <p class="text-sm text-blue-700">{{ daftartenant.form_upload.name|slice:"12:" }}</p>
+                                    </div>
+                                </div>
+                                <a href="{{ daftartenant.form_upload.url }}" target="_blank" 
+                                   class="inline-flex items-center px-3 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700">
+                                    <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
+                                        <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"/>
+                                    </svg>
+                                    Lihat File
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                    
+                </div>
+            </div>
+        </div>
+        <div class="w-full md:w-1/3">
+            <div class="bg-white rounded-lg shadow-md mb-6">
+                <div class="border-b px-6 py-4">
+                    <h5 class="font-semibold text-lg">Status Tenant</h5>
+                </div>
+                <div class="p-6">
+                    <div class="flex flex-col items-center mb-6">
+                        {% if daftartenant.aktif %}
+                            <div class="text-6xl text-green-500 mb-2">
+                                <svg class="w-16 h-16" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                            <h4 class="text-xl font-medium mb-1">Tenant Aktif</h4>
+                            <p class="text-gray-500">
+                                {% if daftartenant.is_read %}
+                                    Sudah Dibaca
+                                {% else %}
+                                    Belum Dibaca
+                                {% endif %}
+                            </p>
+                        {% else %}
+                            <div class="text-6xl text-red-500 mb-2">
+                                <svg class="w-16 h-16" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                            <h4 class="text-xl font-medium mb-1">Tenant Tidak Aktif</h4>
+                        {% endif %}
+                    </div>
+                    
+                    <form method="post" action="{% url 'administrator:toggle_aktif' daftartenant.id %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="next" value="{% url 'administrator:daftartenant_detail' daftartenant.slug %}">
+                        {% if daftartenant.aktif %}
+                            <button type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white py-3 px-4 rounded-md mb-4 flex items-center justify-center">
+                                <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                                </svg>
+                                Nonaktifkan Tenant
+                            </button>
+                        {% else %}
+                            <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white py-3 px-4 rounded-md mb-4 flex items-center justify-center">
+                                <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                </svg>
+                                Aktifkan Tenant
+                            </button>
+                        {% endif %}
+                    </form>
+                    
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-lg shadow-md">
+                <div class="border-b px-6 py-4">
+                    <h5 class="font-semibold text-lg">Informasi Lainnya</h5>
+                </div>
+                <div class="p-6">
+                    <table class="w-full">
+                        <tbody>
+                            <tr>
+                                <th class="text-left py-2 text-gray-600">Slug</th>
+                                <td class="py-2">{{ daftartenant.slug }}</td>
+                            </tr>
+                            <tr>
+                                <th class="text-left py-2 text-gray-600">Token</th>
+                                <td class="py-2">
+                                    <code class="text-xs bg-gray-100 px-2 py-1 rounded">{{ daftartenant.token_daftartenant|default:"-" }}</code>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            {% if request.user.admin_panel_profile.is_superadmin %}
+            <div class="bg-white rounded-lg shadow-md mt-6">
+                <div class="border-b px-6 py-4">
+                    <h5 class="font-semibold text-lg">Aksi Admin</h5>
+                </div>
+                <div class="p-6">
+                    <form method="POST" action="{% url 'administrator:daftartenant_delete' daftartenant.slug %}" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data tenant ini?');">
+                        {% csrf_token %}
+                        <button type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white py-3 px-4 rounded-md flex items-center justify-center">
+                            <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"/>
+                            </svg>
+                            Hapus Tenant
+                        </button>
+                    </form>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

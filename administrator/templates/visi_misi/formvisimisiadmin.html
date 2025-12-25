@@ -1,0 +1,64 @@
+{% extends "baseadmin.html" %}
+{% load static %}
+{% block content %}
+<div class="overflow-x-auto flex-1 p-6 transition-all duration-200 ease-in-out">
+    <header class="mb-8 flex items-center space-x-3">
+        <i class="fas fa-layer-group text-pink-300 text-2xl"></i>
+        <h1 class="text-3xl font-bold text-gray-700">{{ judul }}</h1>
+    </header>
+    
+    <div class="bg-white shadow rounded-lg p-6">
+        <form method="post">
+            {% csrf_token %}
+            
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="id_visi">
+                    Visi
+                </label>
+                {{ form.visi }}
+                <small class="text-gray-500">Gunakan editor untuk memasukkan visi</small>
+            </div>
+            
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="id_misi">
+                    Misi
+                </label>
+                {{ form.misi }}
+                <small class="text-gray-500">Gunakan editor untuk memasukkan misi</small>
+            </div>
+            
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="id_sasaran">
+                    Sasaran
+                </label>
+                {{ form.sasaran }}
+                <small class="text-gray-500">Gunakan editor untuk memasukkan sasaran</small>
+            </div>
+            
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="id_tujuan">
+                    Tujuan
+                </label>
+                {{ form.tujuan }}
+                <small class="text-gray-500">Gunakan editor untuk memasukkan tujuan</small>
+            </div>
+            
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="id_aktif">
+                    Status Aktif
+                </label>
+                {{ form.aktif }}
+            </div>
+            
+            <div class="flex items-center justify-between">
+                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
+                    Simpan
+                </button>
+                <a href="{% url 'administrator:visimisiadmin' %}" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                    Batal
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock content %}

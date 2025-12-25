@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+{% load static %}
+{% block body_class %}index-page{% endblock %}
+{% block content %}
+
+<!-- Hero Section -->
+<div class="hero-pilihan">
+    <div class="hero-content">
+
+        <!-- <a href="#" class="hero-button">Mulai Sekarang</a> -->
+
+        <!-- Animasi latar belakang yang lebih profesional -->
+        <div class="particles">
+            <div class="particle" style="top: 20%; left: 10%; animation-delay: 0s;"></div>
+            <div class="particle" style="top: 30%; left: 25%; animation-delay: 2s;"></div>
+            <div class="particle" style="top: 50%; left: 15%; animation-delay: 4s;"></div>
+            <div class="particle" style="top: 70%; left: 20%; animation-delay: 1s;"></div>
+            <div class="particle" style="top: 80%; left: 40%; animation-delay: 3s;"></div>
+            <div class="particle" style="top: 40%; left: 60%; animation-delay: 5s;"></div>
+            <div class="particle" style="top: 60%; left: 50%; animation-delay: 0s;"></div>
+            <div class="particle" style="top: 10%; left: 50%; animation-delay: 2s;"></div>
+            <div class="particle" style="top: 30%; left: 70%; animation-delay: 1s;"></div>
+            <div class="particle" style="top: 60%; left: 80%; animation-delay: 3s;"></div>
+        </div>
+
+        <div class="wave wave-1"></div>
+        <div class="wave wave-2"></div>
+        <div class="wave wave-3"></div>
+
+        <!-- Dekorasi lingkaran dengan animasi -->
+        <div class="circle-decoration circle-1"></div>
+        <div class="circle-decoration circle-2"></div>
+    </div>
+
+    <div class="hero-image-container">
+        <img src="{% static 'assets/img/acara/hipmisurabaya.jpg' %}" alt="Gedung Bisnis Modern" class="hero-image">
+    </div>
+</div>
+
+<!-- Portfolio Details Section -->
+<section id="portfolio-details" class="portfolio-details">
+
+    <div class="container section-title" style="margin-bottom: -10px;" data-aos="fade-up">
+        <h2>Tenant Inkubator</h2>
+    </div><!-- End Section Title -->
+    <div class="container" data-aos="fade-up">
+        <div class="row justify-content-between gy-4 ">
+            <div class="col-lg-8" data-aos="fade-up">
+                <div class="portfolio-description">
+                    <h2>Apa Itu Tenant Inkubator?</h2>
+                    <p>
+                        Tenant Inkubator adalah individu, tim, atau startup yang bergabung dalam program inkubasi bisnis
+                        di
+                        Pusat Inkubator Bisnis Universitas Nurul Jadid (UNUJA). Mereka adalah wirausahawan muda yang
+                        ingin
+                        mengembangkan ide bisnis mereka dengan dukungan dari mentor, fasilitas, dan ekosistem yang
+                        mendukung
+                        pertumbuhan usaha.
+                    </p>
+                    <p>
+                        Bergabung dengan Inkubator Pusat Bisnis UNUJA bukan sekadar mendapatkan tempat kerja, tetapi
+                        juga
+                        sebuah ekosistem yang siap membantu bisnis berkembang dengan pesat.
+                    </p>
+
+                    <p>🔹<strong> Lingkungan yang Mendukung:</strong> Bertemu dengan sesama entrepreneur yang memiliki
+                        visi
+                        serupa akan memberikan inspirasi dan semangat baru.</p>
+                    <p>🔹<strong> Dukungan Berkelanjutan:</strong> Dari ide awal hingga tahap ekspansi bisnis, tenant
+                        akan
+                        mendapatkan pendampingan dan akses ke sumber daya yang dibutuhkan.</p>
+                    <p>🔹<strong>Peluang Kolaborasi:</strong> Berjejaring dengan pelaku bisnis lain, investor, dan
+                        mentor
+                        yang akan mempercepat pertumbuhan usaha.</p>
+                    <p>🔹<strong>Akses Teknologi dan Inovasi:</strong> Memanfaatkan fasilitas riset dan laboratorium
+                        teknologi untuk mengembangkan produk dan layanan yang lebih kompetitif.</p>
+
+                </div>
+            </div>
+
+            <div class="col-lg-3" data-aos="fade-up" data-aos-delay="100">
+                <div class="portfolio-info">
+                    <h3>Layanan untuk Tenant Inkubator</h3>
+                    <ul>
+                        <li><strong>Pendampingan Bisnisr</strong><br>Mentoring dan konsultasi bisnis untuk pengembangan
+                            startup
+                            dari awal hingga ekspansi.</li>
+                        <li><strong>Akses keinvestor</strong><br>Membuka peluang pendanaan dari investor dan venture
+                            capital
+                            untuk bisnis yang menjanjikan.</li>
+                        <li><strong>Pelatihan & Workshop</strong><br>Kelas intensif dalam pemasaran digital, manajemen
+                            keuangan,
+                            dan pengembangkan produk.</li>
+                        
+                        <li><strong>Pelatihan & Workshop</strong><br>Kelas intensif dalam pemasaran digital, manajemen
+                            keuangan,
+                            dan pengembangkan produk.</li>
+                        
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+{{ ... }}
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        new Swiper('.hero-slider', {
+            loop: true,
+            speed: 800,
+            autoplay: {
+                delay: 5000,
+                disableOnInteraction: false
+            },
+            pagination: {
+                el: '.hero-slider .swiper-pagination',
+                clickable: true
+            },
+            navigation: {
+                nextEl: '.hero-slider .swiper-button-next',
+                prevEl: '.hero-slider .swiper-button-prev'
+            }
+        });
+    });
+</script>
+
+
+{% endblock content %}

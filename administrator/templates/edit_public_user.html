@@ -1,0 +1,134 @@
+{% extends "baseadmin.html" %}
+{% load static %}
+
+{% block title %}Edit User Biasa{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-2xl font-bold">Edit User Biasa</h1>
+        <div class="space-x-2">
+            <a href="{% url 'administrator:daftar_user' %}" class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded">
+                <i class="fas fa-arrow-left mr-2"></i>Kembali ke Daftar User
+            </a>
+        </div>
+    </div>
+
+    <div class="bg-white rounded-lg shadow overflow-hidden">
+        <form method="post" class="space-y-6">
+            {% csrf_token %}
+            
+            <!-- Informasi Dasar -->
+            <div class="p-6">
+                <h2 class="text-lg font-semibold text-gray-900 border-b pb-2 mb-4">Informasi Dasar</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="text-sm font-medium text-gray-500">Username *</label>
+                        <input type="text" name="username" value="{{ user.username }}" required
+                               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-4 py-3 text-base">
+                    </div>
+                    <div>
+                        <label class="text-sm font-medium text-gray-500">Email</label>
+                        <input type="email" name="email" value="{{ user.email }}"
+                               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-4 py-3 text-base">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Status User -->
+            <div class="p-6 border-t">
+                <h2 class="text-lg font-semibold text-gray-900 border-b pb-2 mb-4">Status User</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="text-sm font-medium text-gray-500">Status Akun</label>
+                        <div class="mt-2">
+                            <div class="flex items-center">
+                                <input type="checkbox" name="is_active" {% if user.is_active %}checked{% endif %}
+                                       class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                                <label class="ml-2 block text-sm text-gray-900">
+                                    Akun Aktif
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="text-sm font-medium text-gray-500">Staff Status</label>
+                        <div class="mt-2">
+                            <div class="flex items-center">
+                                <input type="checkbox" name="is_staff" {% if user.is_staff %}checked{% endif %}
+                                       class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                                <label class="ml-2 block text-sm text-gray-900">
+                                    Staff Status (bisa mengakses admin panel)
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Password -->
+            <div class="p-6 border-t">
+                <h2 class="text-lg font-semibold text-gray-900 border-b pb-2 mb-4">Password</h2>
+                
+                <div class="space-y-4">
+                    <div>
+                        <label class="text-sm font-medium text-gray-500">Password Saat Ini</label>
+                        <p class="text-sm text-gray-900">
+                            <span class="font-mono text-xs bg-gray-100 px-2 py-1 rounded">••••••••</span>
+                            <span class="text-xs text-gray-500 ml-2">(Hashed)</span>
+                        </p>
+                    </div>
+                    <div>
+                        <label class="text-sm font-medium text-gray-500">Password Baru</label>
+                        <input type="password" name="password"
+                               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-4 py-3 text-base"
+                               placeholder="Kosongkan jika tidak ingin mengubah">
+                        <p class="mt-1 text-sm text-gray-500">Minimal 8 karakter</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Informasi Waktu (Read-only) -->
+            <div class="p-6 border-t">
+                <h2 class="text-lg font-semibold text-gray-900 border-b pb-2 mb-4">Informasi Waktu</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="text-sm font-medium text-gray-500">Tanggal Daftar</label>
+                        <p class="text-sm text-gray-900 font-medium">{{ user.date_joined|date:'d F Y H:i:s' }}</p>
+                    </div>
+                    <div>
+                        <label class="text-sm font-medium text-gray-500">Terakhir Login</label>
+                        <p class="text-sm text-gray-900 font-medium">{{ user.last_login|date:'d F Y H:i:s'|default:'Belum pernah login' }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tombol Aksi -->
+            <div class="p-6 bg-gray-50 border-t">
+                <div class="flex justify-between">
+                    <div>
+                        {% if user.id != request.user.id %}
+                        <a href="{% url 'administrator:delete_admin_user' user.id %}" 
+                           class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded"
+                           onclick="return confirm('Apakah Anda yakin ingin menghapus user {{ user.username }}?')">
+                            <i class="fas fa-trash mr-2"></i>Hapus User
+                        </a>
+                        {% endif %}
+                    </div>
+                    <div class="space-x-3">
+                        <a href="{% url 'administrator:daftar_user' %}" class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded">
+                            Batal
+                        </a>
+                        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
+                            <i class="fas fa-save mr-2"></i>Simpan Perubahan
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

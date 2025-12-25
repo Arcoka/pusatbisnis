@@ -1,0 +1,182 @@
+{% extends "base.html" %}
+{% load static %}
+{% block body_class %}index-page{% endblock %}
+{% block content %}
+
+{% for row in slide  %}
+
+<div class="hero-pilihan">
+    <div class="hero-content">
+
+        <!-- <a href="#" class="hero-button">Mulai Sekarang</a> -->
+
+        <!-- Animasi latar belakang yang lebih profesional -->
+        <div class="particles">
+            <div class="particle" style="top: 20%; left: 10%; animation-delay: 0s;"></div>
+            <div class="particle" style="top: 30%; left: 25%; animation-delay: 2s;"></div>
+            <div class="particle" style="top: 50%; left: 15%; animation-delay: 4s;"></div>
+            <div class="particle" style="top: 70%; left: 20%; animation-delay: 1s;"></div>
+            <div class="particle" style="top: 80%; left: 40%; animation-delay: 3s;"></div>
+            <div class="particle" style="top: 40%; left: 60%; animation-delay: 5s;"></div>
+            <div class="particle" style="top: 60%; left: 50%; animation-delay: 0s;"></div>
+            <div class="particle" style="top: 10%; left: 50%; animation-delay: 2s;"></div>
+            <div class="particle" style="top: 30%; left: 70%; animation-delay: 1s;"></div>
+            <div class="particle" style="top: 60%; left: 80%; animation-delay: 3s;"></div>
+        </div>
+
+        <div class="wave wave-1"></div>
+        <div class="wave wave-2"></div>
+        <div class="wave wave-3"></div>
+
+        <!-- Dekorasi lingkaran dengan animasi -->
+        <div class="circle-decoration circle-1"></div>
+        <div class="circle-decoration circle-2"></div>
+    </div>
+
+    <div class="hero-image-container">
+        <img src="{{ row.gambar_slide.url }}" alt="Gedung Bisnis Modern" class="hero-image">
+    </div>
+</div>
+
+{% endfor %}
+<!-- Services Section -->
+
+<section id="jenislayanan" class="services section">
+    <div class="section-title " style="margin-bottom: -10px;">
+        <h2>Jenis Layanan</h2>
+        <p></p>
+    </div>
+
+    <div class="container">
+
+        <div class="row gy-4">
+
+            <div class="col-lg-12 " data-aos="fade-up" data-aos-delay="100">
+                <div class="service-item d-flex">
+                    <div class="icon flex-shrink-0"><i class="bi bi-briefcase"></i></div>
+                    <div>
+                        <h4 class="title"><a href="#" class="stretched-link">Konsultasi Bisnis Umum</a></h4>
+                        <p class="description">
+                            <ul>
+                                <li>Sesi Konsultasi Pribadi: Sesi tatap muka atau daring dengan konsultan bisnis
+                                    berpengalaman untuk mendiskusikan berbagai aspek bisnis, termasuk strategi,
+                                    model bisnis, dan rencana pengembangan.</li>
+                                <li>Pembuatan Rencana Bisnis: Bantuan dalam menyusun dan menyempurnakan rencana
+                                    bisnis yang komprehensif, termasuk analisis pasar, proyeksi keuangan, dan
+                                    strategi pemasaran.</li>
+                                <li>Evaluasi Ide Bisnis: Ulasan mendalam terhadap ide bisnis untuk menilai
+                                    kelayakan dan potensi pasar.</li>
+                            </ul>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <!-- End Service Item -->
+
+            <div class="col-lg-12 " data-aos="fade-up" data-aos-delay="200">
+                <div class="service-item d-flex">
+                    <div class="icon flex-shrink-0"><i class="bi bi-card-checklist"></i></div>
+                    <div>
+                        <h4 class="title"><a href="#" class="stretched-link">Konsultasi Manajerial</a></h4>
+                        <p class="description">
+                            <ul>
+                                <li>Manajemen Operasional: Bantuan dalam mengelola operasi bisnis sehari-hari,
+                                    termasuk manajemen rantai pasokan, pengelolaan inventaris, dan proses
+                                    produksi.</li>
+                                <li>Manajemen Sumber Daya Manusia (SDM): Konsultasi tentang pengelolaan tim,
+                                    rekrutmen, pelatihan, dan pengembangan karyawan.</li>
+                                <li>Strategi Pengembangan Organisasi: Dukungan dalam merancang dan
+                                    mengimplementasikan strategi untuk pertumbuhan dan ekspansi bisnis.</li>
+                            </ul>
+                        </p>
+                    </div>
+                </div>
+            </div><!-- End Service Item -->
+
+            <div class="col-lg-12 " data-aos="fade-up" data-aos-delay="300">
+                <div class="service-item d-flex">
+                    <div class="icon flex-shrink-0"><i class="bi bi-bar-chart"></i></div>
+                    <div>
+                        <h4 class="title"><a href="#" class="stretched-link">Konsultasi Pemasaran dan
+                                Penjualan</a></h4>
+                        <p class="description">
+                            <ul>
+                                <li>Strategi Pemasaran: Bantuan dalam merancang strategi pemasaran, kampanye
+                                    iklan, dan promosi untuk menarik dan mempertahankan pelanggan.</li>
+                                <li>Analisis Pasar: Ulasan tentang tren pasar, analisis pesaing, dan segmentasi
+                                    pelanggan untuk menyesuaikan penawaran produk atau layanan.</li>
+                                <li>Pengembangan Brand: Konsultasi untuk membangun dan mengelola identitas
+                                    merek, termasuk logo, branding, dan strategi komunikasi.</li>
+                            </ul>
+                        </p>
+                    </div>
+                </div>
+            </div><!-- End Service Item -->
+
+            <div class="col-lg-12 " data-aos="fade-up" data-aos-delay="400">
+                <div class="service-item d-flex">
+                    <div class="icon flex-shrink-0"><i class="bi bi-binoculars"></i></div>
+                    <div>
+                        <h4 class="title"><a href="#" class="stretched-link">Konsultasi Keuangan</a></h4>
+                        <p class="description">
+                            <ul>
+                                <li>Perencanaan Keuangan: Bantuan dalam menyusun anggaran, proyeksi keuangan,
+                                    dan rencana pengelolaan arus kas.</li>
+                                <li>Pendanaan dan Investasi: Konsultasi tentang cara memperoleh pendanaan,
+                                    mencari investor, dan menyiapkan presentasi untuk pitch investor.</li>
+                                <li>Manajemen Risiko: Penilaian risiko finansial dan strategi untuk mengelola
+                                    dan mengurangi risiko bisnis.</li>
+                            </ul>
+                            <p>
+                    </div>
+                </div>
+            </div><!-- End Service Item -->
+
+            <div class="col-lg-12 " data-aos="fade-up" data-aos-delay="500">
+                <div class="service-item d-flex">
+                    <div class="icon flex-shrink-0"><i class="bi bi-brightness-high"></i></div>
+                    <div>
+                        <h4 class="title"><a href="#" class="stretched-link">Konsultasi Teknologi dan
+                                Digital</a></h4>
+                        <p class="description">
+                            <ul>
+                                <li>Strategi Teknologi: Bantuan dalam memilih dan mengimplementasikan teknologi
+                                    yang tepat untuk mendukung operasi bisnis, seperti perangkat lunak manajemen
+                                    atau alat analitik.</li>
+                                <li>Transformasi Digital: Dukungan dalam mengadopsi dan memanfaatkan teknologi
+                                    digital untuk meningkatkan efisiensi dan mencapai tujuan bisnis.</li>
+                                <li>Pengembangan Situs Web dan Aplikasi: Konsultasi tentang pengembangan dan
+                                    optimasi situs web atau aplikasi untuk meningkatkan visibilitas dan
+                                    interaksi dengan pelanggan.</li>
+                            </ul>
+                            <p>
+                    </div>
+                </div>
+            </div><!-- End Service Item -->
+
+            <div class="col-lg-12 " data-aos="fade-up" data-aos-delay="600">
+                <div class="service-item d-flex">
+                    <div class="icon flex-shrink-0"><i class="bi bi-calendar4-week"></i></div>
+                    <div>
+                        <h4 class="title"><a href="#" class="stretched-link">Konsultasi Hukum dan Kepatuhan</a>
+                        </h4>
+                        <p class="description">
+                            <ul>
+                                <li>Aspek Hukum Bisnis: Bantuan dalam memahami dan memenuhi persyaratan hukum
+                                    dan peraturan yang relevan, termasuk pendaftaran bisnis, perlindungan hak
+                                    kekayaan intelektual, dan kepatuhan peraturan.</li>
+                                <li>Kontrak dan Perjanjian: Bantuan dalam merancang dan meninjau kontrak bisnis,
+                                    perjanjian kemitraan, dan dokumen hukum lainnya.</li>
+                            </ul>
+                            <p>
+                    </div>
+                </div>
+            </div><!-- End Service Item -->
+
+        </div>
+
+    </div>
+
+</section><!-- /Services Section -->
+
+{% endblock content %}

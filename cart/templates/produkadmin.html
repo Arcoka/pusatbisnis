@@ -1,0 +1,268 @@
+{% extends "baseadmin.html" %}
+{% load static %}
+{% load humanize %}
+{% block title %}{{ judul|default:'Data Produk' }}{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-6">
+    <!-- Header Section -->
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+        <div class="mb-4 md:mb-0">
+            <div class="flex items-center">
+                <div class="bg-blue-100 p-3 rounded-full mr-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="text-2xl md:text-3xl font-bold text-gray-800">{{ judul|default:'Data Produk' }}</h1>
+                    <p class="text-gray-600 mt-1">Kelola semua produk Anda di satu tempat</p>
+                </div>
+            </div>
+        </div>
+        <div class="flex items-center space-x-2">
+            <div class="relative">
+                <input id="prod-q" type="text" placeholder="Cari produk..." oninput="applyProdukFilter()" class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                <div class="absolute left-3 top-2.5 text-gray-400">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                </div>
+            </div>
+            <select id="prod-st" onchange="applyProdukFilter()" class="pl-3 pr-8 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm">
+                <option value="all">Semua Status</option>
+                <option value="aktif">Aktif</option>
+                <option value="nonaktif">Nonaktif</option>
+                <option value="habis">Stok Habis</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+        <div class="bg-white rounded-lg shadow p-4 border-l-4 border-blue-500">
+            <div class="flex justify-between items-center">
+                <div>
+                    <p class="text-sm text-gray-500">Total Produk</p>
+                    <h3 id="total-produk-value" class="text-2xl font-bold text-gray-800" data-total-produk="1">{{ produk|length }}</h3>
+                </div>
+                <div class="bg-blue-100 p-3 rounded-full">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="bg-white rounded-lg shadow-md overflow-hidden">
+        <!-- Table Header -->
+        <div class="p-4 border-b border-gray-200 flex flex-col sm:flex-row justify-between items-start sm:items-center">
+            <div class="mb-2 sm:mb-0">
+                <h3 class="text-lg font-medium text-gray-900">Daftar Produk</h3>
+                <p class="text-sm text-gray-500 mt-1">Terakhir diperbarui: {% now "j F Y H:i" %}</p>
+            </div>
+            <div class="flex space-x-2">
+                {% if perms.cart.add_produk %}
+                <a href="{% url 'formprodukadmin' %}" class="inline-flex items-center px-4 py-1.5 bg-blue-600 border border-transparent rounded-md font-medium text-xs text-white uppercase tracking-wider hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                    </svg>
+                    Tambah Produk
+                </a>
+                {% endif %}
+                <button class="px-3 py-1.5 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">
+                    <i class="fas fa-filter mr-1"></i> Filter
+                </button>
+                <button class="px-3 py-1.5 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">
+                    <i class="fas fa-download mr-1"></i> Export
+                </button>
+            </div>
+        </div>
+
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Pemilik</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Kategori</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Harga</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Stok</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-24">Status</th>
+                        <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider w-24">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    {% for item in produk %}
+                    <tr class="hover:bg-gray-50" data-name="{{ item.nama|lower }}" data-status="{% if item.aktif %}aktif{% else %}nonaktif{% endif %}" data-stok="{{ item.stok|default:0 }}">
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0 h-10 w-10 rounded bg-gray-100 overflow-hidden">
+                                    {% if item.gambar %}
+                                    <img src="{{ item.gambar.url }}" alt="{{ item.nama }}" class="h-10 w-10 object-cover">
+                                    {% endif %}
+                                </div>
+                                <div class="ml-4">
+                                    <div class="text-sm font-medium text-gray-900">{{ item.nama }}</div>
+                                    <div class="text-xs text-gray-500 truncate" style="max-width: 200px;">{{ item.deskripsi|striptags|default:'-'|truncatechars:60 }}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            {% if item.user %}
+                                {{ item.user.get_full_name|default:item.user.username }}
+                                <div class="text-xs text-gray-400">{{ item.user.email|default:'' }}</div>
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ item.kategoripenjualan.nama|default:'-' }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Rp {{ item.harga|intcomma }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm {% if item.stok > 0 %}text-green-600{% else %}text-red-600{% endif %}">
+                            {% if item.stok > 0 %}{{ item.stok }}{% else %}Habis{% endif %}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            {% if item.aktif %}
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Aktif</span>
+                            {% else %}
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-200 text-gray-800">Nonaktif</span>
+                            {% endif %}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                            <div class="flex justify-end space-x-2">
+                                {% if perms.cart.change_produk %}
+                                <a href="{% url 'editprodukadmin' item.token_produk %}" 
+                                   class="text-blue-600 hover:text-blue-900 p-1 rounded-full hover:bg-blue-50"
+                                   title="Lihat / Edit">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                    </svg>
+                                </a>
+                                {% endif %}
+                                {% if perms.cart.delete_produk %}
+                                <button 
+                                        data-token="{{ item.token_produk }}"
+                                        data-nama="{{ item.nama|default:'-' }}"
+                                        onclick="confirmDelete(this.dataset.token, this.dataset.nama)"
+                                        class="text-red-600 hover:text-red-900 p-1 rounded-full hover:bg-red-50"
+                                        title="Hapus Produk">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                    </svg>
+                                </button>
+                                {% endif %}
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="6" class="px-6 py-12 text-center">
+                                <div class="text-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                    </svg>
+                                    <h3 class="mt-2 text-sm font-medium text-gray-900">Tidak ada produk</h3>
+                                    <p class="mt-1 text-sm text-gray-500">Belum ada produk yang ditambahkan.</p>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination removed to match non-paginated backend -->
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div id="deleteModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-lg shadow-xl max-w-md w-full transform transition-all">
+        <div class="p-6">
+            <div class="flex items-center justify-center h-12 w-12 rounded-full bg-red-100 mx-auto mb-4">
+                <svg class="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+            </div>
+            <h3 class="text-lg font-medium text-gray-900 text-center mb-2">Konfirmasi Hapus Produk</h3>
+            <p class="text-sm text-gray-500 text-center mb-6">
+                Apakah Anda yakin ingin menghapus produk <span id="produkNama" class="font-semibold text-gray-700"></span>?
+                <br>Data yang dihapus tidak dapat dikembalikan.
+            </p>
+            <div class="flex justify-center space-x-3">
+                <button onclick="closeModal()" class="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition">
+                    Batal
+                </button>
+                <form id="deleteForm" method="POST" action="" class="inline">
+                    {% csrf_token %}
+                    <button type="submit" class="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition">
+                        Ya, Hapus
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function confirmDelete(token, nama) {
+        document.getElementById('deleteModal').classList.remove('hidden');
+        document.getElementById('produkNama').textContent = nama;
+        document.getElementById('deleteForm').action = "/administrator/penjualan/berandapenjualan/delete-produk/" + token + "/";
+        document.body.style.overflow = 'hidden';
+    }
+    
+    function closeModal() {
+        document.getElementById('deleteModal').classList.add('hidden');
+        document.body.style.overflow = 'auto';
+    }
+    
+    // Close modal when clicking outside
+    window.onclick = function(event) {
+        const modal = document.getElementById('deleteModal');
+        if (event.target === modal) {
+            closeModal();
+        }
+    }
+    
+    // Close modal with Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeModal();
+        }
+    });
+
+    // Simple client-side filter for produk list
+    function applyProdukFilter() {
+        const qInput = document.getElementById('prod-q');
+        const stSel = document.getElementById('prod-st');
+        const term = (qInput && qInput.value || '').toLowerCase();
+        const filter = stSel ? stSel.value : 'all';
+        const rows = document.querySelectorAll('table tbody tr');
+        let visible = 0;
+        rows.forEach(r => {
+            const name = (r.dataset.name || '').toLowerCase();
+            const status = (r.dataset.status || '').toLowerCase();
+            const stok = parseInt(r.dataset.stok || '0', 10);
+            const matchName = !term || name.includes(term);
+            const matchFilter = (filter === 'all') || (filter === 'habis' ? stok <= 0 : status === filter);
+            const show = matchName && matchFilter;
+            r.style.display = show ? '' : 'none';
+            if (show) visible++;
+        });
+        // Update total card to reflect visible items
+        const totalEl = document.querySelector('[data-total-produk]');
+        if (totalEl) totalEl.textContent = visible;
+    }
+
+    // Mark total element and initialize count once loaded
+    window.addEventListener('DOMContentLoaded', function(){
+        const totalSpan = document.querySelector('#total-produk-value');
+        if (totalSpan) totalSpan.setAttribute('data-total-produk','1');
+        applyProdukFilter();
+    });
+</script>
+{% endblock content %}

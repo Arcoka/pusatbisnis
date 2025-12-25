@@ -1,0 +1,98 @@
+@font-face {
+    font-family: 'Samarata';
+    src: url(font/Samarata.ttf);
+}
+
+.font-Samarata {
+    font-family: 'Samarata', serif;
+}
+
+@font-face {
+    font-family: 'Rocqwey';
+    src: url(font/Rocqwey.ttf);
+}
+
+.font-Rocqwey {
+    font-family: 'Rocqwey', serif;
+}
+
+@font-face {
+    font-family: 'Freegdom';
+    src: url(font/Freegdom.otf);
+}
+
+.font-Freegdom {
+    font-family: 'Freegdom', serif;
+}
+
+@font-face {
+    font-family: 'FourtCarseyL3vg';
+    src: url(font/FourtCarseyL3ovg.otf);
+}
+
+.font-FourtCarseyL3vg {
+    font-family: 'FourtCarseyL3vg', serif;
+}
+
+@font-face {
+    font-family: 'CentralDisplayDEMORegular';
+    src: url(font/CentralDisplayDEMORegular.ttf);
+}
+
+.font-CentralDisplayDEMORegular {
+    font-family: 'CentralDisplayDEMORegular', serif;
+}
+
+@font-face {
+    font-family: 'AestheticRegular';
+    src: url(font/AestheticRegular.ttf);
+}
+
+.font-AestheticRegular {
+    font-family: 'AestheticRegular', serif;
+}
+
+@font-face {
+    font-family: 'RachillaDemoRegular';
+    src: url(font/RachillaDemoRegular.ttf);
+}
+
+.font-RachillaDemoRegular {
+    font-family: 'RachillaDemoRegular', serif;
+}
+
+@font-face {
+    font-family: 'Cralika';
+    src: url(font/Cralika.ttf);
+}
+
+.font-Cralika {
+    font-family: 'Cralika', serif;
+}
+
+@font-face {
+    font-family: 'BlackoutSunrise';
+    src: url(font/BlackoutSunrise.ttf);
+}
+
+.font-BlackoutSunrise {
+    font-family: 'BlackoutSunrise', serif;
+}
+
+@font-face {
+    font-family: 'Dragonlord';
+    src: url(font/Dragonlord.otf);
+}
+
+.font-Dragonlord {
+    font-family: 'Dragonlord', serif;
+}
+
+@font-face {
+    font-family: 'handwriting';
+    src: url(font/handwriting.ttf);
+}
+
+.font-handwriting {
+    font-family: 'handwriting', serif;
+}

@@ -1,0 +1,71 @@
+{% extends "baseadmin.html" %}
+{% load static %}
+{% block content %}
+<div class="overflow-x-auto flex-1 p-6 transition-all duration-200 ease-in-out">
+    <header class="mb-8 flex items-center space-x-3">
+        <i class="fas fa-trash-alt text-red-500 text-2xl"></i>
+        <h1 class="text-3xl font-bold text-gray-700">{{ judul }}</h1>
+    </header>
+    
+    <div class="bg-white shadow rounded-lg p-6">
+        <div class="mb-6">
+            <h2 class="text-xl font-semibold mb-4">Apakah Anda yakin ingin menghapus data berikut?</h2>
+            
+            {% if jenis == 'visi' %}
+                <div class="bg-blue-50 p-4 rounded">
+                    <h3 class="font-medium text-blue-800 mb-2">Visi:</h3>
+                    <p class="text-blue-600">{{ visimisi.visi|safe }}</p>
+                </div>
+            {% elif jenis == 'misi' %}
+                <div class="bg-green-50 p-4 rounded">
+                    <h3 class="font-medium text-green-800 mb-2">Misi:</h3>
+                    <p class="text-green-600">{{ visimisi.misi|safe }}</p>
+                </div>
+            {% elif jenis == 'sasaran' %}
+                <div class="bg-purple-50 p-4 rounded">
+                    <h3 class="font-medium text-purple-800 mb-2">Sasaran:</h3>
+                    <p class="text-purple-600">{{ visimisi.sasaran|safe }}</p>
+                </div>
+            {% elif jenis == 'tujuan' %}
+                <div class="bg-orange-50 p-4 rounded">
+                    <h3 class="font-medium text-orange-800 mb-2">Tujuan:</h3>
+                    <p class="text-orange-600">{{ visimisi.tujuan|safe }}</p>
+                </div>
+            {% else %}
+                <div class="bg-gray-50 p-4 rounded mb-4">
+                    {% if visimisi.visi %}
+                        <h3 class="font-medium text-gray-800 mb-2">Visi:</h3>
+                        <p class="text-gray-600 mb-4">{{ visimisi.visi|safe }}</p>
+                    {% endif %}
+                    {% if visimisi.misi %}
+                        <h3 class="font-medium text-gray-800 mb-2">Misi:</h3>
+                        <p class="text-gray-600 mb-4">{{ visimisi.misi|safe }}</p>
+                    {% endif %}
+                    {% if visimisi.sasaran %}
+                        <h3 class="font-medium text-gray-800 mb-2">Sasaran:</h3>
+                        <p class="text-gray-600 mb-4">{{ visimisi.sasaran|safe }}</p>
+                    {% endif %}
+                    {% if visimisi.tujuan %}
+                        <h3 class="font-medium text-gray-800 mb-2">Tujuan:</h3>
+                        <p class="text-gray-600">{{ visimisi.tujuan|safe }}</p>
+                    {% endif %}
+                </div>
+            {% endif %}
+        </div>
+        
+        <form method="post">
+            {% csrf_token %}
+            <input type="hidden" name="jenis" value="{{ jenis }}">
+            
+            <div class="flex items-center justify-end space-x-4">
+                <a href="{% url 'administrator:visimisiadmin' %}" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                    Batal
+                </a>
+                <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                    Hapus
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock content %}
