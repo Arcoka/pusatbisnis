@@ -105,8 +105,11 @@ DATABASES = {
 # Security: Only active in production
 # -------------------------
 if not DEBUG:
-    # Force HTTPS and HSTS
-    SECURE_SSL_REDIRECT = True
+    # Railway sudah handle HTTPS, jadi tidak perlu redirect lagi
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    SECURE_SSL_REDIRECT = False  # PENTING: Set False untuk Railway
+    
+    # HSTS settings
     SECURE_HSTS_SECONDS = 31536000  # 1 year
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_HSTS_PRELOAD = True
@@ -119,7 +122,6 @@ if not DEBUG:
     SECURE_CONTENT_TYPE_NOSNIFF = True
     SECURE_REFERRER_POLICY = 'same-origin'
     X_FRAME_OPTIONS = 'DENY'
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
