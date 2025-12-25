@@ -95,7 +95,7 @@ WSGI_APPLICATION = 'aplikasi.wsgi.application'
 # Database: hanya MySQL sebagai default
 DATABASES = {
     'default': dj_database_url.config(
-        default='mysql://root:password@localhost:3306/pusat_bisnis',
+        default='mysql://root:password@localhost:3306/inbis_unuja',
         conn_max_age=600,
         ssl_require=False
     )
