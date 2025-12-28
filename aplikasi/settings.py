@@ -93,14 +93,19 @@ WSGI_APPLICATION = 'aplikasi.wsgi.application'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 # Database: hanya MySQL sebagai default
+# DATABASES = {
+#     'default': dj_database_url.config(
+#         default='mysql://root:password@localhost:3306/inbis_unuja',
+#         conn_max_age=600,
+#         ssl_require=False
+#     )
+# }
 DATABASES = {
-    'default': dj_database_url.config(
-        default='mysql://root:password@localhost:3306/inbis_unuja',
-        conn_max_age=600,
-        ssl_require=False
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
 }
-
 # -------------------------
 # Security: Only active in production
 # -------------------------
