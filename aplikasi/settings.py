@@ -60,6 +60,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'website.middleware.SecurityHeadersMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # For static files in production
     'administrator.middleware.ActivityLogMiddleware',
     'website.middleware.FriendlyErrorMiddleware',
     'administrator.middleware.AdminRoleMiddleware',
